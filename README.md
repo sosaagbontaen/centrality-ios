@@ -100,7 +100,7 @@ Centrality is an all-in one productivity suite that accomodates for different us
 
 ## Wireframes
 #### Low-Fidelity Wireframe and Navigation Flow
-<img src="LoFi-Screens-and-Flows.heic" width=600>
+<img src="Lofi Prototype.png" width=600>
 
 ### [In-Progress] Digital Wireframes & Mockups
 
