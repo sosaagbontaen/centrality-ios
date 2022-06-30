@@ -99,7 +99,7 @@ Centrality is an all-in one productivity suite that accomodates for different us
     * View usage stats (tasks completed, percentages, etc.)
 
 ## Wireframes
-#### Low-Fidelity Wireframe and Navigation Flow
+### Low-Fidelity Wireframe and Navigation Flow
 <img src="Lofi Prototype.png" width=600>
 
 ### [In-Progress] Digital Wireframes & Mockups
@@ -107,10 +107,19 @@ Centrality is an all-in one productivity suite that accomodates for different us
 ### [In-Progress] Interactive Prototype
 
 ## [In-Progress] Schema 
-[This section will be completed in Unit 9]
+### Models
+#### Task
 
-### [In-Progress] Models
-[Add table of models]
+   | Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | objectId      | Number   | unique id for the current task (default field) |
+   | dateCreated   | DateTime | date when user created task |
+   | dueDate       | DateTime | due date for task set by user |
+   | taskTitle     | String   | title for the task |
+   | taskDesc      | String   | description for the task |
+   | taskPriority  | Number | priority-level of the task |
+   | reminders     | DateTime Array | list of timed reminders set by user |
+   | categories    | String | category that task belongs to |
 
 ### [In-Progress] Networking
 - [Add list of network requests by screen ]
