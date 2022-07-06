@@ -25,28 +25,26 @@ Centrality is an all-in one productivity suite that accomodates for different us
 **Required Must-have Stories**
 
 * Allow users to create an account
-* Allow users to create, read, update, and delete tasks
-* Allow users to add due date and reminders to tasks
-* Allow user to add tags/categories to tasks
-* Allow users to filter view by tags, due date, or priority, 
-* Table view for viewing tasks
-* Kanban view for viewing tasks
-* Push Notifications
+* Allow users to create, read, update, describe, and delete tasks that are saved to their account in the backend.
+* Allow user to categorize tasks.
+* List-view (XCode TableView) for viewing tasks
 
-**Optional Nice-to-have Stories**
-* Allow user to save task info to an account, not just locally
-* Allow users to describe tasks
-* Allow users to rank priority of tasks
+**High-Priority Nice-To-Have Stories**
+* Allow users to filter view by tags, due date, or priority
+* Kanban view for viewing tasks
+* Push Notifications for task reminders
+* Allow users to add subtasks to a task
+
+**Low-Priority Nice-To-Have Stories**
+* Calendar view for viewing tasks
 * Grid view for viewing tasks
 * Pomodoro Timer
 * Focus Board
-* Calendar view for viewing tasks
 * Dark mode toggle
 * Time-Blocker
 * Notes Manager
 * Sync w/ GCal & Outlook
 * Collaborative feature : allow users to share tasks with eachother
-* Allow users to add subtasks to a task
 * Allow users to add custom metrics (task difficulty, task duration)
 
 ### 2. Screen Archetypes
