@@ -1,0 +1,6 @@
+framework module Pods_CentralityiOS_CentralityiOSUITests {
+  umbrella header "Pods-CentralityiOS-CentralityiOSUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
