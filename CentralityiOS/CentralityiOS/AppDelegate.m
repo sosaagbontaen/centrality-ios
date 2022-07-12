@@ -7,25 +7,28 @@
 
 #import "AppDelegate.h"
 #import "Parse/Parse.h"
-NSString *path;
-NSDictionary *dict;
-NSString *applicationId;
-NSString *clientKey;
+
+static const NSString *applicationIdObj = @"applicationId";
+static const NSString *clientKeyObj = @"clientKey";
+static NSString *serverURL = @"https://parseapi.back4app.com";
+static NSString *keysFileName = @"Keys";
+static NSString *keysFileExtension = @"plist";
 
 @implementation AppDelegate
+    
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ParseClientConfiguration *config = [ParseClientConfiguration  configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
 
-        path = [[NSBundle mainBundle] pathForResource: @"Keys" ofType: @"plist"];
-        dict = [NSDictionary dictionaryWithContentsOfFile: path];
+        NSString *path = [[NSBundle mainBundle] pathForResource: keysFileName ofType: keysFileExtension];
+        NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: path];
 
-        applicationId = [dict objectForKey: @"applicationId"];
-        clientKey = [dict objectForKey: @"clientKey"];
+        NSString *applicationId = [dict objectForKey: applicationIdObj];
+        NSString *clientKey = [dict objectForKey: clientKeyObj];
         
         configuration.applicationId = [NSString stringWithFormat:@"%@", applicationId];
         configuration.clientKey = [NSString stringWithFormat: @"%@", clientKey];
-        configuration.server = @"https://parseapi.back4app.com";
+        configuration.server = serverURL;
     }];
 
     [Parse initializeWithConfiguration:config];

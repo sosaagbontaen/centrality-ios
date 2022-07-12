@@ -5,4 +5,7 @@ CentralityiOSUITests/
 CentralityiOSTests/
 CentralityiOS.xcworkspace/
 CentralityiOS.xcodeproj/
+CentralityiOS/.DS_Store
 .DS_Store
+Podfile
+Podfile.lock
