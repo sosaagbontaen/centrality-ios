@@ -7,20 +7,21 @@
 
 #import "AppDelegate.h"
 #import "Parse/Parse.h"
-
-@interface AppDelegate ()
-@end
+NSString *path;
+NSDictionary *dict;
+NSString *applicationId;
+NSString *clientKey;
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ParseClientConfiguration *config = [ParseClientConfiguration  configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
 
-        NSString *path = [[NSBundle mainBundle] pathForResource: @"Keys" ofType: @"plist"];
-        NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: path];
+        path = [[NSBundle mainBundle] pathForResource: @"Keys" ofType: @"plist"];
+        dict = [NSDictionary dictionaryWithContentsOfFile: path];
 
-        NSString *applicationId = [dict objectForKey: @"applicationId"];
-        NSString *clientKey = [dict objectForKey: @"clientKey"];
+        applicationId = [dict objectForKey: @"applicationId"];
+        clientKey = [dict objectForKey: @"clientKey"];
         
         configuration.applicationId = [NSString stringWithFormat:@"%@", applicationId];
         configuration.clientKey = [NSString stringWithFormat: @"%@", clientKey];
