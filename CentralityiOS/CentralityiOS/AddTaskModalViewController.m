@@ -19,6 +19,7 @@
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
 - (IBAction)addTaskAction:(id)sender {
+    
     if ([self.taskTitleInput.text isEqual:@""]){
         [self alert:@"Invalid Task Name" messageLabel:@"Task Name field is empty" label:@"OK"];
         return;
@@ -27,13 +28,9 @@
     [self dismissViewControllerAnimated:YES completion:^{}];
     
     TaskObject *newTask = [TaskObject new];
-    
-    //newTask.taskID = User.taskCounter;
-    //newTask.dueDate;
     newTask.taskTitle = self.taskTitleInput.text;
     newTask.taskDesc = self.taskDescInput.text;
     newTask.isCompleted = false;
-    //newTask.category;
     
     NSLog(@"Attempting to add task to Parse!");
     [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -56,25 +53,9 @@
                                                              // handle cancel response here. Doing nothing will dismiss the view.
                                                       }];
     [alert addAction:onlyAction];
-    
-    [self presentViewController:alert animated:YES completion:^{
-        // optional code for what happens after the alert controller has finished presenting
-    }];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end

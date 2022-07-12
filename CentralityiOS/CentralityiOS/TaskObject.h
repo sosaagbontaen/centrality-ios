@@ -16,7 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *taskDesc;
 @property (nonatomic) BOOL isCompleted;
 @property (nonatomic, strong) NSString *category;
-//@property (nonatomic, strong) User *owner;
     
     
     
