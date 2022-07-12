@@ -1,3 +1,8 @@
 
-CentralityiOS/Keys.plist
 Keys.plist
+Pods/
+CentralityiOSUITests/
+CentralityiOSTests/
+CentralityiOS.xcworkspace/
+CentralityiOS.xcodeproj/
+.DS_Store
