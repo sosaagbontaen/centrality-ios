@@ -52,11 +52,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell"];
     TaskObject *task = self.arrayOfTasks[indexPath.row];
+    TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell"];
     cell.task = task;
     cell.taskNameLabel.text = task.taskTitle;
     cell.taskDescLabel.text = task.taskDesc;
+    [cell refreshCell];
     return cell;
 }
 
