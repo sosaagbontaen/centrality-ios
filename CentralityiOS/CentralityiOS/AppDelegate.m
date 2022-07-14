@@ -10,9 +10,9 @@
 
 static NSString * const kapplicationIdObj = @"applicationId";
 static NSString * const kclientKeyObj = @"clientKey";
-static NSString * const serverURL = @"https://parseapi.back4app.com";
-static NSString * const keysFileName = @"Keys";
-static NSString * const keysFileExtension = @"plist";
+static NSString * const kserverURL = @"https://parseapi.back4app.com";
+static NSString * const kFileName = @"Keys";
+static NSString * const kFileExtension = @"plist";
 
 @implementation AppDelegate
     
@@ -20,7 +20,7 @@ static NSString * const keysFileExtension = @"plist";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ParseClientConfiguration *config = [ParseClientConfiguration  configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
 
-        NSString *path = [[NSBundle mainBundle] pathForResource: keysFileName ofType: keysFileExtension];
+        NSString *path = [[NSBundle mainBundle] pathForResource: kFileName ofType: kFileExtension];
         NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: path];
 
         NSString *applicationId = [dict objectForKey: kapplicationIdObj];
@@ -28,7 +28,7 @@ static NSString * const keysFileExtension = @"plist";
         
         configuration.applicationId = [NSString stringWithFormat:@"%@", applicationId];
         configuration.clientKey = [NSString stringWithFormat: @"%@", clientKey];
-        configuration.server = serverURL;
+        configuration.server = kserverURL;
     }];
 
     [Parse initializeWithConfiguration:config];
