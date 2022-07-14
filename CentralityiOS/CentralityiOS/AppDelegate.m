@@ -8,11 +8,11 @@
 #import "AppDelegate.h"
 #import "Parse/Parse.h"
 
-static const NSString *applicationIdObj = @"applicationId";
-static const NSString *clientKeyObj = @"clientKey";
-static NSString *serverURL = @"https://parseapi.back4app.com";
-static NSString *keysFileName = @"Keys";
-static NSString *keysFileExtension = @"plist";
+static NSString * const kapplicationIdObj = @"applicationId";
+static NSString * const kclientKeyObj = @"clientKey";
+static NSString * const serverURL = @"https://parseapi.back4app.com";
+static NSString * const keysFileName = @"Keys";
+static NSString * const keysFileExtension = @"plist";
 
 @implementation AppDelegate
     
@@ -23,8 +23,8 @@ static NSString *keysFileExtension = @"plist";
         NSString *path = [[NSBundle mainBundle] pathForResource: keysFileName ofType: keysFileExtension];
         NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: path];
 
-        NSString *applicationId = [dict objectForKey: applicationIdObj];
-        NSString *clientKey = [dict objectForKey: clientKeyObj];
+        NSString *applicationId = [dict objectForKey: kapplicationIdObj];
+        NSString *clientKey = [dict objectForKey: kclientKeyObj];
         
         configuration.applicationId = [NSString stringWithFormat:@"%@", applicationId];
         configuration.clientKey = [NSString stringWithFormat: @"%@", clientKey];
