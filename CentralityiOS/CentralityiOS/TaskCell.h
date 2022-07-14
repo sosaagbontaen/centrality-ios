@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TaskCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *taskNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *taskDescLabel;
+@property (weak, nonatomic) IBOutlet UIButton *completeButton;
 @property (nonatomic) TaskObject* task;
 @end
 
