@@ -7,7 +7,6 @@
 
 #import <UIKit/UIKit.h>
 #import "TaskObject.h"
-@import Parse;
 
 NS_ASSUME_NONNULL_BEGIN
 

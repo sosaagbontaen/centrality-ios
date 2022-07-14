@@ -6,13 +6,16 @@
 //
 
 #import "Parse/Parse.h"
+#import "AddTaskModalViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ToDoFeedViewController : UIViewController
+@interface ToDoFeedViewController : UIViewController <AddTaskModalViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *taskTableView;
-@property (strong, nonatomic) NSArray *arrayOfTasks;
+@property (strong, nonatomic) NSMutableArray *arrayOfTasks;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (weak, nonatomic) IBOutlet UIButton *addTaskButton;
+-(void) fetchData;
 @end
 
 NS_ASSUME_NONNULL_END
