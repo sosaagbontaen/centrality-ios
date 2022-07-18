@@ -24,7 +24,7 @@
     [self presentViewController:addTaskModalVC animated:YES completion:^{}];
 }
 
-- (void)addNewTaskToFeed:(AddTaskModalViewController *)controller newTaskToAddToFeed:(TaskObject*) newTask {
+- (void)didAddNewTask:(TaskObject*) newTask toFeed:(AddTaskModalViewController *)controller{
     NSLog(@"Succesfully added '%@' to Parse!", newTask.taskTitle);
     [self.arrayOfTasks addObject:newTask];
     [self fetchData];
@@ -37,7 +37,7 @@
 
     [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
         if (tasks != nil) {
-            self.arrayOfTasks = (NSMutableArray*)tasks;
+            self.arrayOfTasks = [tasks mutableCopy];
         } else {
             NSLog(@"%@", error.localizedDescription);
         }

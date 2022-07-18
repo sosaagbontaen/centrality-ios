@@ -8,6 +8,9 @@
 #import "TaskCell.h"
 #import "TaskObject.h"
 
+static NSString * const kIncompleteImageName = @"circle";
+static NSString * const kCompleteImageName = @"checkmark.circle.fill";
+
 @implementation TaskCell
 
 - (void)awakeFromNib {
@@ -18,26 +21,21 @@
     [super setSelected:selected animated:animated];
 }
 - (IBAction)completeAction:(id)sender {
-    if (self.task.isCompleted == NO){
-        self.task.isCompleted = YES;
-    }
-    else{
-        self.task.isCompleted = NO;
-    }
+    self.task.isCompleted = !self.task.isCompleted;
     [self.task saveInBackground];
     [self refreshCell];
 }
 
 - (void)refreshCell{
-    UIImage *incompleteImage = [UIImage systemImageNamed:@"circle"];
-    UIImage *completeImage = [UIImage systemImageNamed:@"checkmark.circle.fill"];
+    UIImage *incompleteImage = [UIImage systemImageNamed:kIncompleteImageName];
+    UIImage *completeImage = [UIImage systemImageNamed:kCompleteImageName];
     UIColor *completeColor = [UIColor grayColor];
     UIColor *inCompleteColor = [UIColor blackColor];
     
-    [self.completeButton setSelected:FALSE];
-    [self.completeButton setHighlighted:FALSE];
+    [self.completeButton setSelected:NO];
+    [self.completeButton setHighlighted:NO];
     
-    if (self.task.isCompleted == YES){
+    if (self.task.isCompleted){
         [self.completeButton setImage:completeImage forState:UIControlStateNormal];
         self.taskNameLabel.textColor = completeColor;
     }

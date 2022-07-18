@@ -26,12 +26,12 @@
     TaskObject *newTask = [TaskObject new];
     newTask.taskTitle = self.taskTitleInput.text;
     newTask.taskDesc = self.taskDescInput.text;
-    newTask.isCompleted = false;
+    newTask.isCompleted = NO;
     
     NSLog(@"Attempting to add task '%@' to Parse!", newTask.taskTitle);
     [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
-            [self.delegate addNewTaskToFeed:self newTaskToAddToFeed:newTask];
+            [self.delegate didAddNewTask:newTask toFeed:self];
             [self dismissViewControllerAnimated:YES completion:^{}];
         }
         else {

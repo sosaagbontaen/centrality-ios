@@ -11,7 +11,7 @@
 @class AddTaskModalViewController;
 
 @protocol AddTaskModalViewControllerDelegate <NSObject>
-- (void)addNewTaskToFeed:(AddTaskModalViewController *)controller newTaskToAddToFeed:(TaskObject *)item;
+- (void)didAddNewTask:(TaskObject *)item toFeed:(AddTaskModalViewController *)controller;
 @end
 
 @interface AddTaskModalViewController : UIViewController

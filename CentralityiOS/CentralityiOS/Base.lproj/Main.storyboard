@@ -240,6 +240,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="WUk-cJ-fg2"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <connections>
                         <outlet property="taskDescInput" destination="fAf-Pc-EII" id="L9U-KE-Yak"/>
