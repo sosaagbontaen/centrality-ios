@@ -7,14 +7,15 @@
 
 #import <UIKit/UIKit.h>
 #import "TaskObject.h"
-@import Parse;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TaskCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *taskNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *taskDescLabel;
-@property (nonatomic) TaskObject* task;
+@property (weak, nonatomic) IBOutlet UIButton *completeButton;
+@property TaskObject* task;
+- (void)refreshCell;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -6,6 +6,7 @@
 //
 
 #import "ToDoFeedViewController.h"
+#import "AddTaskModalViewController.h"
 #import "Parse/Parse.h"
 #import "TaskCell.h"
 #import "TaskObject.h"
@@ -15,15 +16,28 @@
 
 @implementation ToDoFeedViewController
 
+- (IBAction)newTaskAction:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
+                                    @"Main" bundle:nil];
+    AddTaskModalViewController *addTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"AddTaskModalViewController"];
+    addTaskModalVC.delegate = self;
+    [self presentViewController:addTaskModalVC animated:YES completion:^{}];
+}
+
+- (void)didAddNewTask:(TaskObject*) newTask toFeed:(AddTaskModalViewController *)controller{
+    NSLog(@"Succesfully added '%@' to Parse!", newTask.taskTitle);
+    [self.arrayOfTasks addObject:newTask];
+    [self fetchData];
+}
+
 - (void)fetchData{
-    
     PFQuery *query = [PFQuery queryWithClassName:@"TaskObject"];
     [query orderByDescending:@"createdAt"];
     query.limit = 20;
 
     [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
         if (tasks != nil) {
-            self.arrayOfTasks = tasks;
+            self.arrayOfTasks = [tasks mutableCopy];
         } else {
             NSLog(@"%@", error.localizedDescription);
         }
@@ -38,11 +52,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell"];
     TaskObject *task = self.arrayOfTasks[indexPath.row];
+    TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell"];
     cell.task = task;
     cell.taskNameLabel.text = task.taskTitle;
     cell.taskDescLabel.text = task.taskDesc;
+    [cell refreshCell];
     return cell;
 }
 
