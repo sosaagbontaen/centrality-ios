@@ -72,7 +72,6 @@
     newUser.username = username;
     newUser.password = password;
     
-    // call sign up function on the object
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
         if (error != nil) {
             NSLog(@"Error: %@", error.localizedDescription);
@@ -81,25 +80,6 @@
             NSLog(@"User registered successfully");
             [self performSegueWithIdentifier:@"loginSegue" sender:nil];
         }
-    }];
-}
-
-- (void)alert:(NSString *)titleLabel messageLabel:(NSString *)messageLabel leftLabel: (NSString *)leftLabel rightLabel: (NSString *)rightLabel{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:titleLabel
-                                                                               message:messageLabel
-                                                                        preferredStyle:(UIAlertControllerStyleAlert)];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:leftLabel
-                                                        style:UIAlertActionStyleCancel
-                                                      handler:^(UIAlertAction * _Nonnull action) {
-                                                      }];
-    [alert addAction:cancelAction];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:rightLabel
-                                                       style:UIAlertActionStyleDefault
-                                                     handler:^(UIAlertAction * _Nonnull action) {
-                                                     }];
-    [alert addAction:okAction];
-    
-    [self presentViewController:alert animated:YES completion:^{
     }];
 }
 
