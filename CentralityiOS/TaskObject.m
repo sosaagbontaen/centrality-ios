@@ -10,6 +10,7 @@
 @implementation TaskObject
 
 @dynamic taskID;
+@dynamic owner;
 @dynamic dueDate;
 @dynamic taskTitle;
 @dynamic taskDesc;

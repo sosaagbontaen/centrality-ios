@@ -17,13 +17,14 @@
 - (IBAction)cancelAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
-- (IBAction)addTaskAction:(id)sender {
+- (IBAction)addTaskAction:(id)sender{
     if ([self.taskTitleInput.text isEqual:@""]){
         NSLog(@"Empty title");
         return;
     }
     
     TaskObject *newTask = [TaskObject new];
+    newTask.owner = [PFUser currentUser];
     newTask.taskTitle = self.taskTitleInput.text;
     newTask.taskDesc = self.taskDescInput.text;
     newTask.isCompleted = NO;
@@ -38,9 +39,7 @@
             NSLog(@"Task not added to Parse : %@", error.localizedDescription);
         }
     }];
-    
-    }
-
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
 }

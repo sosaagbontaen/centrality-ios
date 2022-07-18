@@ -10,11 +10,27 @@
 #import "Parse/Parse.h"
 #import "TaskCell.h"
 #import "TaskObject.h"
+#import "SceneDelegate.h"
 
 @interface ToDoFeedViewController () <UITableViewDelegate, UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @end
 
 @implementation ToDoFeedViewController
+
+- (IBAction)logoutAction:(id)sender {
+    [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
+        SceneDelegate *mySceneDelegate = (SceneDelegate * ) UIApplication.sharedApplication.connectedScenes.allObjects.firstObject.delegate;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        if ([mySceneDelegate.window.rootViewController isKindOfClass:[UITabBarController self]]){
+            mySceneDelegate.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+        }
+        else{
+            [self dismissViewControllerAnimated:YES completion:^{}];
+        }
+        NSLog(@"User logged out succesfully!");
+    }];
+}
 
 - (IBAction)newTaskAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
@@ -33,6 +49,7 @@
 - (void)fetchData{
     PFQuery *query = [PFQuery queryWithClassName:@"TaskObject"];
     [query orderByDescending:@"createdAt"];
+    [query whereKey:@"owner" equalTo:[PFUser currentUser]];
     query.limit = 20;
 
     [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
