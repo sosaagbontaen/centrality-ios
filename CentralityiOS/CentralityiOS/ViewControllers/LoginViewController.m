@@ -22,9 +22,6 @@
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;
     
-    BOOL usernameIsEmpty = [username isEqual:@""];
-    BOOL passwordIsEmpty = [password isEqual:@""];
-    
     [self fieldChecker:username passwordInput:password];
         
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
@@ -41,9 +38,6 @@
     
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;
-    
-    BOOL usernameIsEmpty = [username isEqual:@""];
-    BOOL passwordIsEmpty = [password isEqual:@""];
     
     [self fieldChecker:username passwordInput:password];
     
