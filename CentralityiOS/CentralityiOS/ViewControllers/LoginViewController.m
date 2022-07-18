@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UIButton *signupButton;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
+- (void)fieldChecker:(NSString*)usernameInput passwordInput:(NSString*)passwordInput;
 @end
 
 @implementation LoginViewController
@@ -24,18 +25,7 @@
     BOOL usernameIsEmpty = [username isEqual:@""];
     BOOL passwordIsEmpty = [password isEqual:@""];
     
-    if (usernameIsEmpty && passwordIsEmpty){
-        [self alert:@"Invalid username and password" messageLabel:@"Username and password fields are empty" label:@"OK"];
-        return;
-    }
-    else if (usernameIsEmpty){
-        [self alert:@"Invalid username" messageLabel:@"Username field is empty" label:@"OK"];
-        return;
-    }
-    else if (passwordIsEmpty){
-        [self alert:@"Invalid password" messageLabel:@"Password field is empty" label:@"OK"];
-        return;
-    }
+    [self fieldChecker:username passwordInput:password];
         
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         if (error != nil) {
@@ -55,18 +45,7 @@
     BOOL usernameIsEmpty = [username isEqual:@""];
     BOOL passwordIsEmpty = [password isEqual:@""];
     
-    if (usernameIsEmpty && passwordIsEmpty){
-        [self alert:@"Invalid username and password" messageLabel:@"Username and password fields are empty" label:@"OK"];
-        return;
-    }
-    else if (usernameIsEmpty){
-        [self alert:@"Invalid username" messageLabel:@"Username field is empty" label:@"OK"];
-        return;
-    }
-    else if (passwordIsEmpty){
-        [self alert:@"Invalid password" messageLabel:@"Password field is empty" label:@"OK"];
-        return;
-    }
+    [self fieldChecker:username passwordInput:password];
     
     PFUser *newUser = [PFUser user];
     newUser.username = username;
@@ -97,16 +76,24 @@
     }];
 }
 
+- (void)fieldChecker:(NSString*)usernameInput passwordInput:(NSString*)passwordInput{
+    if ([usernameInput isEqualToString:@""] && [passwordInput isEqualToString:@""]){
+        [self alert:@"Invalid username and password" messageLabel:@"Username and password fields are empty" label:@"OK"];
+        return;
+    }
+    else if ([usernameInput isEqualToString:@""]){
+        [self alert:@"Invalid username" messageLabel:@"Username field is empty" label:@"OK"];
+        return;
+    }
+    else if ([passwordInput isEqualToString:@""]){
+        [self alert:@"Invalid password" messageLabel:@"Password field is empty" label:@"OK"];
+        return;
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    BOOL isFirstResponder = self.passwordField.isFirstResponder;
-    if (isFirstResponder){
-        [self.passwordField resignFirstResponder];
-    }
     self.passwordField.secureTextEntry = !self.passwordField.secureTextEntry;
-    if (isFirstResponder){
-        [self.passwordField becomeFirstResponder];
-    };
 }
 
 @end
