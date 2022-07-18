@@ -9,4 +9,5 @@ CentralityiOS/.DS_Store
 .DS_Store
 Podfile
 Podfile.lock
-.storyboard
+Main.storyboard
+LaunchScreen.storyboard
