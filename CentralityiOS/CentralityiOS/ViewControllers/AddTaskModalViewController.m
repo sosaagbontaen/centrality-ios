@@ -17,7 +17,7 @@
 - (IBAction)cancelAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
-- (IBAction)addTaskAction:(id)sender{
+- (IBAction)addTaskAction:(id)sender {
     if ([self.taskTitleInput.text isEqual:@""]){
         NSLog(@"Empty title");
         return;

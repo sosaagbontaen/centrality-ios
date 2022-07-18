@@ -17,22 +17,25 @@
 
 @implementation LoginViewController
 - (IBAction)loginAction:(id)sender {
-    if ([self.usernameField.text isEqual:@""] && [self.passwordField.text isEqual:@""]){
-        [self alert:@"Invalid username and password" messageLabel:@"Username and password fields are empty" label:@"OK"];
-        return;
-    }
-    else if ([self.usernameField.text isEqual:@""]){
-        [self alert:@"Invalid username" messageLabel:@"Username field is empty" label:@"OK"];
-        return;
-    }
-    else if ([self.passwordField.text isEqual:@""]){
-        [self alert:@"Invalid password" messageLabel:@"Password field is empty" label:@"OK"];
-        return;
-    }
-    
     
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;
+    
+    BOOL usernameIsEmpty = [username isEqual:@""];
+    BOOL passwordIsEmpty = [password isEqual:@""];
+    
+    if (usernameIsEmpty && passwordIsEmpty){
+        [self alert:@"Invalid username and password" messageLabel:@"Username and password fields are empty" label:@"OK"];
+        return;
+    }
+    else if (usernameIsEmpty){
+        [self alert:@"Invalid username" messageLabel:@"Username field is empty" label:@"OK"];
+        return;
+    }
+    else if (passwordIsEmpty){
+        [self alert:@"Invalid password" messageLabel:@"Password field is empty" label:@"OK"];
+        return;
+    }
         
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         if (error != nil) {
@@ -45,25 +48,29 @@
     }];
 }
 - (IBAction)signupAction:(id)sender {
-    if ([self.usernameField.text isEqual:@""] && [self.passwordField.text isEqual:@""]){
+    
+    NSString *username = self.usernameField.text;
+    NSString *password = self.passwordField.text;
+    
+    BOOL usernameIsEmpty = [username isEqual:@""];
+    BOOL passwordIsEmpty = [password isEqual:@""];
+    
+    if (usernameIsEmpty && passwordIsEmpty){
         [self alert:@"Invalid username and password" messageLabel:@"Username and password fields are empty" label:@"OK"];
         return;
     }
-    else if ([self.usernameField.text isEqual:@""]){
+    else if (usernameIsEmpty){
         [self alert:@"Invalid username" messageLabel:@"Username field is empty" label:@"OK"];
         return;
     }
-    else if ([self.passwordField.text isEqual:@""]){
+    else if (passwordIsEmpty){
         [self alert:@"Invalid password" messageLabel:@"Password field is empty" label:@"OK"];
         return;
     }
     
-    // initialize a user object
     PFUser *newUser = [PFUser user];
-    
-    // set user properties
-    newUser.username = self.usernameField.text;
-    newUser.password = self.passwordField.text;
+    newUser.username = username;
+    newUser.password = password;
     
     // call sign up function on the object
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
@@ -84,18 +91,15 @@
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:leftLabel
                                                         style:UIAlertActionStyleCancel
                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                             // handle cancel response here. Doing nothing will dismiss the view.
                                                       }];
     [alert addAction:cancelAction];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:rightLabel
                                                        style:UIAlertActionStyleDefault
                                                      handler:^(UIAlertAction * _Nonnull action) {
-                                                             // handle response here.
                                                      }];
     [alert addAction:okAction];
     
     [self presentViewController:alert animated:YES completion:^{
-        // optional code for what happens after the alert controller has finished presenting
     }];
 }
 
@@ -106,12 +110,10 @@
     UIAlertAction *onlyAction = [UIAlertAction actionWithTitle:label
                                                         style:UIAlertActionStyleCancel
                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                             // handle cancel response here. Doing nothing will dismiss the view.
                                                       }];
     [alert addAction:onlyAction];
     
     [self presentViewController:alert animated:YES completion:^{
-        // optional code for what happens after the alert controller has finished presenting
     }];
 }
 
