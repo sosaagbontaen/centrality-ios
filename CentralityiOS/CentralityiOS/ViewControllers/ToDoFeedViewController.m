@@ -33,7 +33,6 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
         else{
             [self dismissViewControllerAnimated:YES completion:^{}];
         }
-        NSLog(@"User logged out succesfully!");
     }];
 }
 
@@ -46,7 +45,6 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
 }
 
 - (void)didAddNewTask:(TaskObject*) newTask toFeed:(AddTaskModalViewController *)controller{
-    NSLog(@"Succesfully added '%@' to Parse!", newTask.taskTitle);
     [self.arrayOfTasks addObject:newTask];
     [self fetchData];
 }

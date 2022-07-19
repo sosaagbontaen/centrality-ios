@@ -29,7 +29,6 @@
     newTask.taskDesc = self.taskDescInput.text;
     newTask.isCompleted = NO;
     
-    NSLog(@"Attempting to add task '%@' to Parse!", newTask.taskTitle);
     [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
             [self.delegate didAddNewTask:newTask toFeed:self];

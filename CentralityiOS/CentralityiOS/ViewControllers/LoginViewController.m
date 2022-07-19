@@ -29,7 +29,6 @@
             NSLog(@"User log in failed: %@", error.localizedDescription);
             [self alert:@"Incorrect Password" messageLabel:@"The password you entered is incorrect. Please try again." label:@"OK"];
         } else {
-            NSLog(@"User logged in successfully");
             [self performSegueWithIdentifier:@"loginSegue" sender:nil];
         }
     }];
@@ -50,7 +49,6 @@
             NSLog(@"Error: %@", error.localizedDescription);
             [self alert:@"Invalid Username or Password" messageLabel:@"Username may be taken." label:@"OK"];
         } else {
-            NSLog(@"User registered successfully");
             [self performSegueWithIdentifier:@"loginSegue" sender:nil];
         }
     }];
