@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @end
 
+NSInteger kToDoFeedLimit = 20;
+
 @implementation ToDoFeedViewController
 
 - (IBAction)logoutAction:(id)sender {
@@ -50,7 +52,7 @@
     PFQuery *query = [PFQuery queryWithClassName:@"TaskObject"];
     [query orderByDescending:@"createdAt"];
     [query whereKey:@"owner" equalTo:[PFUser currentUser]];
-    query.limit = 20;
+    query.limit = kToDoFeedLimit;
 
     [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
         if (tasks != nil) {
@@ -76,6 +78,28 @@
     cell.taskDescLabel.text = task.taskDesc;
     [cell refreshCell];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (editingStyle == UITableViewCellEditingStyleDelete){
+        
+        PFQuery *query = [PFQuery queryWithClassName:@"TaskObject"];
+        [query orderByDescending:@"createdAt"];
+        [query whereKey:@"owner" equalTo:[PFUser currentUser]];
+        query.limit = kToDoFeedLimit;
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
+            if (tasks != nil) {
+                //Removes task from backend
+                [self.arrayOfTasks[indexPath.row] deleteInBackground];
+                //Removes task from current view / local array
+                [self.arrayOfTasks removeObjectAtIndex:indexPath.row];
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            } else {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+    }
 }
 
 - (void)viewDidLoad {
