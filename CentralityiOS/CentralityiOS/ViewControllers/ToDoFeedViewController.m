@@ -86,8 +86,10 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (editingStyle == UITableViewCellEditingStyleDelete){
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView
+trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Delete" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
         PFQuery *query = [self makeQuery];
         
@@ -102,7 +104,16 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
                 NSLog(@"%@", error.localizedDescription);
             }
         }];
-    }
+        
+        completionHandler(YES);
+        
+    }];
+    
+    deleteAction.backgroundColor = [UIColor systemRedColor];
+    
+    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+    swipeActions.performsFirstActionWithFullSwipe=false;
+    return swipeActions;
 }
 
 - (void)viewDidLoad {
