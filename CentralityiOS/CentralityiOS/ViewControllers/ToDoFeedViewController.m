@@ -16,7 +16,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @end
 
-NSInteger kToDoFeedLimit = 20;
+static const NSInteger kToDoFeedLimit = 20;
+static NSString * const kTaskClassName = @"TaskObject";
+static NSString * const kByOwnerQueryKey = @"owner";
+static NSString * const kCreatedAtQueryKey = @"createdAt";
 
 @implementation ToDoFeedViewController
 
@@ -48,12 +51,17 @@ NSInteger kToDoFeedLimit = 20;
     [self fetchData];
 }
 
-- (void)fetchData{
-    PFQuery *query = [PFQuery queryWithClassName:@"TaskObject"];
-    [query orderByDescending:@"createdAt"];
-    [query whereKey:@"owner" equalTo:[PFUser currentUser]];
+- (PFQuery*)makeQuery{
+    PFQuery *query = [PFQuery queryWithClassName:kTaskClassName];
+    [query orderByDescending:kCreatedAtQueryKey];
+    [query whereKey:kByOwnerQueryKey equalTo:[PFUser currentUser]];
     query.limit = kToDoFeedLimit;
+    return query;
+}
 
+- (void)fetchData{
+    PFQuery *query = [self makeQuery];
+    
     [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
         if (tasks != nil) {
             self.arrayOfTasks = [tasks mutableCopy];
@@ -83,10 +91,7 @@ NSInteger kToDoFeedLimit = 20;
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     if (editingStyle == UITableViewCellEditingStyleDelete){
         
-        PFQuery *query = [PFQuery queryWithClassName:@"TaskObject"];
-        [query orderByDescending:@"createdAt"];
-        [query whereKey:@"owner" equalTo:[PFUser currentUser]];
-        query.limit = kToDoFeedLimit;
+        PFQuery *query = [self makeQuery];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
