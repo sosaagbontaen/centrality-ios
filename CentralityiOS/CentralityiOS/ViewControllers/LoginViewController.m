@@ -75,11 +75,11 @@
         [self alert:@"Invalid username and password" messageLabel:@"Username and password fields are empty" label:@"OK"];
         return;
     }
-    else if ([usernameInput isEqualToString:@""]){
+    if ([usernameInput isEqualToString:@""]){
         [self alert:@"Invalid username" messageLabel:@"Username field is empty" label:@"OK"];
         return;
     }
-    else if ([passwordInput isEqualToString:@""]){
+    if ([passwordInput isEqualToString:@""]){
         [self alert:@"Invalid password" messageLabel:@"Password field is empty" label:@"OK"];
         return;
     }
