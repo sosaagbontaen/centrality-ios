@@ -7,6 +7,7 @@
 
 #import "ToDoFeedViewController.h"
 #import "AddTaskModalViewController.h"
+#import "EditTaskModalViewController.h"
 #import "Parse/Parse.h"
 #import "TaskCell.h"
 #import "TaskObject.h"
@@ -109,9 +110,19 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         
     }];
     
-    deleteAction.backgroundColor = [UIColor systemRedColor];
+    UIContextualAction *editAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Edit" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
+                                        @"Main" bundle:nil];
+        EditTaskModalViewController *editTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"EditTaskModalViewController"];
+        [self presentViewController:editTaskModalVC animated:YES completion:^{}];
+        completionHandler(YES);
+    }];
     
-    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+    deleteAction.backgroundColor = [UIColor systemRedColor];
+    editAction.backgroundColor = [UIColor systemGreenColor];
+    
+    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction,editAction]];
     swipeActions.performsFirstActionWithFullSwipe=false;
     return swipeActions;
 }

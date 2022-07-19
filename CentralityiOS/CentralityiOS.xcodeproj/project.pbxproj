@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A40F7E9288601B700BBAD4F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A40F7E8288601B700BBAD4F /* LoginViewController.m */; };
+		1A42BB1C2887665F003ACC4D /* EditTaskModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB1B2887665F003ACC4D /* EditTaskModalViewController.m */; };
 		1A8D46872878E91800489744 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46862878E91800489744 /* AppDelegate.m */; };
 		1A8D468A2878E91800489744 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46892878E91800489744 /* SceneDelegate.m */; };
 		1A8D46902878E91800489744 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A8D468E2878E91800489744 /* Main.storyboard */; };
@@ -47,6 +48,8 @@
 /* Begin PBXFileReference section */
 		1A40F7E7288601B700BBAD4F /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		1A40F7E8288601B700BBAD4F /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		1A42BB1A2887665F003ACC4D /* EditTaskModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditTaskModalViewController.h; sourceTree = "<group>"; };
+		1A42BB1B2887665F003ACC4D /* EditTaskModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditTaskModalViewController.m; sourceTree = "<group>"; };
 		1A8D46822878E91800489744 /* CentralityiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CentralityiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A8D46852878E91800489744 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1A8D46862878E91800489744 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -210,6 +213,8 @@
 				1A8D46C6287CC9B200489744 /* ToDoFeedViewController.m */,
 				1A40F7E7288601B700BBAD4F /* LoginViewController.h */,
 				1A40F7E8288601B700BBAD4F /* LoginViewController.m */,
+				1A42BB1A2887665F003ACC4D /* EditTaskModalViewController.h */,
+				1A42BB1B2887665F003ACC4D /* EditTaskModalViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -470,6 +475,7 @@
 				1A8D46C7287CC9B200489744 /* ToDoFeedViewController.m in Sources */,
 				1A8D46C4287CC95F00489744 /* TaskCell.m in Sources */,
 				1A8D46982878E91800489744 /* main.m in Sources */,
+				1A42BB1C2887665F003ACC4D /* EditTaskModalViewController.m in Sources */,
 				1A8D468A2878E91800489744 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
