@@ -37,7 +37,7 @@
     newTask.isCompleted = NO;
     
     CategoryObject *newCategory = [CategoryObject new];
-    newCategory.categoryName = @"None";
+    newCategory.categoryName = @"Uncategorized";
     newCategory.owner = [PFUser currentUser];
     
     [newCategory saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {

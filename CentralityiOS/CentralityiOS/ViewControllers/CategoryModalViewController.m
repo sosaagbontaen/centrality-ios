@@ -60,6 +60,36 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
     cell.categoryNameLabel.text = category.categoryName;
     return cell;
 }
+
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView
+trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Delete" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        
+        PFQuery *query = [self makeQuery];
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
+            if (tasks != nil) {
+                [self.arrayOfCategories[indexPath.row] deleteInBackground];
+                [self.arrayOfCategories removeObjectAtIndex:indexPath.row];
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [self fetchCategories];
+            } else {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+        
+        completionHandler(YES);
+        
+    }];
+    
+    deleteAction.backgroundColor = [UIColor systemRedColor];
+    
+    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+    swipeActions.performsFirstActionWithFullSwipe=false;
+    return swipeActions;
+}
+
 - (IBAction)addCategoryAction:(id)sender {
     
     CategoryObject *newCategory = [CategoryObject new];
