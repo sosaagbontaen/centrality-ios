@@ -10,20 +10,27 @@
 #import "SceneDelegate.h"
 
 @interface EditTaskModalViewController ()
-@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
-@property (weak, nonatomic) IBOutlet UIButton *updateButton;
-
 @end
 
 @implementation EditTaskModalViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.taskNameInput.text = self.taskFromFeed.taskTitle;
+    self.taskDescInput.text = self.taskFromFeed.taskDesc;
 }
 - (IBAction)cancelAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
 - (IBAction)updateAction:(id)sender {
+    if ([self.taskNameInput.text isEqual:@""]){
+        NSLog(@"Empty title");
+        return;
+    }
+    self.taskFromFeed.taskTitle = self.taskNameInput.text;
+    self.taskFromFeed.taskDesc = self.taskDescInput.text;
+    [self.delegate didEditTask:self.taskFromFeed toFeed:self];
+    [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
 @end

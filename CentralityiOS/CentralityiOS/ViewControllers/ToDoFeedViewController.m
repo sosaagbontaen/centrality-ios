@@ -50,6 +50,17 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
     [self fetchData];
 }
 
+- (void)didEditTask:(TaskObject*) updatedTask toFeed:(EditTaskModalViewController *)controller{
+    [updatedTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (succeeded) {
+            [self fetchData];
+        }
+        else{
+            NSLog(@"Task not updated on Parse : %@", error.localizedDescription);
+        }
+    }];
+}
+
 - (PFQuery*)makeQuery{
     PFQuery *query = [PFQuery queryWithClassName:kTaskClassName];
     [query orderByDescending:kCreatedAtQueryKey];
@@ -115,6 +126,9 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
                                         @"Main" bundle:nil];
         EditTaskModalViewController *editTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"EditTaskModalViewController"];
+        editTaskModalVC.delegate = self;
+        TaskObject *task = self.arrayOfTasks[indexPath.row];
+        editTaskModalVC.taskFromFeed = task;
         [self presentViewController:editTaskModalVC animated:YES completion:^{}];
         completionHandler(YES);
     }];

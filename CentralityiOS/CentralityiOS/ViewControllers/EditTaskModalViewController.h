@@ -6,11 +6,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TaskObject.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@class EditTaskModalViewController;
 
-@interface EditTaskModalViewController : UIViewController
-
+@protocol EditTaskModalViewControllerDelegate <NSObject>
+- (void)didEditTask:(TaskObject *)item toFeed:(EditTaskModalViewController *)controller;
 @end
 
-NS_ASSUME_NONNULL_END
+
+@interface EditTaskModalViewController : UIViewController
+@property (nonatomic, weak) id <EditTaskModalViewControllerDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIButton *updateButton;
+@property (weak, nonatomic) IBOutlet UITextField *taskNameInput;
+@property (weak, nonatomic) IBOutlet UITextView *taskDescInput;
+@property (weak, nonatomic) TaskObject *taskFromFeed;
+@end

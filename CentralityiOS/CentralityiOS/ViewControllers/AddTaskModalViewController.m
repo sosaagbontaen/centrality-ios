@@ -41,5 +41,6 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.taskTitleInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Name this task" attributes:@{NSForegroundColorAttributeName: [UIColor systemGrayColor]}];
 }
 @end
