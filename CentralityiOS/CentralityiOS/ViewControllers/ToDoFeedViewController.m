@@ -92,11 +92,17 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
     TaskObject *task = self.arrayOfTasks[indexPath.row];
     TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell" forIndexPath:indexPath];
     
-    [task.category fetchIfNeeded];
+    
     cell.task = task;
     cell.taskNameLabel.text = task.taskTitle;
     cell.taskDescLabel.text = task.taskDesc;
-    cell.categoryLabel.text = [NSString stringWithFormat:@"Category : %@", task.category.categoryName];
+    if ([task.category fetchIfNeeded]){
+        
+        cell.categoryLabel.text = [NSString stringWithFormat:@"Category : %@", task.category.categoryName];
+    }
+    else{
+        cell.categoryLabel.text = @"Category : None";
+    }
     [cell refreshCell];
     return cell;
 }

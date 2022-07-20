@@ -36,14 +36,6 @@
     newTask.taskDesc = self.taskDescInput.text;
     newTask.isCompleted = NO;
     
-    CategoryObject *newCategory = [CategoryObject new];
-    newCategory.categoryName = @"Uncategorized";
-    newCategory.owner = [PFUser currentUser];
-    
-    [newCategory saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-    }];
-    newTask.category = newCategory;
-    
     [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
             [self.delegate didAddNewTask:newTask toFeed:self];
