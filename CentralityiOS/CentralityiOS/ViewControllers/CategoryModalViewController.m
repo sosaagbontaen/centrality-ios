@@ -91,6 +91,10 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
 }
 
 - (IBAction)addCategoryAction:(id)sender {
+    if ([self.nameOfCategoryToAdd.text isEqual: @""]){
+        NSLog(@"Empty category name");
+        return;
+    }
     
     CategoryObject *newCategory = [CategoryObject new];
     newCategory.categoryName = self.nameOfCategoryToAdd.text;
@@ -106,7 +110,6 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         }
     }];
 }
-
 - (IBAction)cancelAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
