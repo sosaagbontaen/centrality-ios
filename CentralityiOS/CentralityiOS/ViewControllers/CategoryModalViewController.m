@@ -60,6 +60,22 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
     cell.categoryNameLabel.text = category.categoryName;
     return cell;
 }
+- (IBAction)addCategoryAction:(id)sender {
+    
+    CategoryObject *newCategory = [CategoryObject new];
+    newCategory.categoryName = self.nameOfCategoryToAdd.text;
+    newCategory.owner = [PFUser currentUser];
+    
+    [newCategory saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (succeeded) {
+            [self fetchCategories];
+            self.nameOfCategoryToAdd.text = @"";
+        }
+        else {
+            NSLog(@"Category not added to Parse : %@", error.localizedDescription);
+        }
+    }];
+}
 
 - (IBAction)cancelAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{}];
