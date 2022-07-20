@@ -7,6 +7,7 @@
 
 #import "ToDoFeedViewController.h"
 #import "AddTaskModalViewController.h"
+#import "EditTaskModalViewController.h"
 #import "Parse/Parse.h"
 #import "TaskCell.h"
 #import "TaskObject.h"
@@ -47,6 +48,17 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
 - (void)didAddNewTask:(TaskObject*) newTask toFeed:(AddTaskModalViewController *)controller{
     [self.arrayOfTasks addObject:newTask];
     [self fetchData];
+}
+
+- (void)didEditTask:(TaskObject*) updatedTask toFeed:(EditTaskModalViewController *)controller{
+    [updatedTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (succeeded) {
+            [self fetchData];
+        }
+        else{
+            NSLog(@"Task not updated on Parse : %@", error.localizedDescription);
+        }
+    }];
 }
 
 - (PFQuery*)makeQuery{
@@ -109,9 +121,22 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         
     }];
     
-    deleteAction.backgroundColor = [UIColor systemRedColor];
+    UIContextualAction *editAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Edit" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
+                                        @"Main" bundle:nil];
+        EditTaskModalViewController *editTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"EditTaskModalViewController"];
+        editTaskModalVC.delegate = self;
+        TaskObject *task = self.arrayOfTasks[indexPath.row];
+        editTaskModalVC.taskFromFeed = task;
+        [self presentViewController:editTaskModalVC animated:YES completion:^{}];
+        completionHandler(YES);
+    }];
     
-    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+    deleteAction.backgroundColor = [UIColor systemRedColor];
+    editAction.backgroundColor = [UIColor systemGreenColor];
+    
+    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction,editAction]];
     swipeActions.performsFirstActionWithFullSwipe=false;
     return swipeActions;
 }

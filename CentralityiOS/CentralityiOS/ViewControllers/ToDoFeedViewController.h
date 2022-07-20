@@ -7,10 +7,11 @@
 
 #import "Parse/Parse.h"
 #import "AddTaskModalViewController.h"
+#import "EditTaskModalViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ToDoFeedViewController : UIViewController <AddTaskModalViewControllerDelegate>
+@interface ToDoFeedViewController : UIViewController <AddTaskModalViewControllerDelegate, EditTaskModalViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *taskTableView;
 @property (strong, nonatomic) NSMutableArray *arrayOfTasks;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;

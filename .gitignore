@@ -4,3 +4,6 @@ CentralityiOSUITests/
 CentralityiOSTests/
 CentralityiOS/.DS_Store
 .DS_Store
+Keys.plist
+Podfile
+Podfile.lock
