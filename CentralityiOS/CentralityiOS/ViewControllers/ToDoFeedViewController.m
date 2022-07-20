@@ -90,10 +90,13 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TaskObject *task = self.arrayOfTasks[indexPath.row];
-    TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell"];
+    TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell" forIndexPath:indexPath];
+    
+    [task.category fetchIfNeeded];
     cell.task = task;
     cell.taskNameLabel.text = task.taskTitle;
     cell.taskDescLabel.text = task.taskDesc;
+    cell.categoryLabel.text = [NSString stringWithFormat:@"Category : %@", task.category.categoryName];
     [cell refreshCell];
     return cell;
 }

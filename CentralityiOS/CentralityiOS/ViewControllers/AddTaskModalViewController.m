@@ -13,6 +13,13 @@
 @end
 
 @implementation AddTaskModalViewController
+- (IBAction)changeCategoryAction:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
+                                    @"Main" bundle:nil];
+    CategoryModalViewController *categoryTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"CategoryModalViewController"];
+    categoryTaskModalVC.delegate = self;
+    [self presentViewController:categoryTaskModalVC animated:YES completion:^{}];
+}
 
 - (IBAction)cancelAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{}];
@@ -22,12 +29,20 @@
         NSLog(@"Empty title");
         return;
     }
-    
+        
     TaskObject *newTask = [TaskObject new];
     newTask.owner = [PFUser currentUser];
     newTask.taskTitle = self.taskTitleInput.text;
     newTask.taskDesc = self.taskDescInput.text;
     newTask.isCompleted = NO;
+    
+    CategoryObject *newCategory = [CategoryObject new];
+    newCategory.categoryName = @"None";
+    newCategory.owner = [PFUser currentUser];
+    
+    [newCategory saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+    }];
+    newTask.category = newCategory;
     
     [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {

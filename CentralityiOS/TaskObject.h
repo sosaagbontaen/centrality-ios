@@ -6,6 +6,7 @@
 //
 
 #import <Parse/Parse.h>
+#import "CategoryObject.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @interface TaskObject : PFObject<PFSubclassing>
@@ -15,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *taskTitle;
 @property (nonatomic, strong) NSString *taskDesc;
 @property (nonatomic) BOOL isCompleted;
-@property (nonatomic, strong) NSString *category;
+@property (nonatomic, strong) CategoryObject *category;
 @end
 
 NS_ASSUME_NONNULL_END
