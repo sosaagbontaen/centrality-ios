@@ -103,7 +103,7 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
     else{
         cell.categoryLabel.text = @"Category : None";
     }
-    if ([task fetchIfNeeded]){
+    if (task.dueDate){
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"MM/dd/yy";
         NSString *formattedDate = [formatter stringFromDate:task.dueDate];
@@ -149,6 +149,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         TaskObject *task = self.arrayOfTasks[indexPath.row];
         editTaskModalVC.taskFromFeed = task;
         editTaskModalVC.taskCategory = task.category;
+        editTaskModalVC.taskDueDate = task.dueDate;
         [self presentViewController:editTaskModalVC animated:YES completion:^{}];
         completionHandler(YES);
     }];

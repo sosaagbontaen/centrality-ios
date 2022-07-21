@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "TaskObject.h"
 #import "CategoryModalViewController.h"
+#import "DueDateModalViewController.h"
 
 @class EditTaskModalViewController;
 
@@ -15,7 +16,7 @@
 - (void)didEditTask:(TaskObject *)item toFeed:(EditTaskModalViewController *)controller;
 @end
 
-@interface EditTaskModalViewController : UIViewController<CategoryModalViewControllerDelegate>
+@interface EditTaskModalViewController : UIViewController<CategoryModalViewControllerDelegate, DueDateModalViewControllerDelegate>
 @property (nonatomic, weak) id <EditTaskModalViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIButton *changeCategoryButton;
 @property (weak, nonatomic) IBOutlet UIButton *changeDateButton;
@@ -24,4 +25,5 @@
 @property (weak, nonatomic) IBOutlet UITextView *taskDescInput;
 @property (weak, nonatomic) TaskObject *taskFromFeed;
 @property CategoryObject *taskCategory;
+@property NSDate *taskDueDate;
 @end
