@@ -90,10 +90,19 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TaskObject *task = self.arrayOfTasks[indexPath.row];
-    TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell"];
+    TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell" forIndexPath:indexPath];
+    
+    
     cell.task = task;
     cell.taskNameLabel.text = task.taskTitle;
     cell.taskDescLabel.text = task.taskDesc;
+    if ([task.category fetchIfNeeded]){
+        
+        cell.categoryLabel.text = [NSString stringWithFormat:@"Category : %@", task.category.categoryName];
+    }
+    else{
+        cell.categoryLabel.text = @"Category : None";
+    }
     [cell refreshCell];
     return cell;
 }
@@ -129,6 +138,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         editTaskModalVC.delegate = self;
         TaskObject *task = self.arrayOfTasks[indexPath.row];
         editTaskModalVC.taskFromFeed = task;
+        editTaskModalVC.taskCategory = task.category;
         [self presentViewController:editTaskModalVC animated:YES completion:^{}];
         completionHandler(YES);
     }];

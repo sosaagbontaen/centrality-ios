@@ -1,22 +1,26 @@
 PODS:
   - Bolts/Tasks (1.9.1)
+  - FSCalendar (2.8.4)
   - Parse (1.19.3):
     - Parse/Core (= 1.19.3)
   - Parse/Core (1.19.3):
     - Bolts/Tasks (= 1.9.1)
 
 DEPENDENCIES:
+  - FSCalendar
   - Parse
 
 SPEC REPOS:
   trunk:
     - Bolts
+    - FSCalendar
     - Parse
 
 SPEC CHECKSUMS:
   Bolts: 8c1e8aab2f603387b8b9924f57d1d64f43d3ffdc
+  FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
   Parse: 0abb63a0ff6fa34a3f64b81d595a294e2ece143a
 
-PODFILE CHECKSUM: a5729e88e447b51fef96b2517d9e73b079f7e9be
+PODFILE CHECKSUM: 163546ef62d55725bcfdc2cd5d89e2a79345c57f
 
 COCOAPODS: 1.11.3

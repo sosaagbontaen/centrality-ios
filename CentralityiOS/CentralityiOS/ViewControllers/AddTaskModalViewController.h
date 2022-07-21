@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TaskObject.h"
+#import "CategoryModalViewController.h"
 
 @class AddTaskModalViewController;
 
@@ -14,8 +15,10 @@
 - (void)didAddNewTask:(TaskObject *)item toFeed:(AddTaskModalViewController *)controller;
 @end
 
-@interface AddTaskModalViewController : UIViewController
+@interface AddTaskModalViewController : UIViewController <CategoryModalViewControllerDelegate>
+@property (weak, nonatomic) IBOutlet UIButton *changeCategoryButton;
 @property (nonatomic, weak) id <AddTaskModalViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UITextField *taskTitleInput;
 @property (weak, nonatomic) IBOutlet UITextView *taskDescInput;
+@property CategoryObject *taskCategory;
 @end

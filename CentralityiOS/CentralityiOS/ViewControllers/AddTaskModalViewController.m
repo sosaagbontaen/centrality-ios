@@ -13,6 +13,13 @@
 @end
 
 @implementation AddTaskModalViewController
+- (IBAction)changeCategoryAction:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
+                                    @"Main" bundle:nil];
+    CategoryModalViewController *categoryTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"CategoryModalViewController"];
+    categoryTaskModalVC.delegate = self;
+    [self presentViewController:categoryTaskModalVC animated:YES completion:^{}];
+}
 
 - (IBAction)cancelAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{}];
@@ -22,11 +29,12 @@
         NSLog(@"Empty title");
         return;
     }
-    
+        
     TaskObject *newTask = [TaskObject new];
     newTask.owner = [PFUser currentUser];
     newTask.taskTitle = self.taskTitleInput.text;
     newTask.taskDesc = self.taskDescInput.text;
+    newTask.category = self.taskCategory;
     newTask.isCompleted = NO;
     
     [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -39,6 +47,12 @@
         }
     }];
 }
+
+- (void)didChangeCategory:(CategoryObject *)item toFeed:(CategoryModalViewController *)controller{
+    self.taskCategory = item;
+    [self.changeCategoryButton setTitle:self.taskCategory.categoryName forState:UIControlStateNormal];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.taskTitleInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Name this task" attributes:@{NSForegroundColorAttributeName: [UIColor systemGrayColor]}];

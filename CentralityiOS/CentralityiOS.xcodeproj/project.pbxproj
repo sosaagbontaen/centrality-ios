@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1A40F7E9288601B700BBAD4F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A40F7E8288601B700BBAD4F /* LoginViewController.m */; };
 		1A42BB1C2887665F003ACC4D /* EditTaskModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB1B2887665F003ACC4D /* EditTaskModalViewController.m */; };
+		1A42BB1F28889FA9003ACC4D /* CategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB1E28889FA9003ACC4D /* CategoryCell.m */; };
+		1A42BB222888A0C2003ACC4D /* CategoryModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB212888A0C2003ACC4D /* CategoryModalViewController.m */; };
+		1A5AAE662888AB9B0080FB4A /* CategoryObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A5AAE652888AB9B0080FB4A /* CategoryObject.m */; };
 		1A8D46872878E91800489744 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46862878E91800489744 /* AppDelegate.m */; };
 		1A8D468A2878E91800489744 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46892878E91800489744 /* SceneDelegate.m */; };
 		1A8D46902878E91800489744 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A8D468E2878E91800489744 /* Main.storyboard */; };
@@ -50,6 +53,12 @@
 		1A40F7E8288601B700BBAD4F /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		1A42BB1A2887665F003ACC4D /* EditTaskModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditTaskModalViewController.h; sourceTree = "<group>"; };
 		1A42BB1B2887665F003ACC4D /* EditTaskModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditTaskModalViewController.m; sourceTree = "<group>"; };
+		1A42BB1D28889FA9003ACC4D /* CategoryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CategoryCell.h; sourceTree = "<group>"; };
+		1A42BB1E28889FA9003ACC4D /* CategoryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CategoryCell.m; sourceTree = "<group>"; };
+		1A42BB202888A0C2003ACC4D /* CategoryModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CategoryModalViewController.h; sourceTree = "<group>"; };
+		1A42BB212888A0C2003ACC4D /* CategoryModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CategoryModalViewController.m; sourceTree = "<group>"; };
+		1A5AAE642888AB9B0080FB4A /* CategoryObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CategoryObject.h; sourceTree = "<group>"; };
+		1A5AAE652888AB9B0080FB4A /* CategoryObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CategoryObject.m; sourceTree = "<group>"; };
 		1A8D46822878E91800489744 /* CentralityiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CentralityiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A8D46852878E91800489744 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1A8D46862878E91800489744 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -190,6 +199,8 @@
 			children = (
 				1A8D46BC287C88BB00489744 /* TaskObject.h */,
 				1A8D46BD287C88BB00489744 /* TaskObject.m */,
+				1A5AAE642888AB9B0080FB4A /* CategoryObject.h */,
+				1A5AAE652888AB9B0080FB4A /* CategoryObject.m */,
 			);
 			name = Models;
 			path = ..;
@@ -200,6 +211,8 @@
 			children = (
 				1A8D46C2287CC95F00489744 /* TaskCell.h */,
 				1A8D46C3287CC95F00489744 /* TaskCell.m */,
+				1A42BB1D28889FA9003ACC4D /* CategoryCell.h */,
+				1A42BB1E28889FA9003ACC4D /* CategoryCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -215,6 +228,8 @@
 				1A40F7E8288601B700BBAD4F /* LoginViewController.m */,
 				1A42BB1A2887665F003ACC4D /* EditTaskModalViewController.h */,
 				1A42BB1B2887665F003ACC4D /* EditTaskModalViewController.m */,
+				1A42BB202888A0C2003ACC4D /* CategoryModalViewController.h */,
+				1A42BB212888A0C2003ACC4D /* CategoryModalViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -469,11 +484,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A40F7E9288601B700BBAD4F /* LoginViewController.m in Sources */,
+				1A42BB222888A0C2003ACC4D /* CategoryModalViewController.m in Sources */,
+				1A42BB1F28889FA9003ACC4D /* CategoryCell.m in Sources */,
 				1A8D46BE287C88BB00489744 /* TaskObject.m in Sources */,
 				1A8D46C1287CB31700489744 /* AddTaskModalViewController.m in Sources */,
 				1A8D46872878E91800489744 /* AppDelegate.m in Sources */,
 				1A8D46C7287CC9B200489744 /* ToDoFeedViewController.m in Sources */,
 				1A8D46C4287CC95F00489744 /* TaskCell.m in Sources */,
+				1A5AAE662888AB9B0080FB4A /* CategoryObject.m in Sources */,
 				1A8D46982878E91800489744 /* main.m in Sources */,
 				1A42BB1C2887665F003ACC4D /* EditTaskModalViewController.m in Sources */,
 				1A8D468A2878E91800489744 /* SceneDelegate.m in Sources */,
