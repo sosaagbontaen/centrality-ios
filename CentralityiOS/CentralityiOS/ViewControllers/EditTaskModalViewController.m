@@ -20,7 +20,7 @@
     self.taskNameInput.text = self.taskFromFeed.taskTitle;
     self.taskDescInput.text = self.taskFromFeed.taskDesc;
     if (self.taskCategory){
-    [self.changeCategoryButton setTitle:self.taskCategory.categoryName forState:UIControlStateNormal];
+        [self.changeCategoryButton setTitle:self.taskCategory.categoryName forState:UIControlStateNormal];
     }
 }
 
