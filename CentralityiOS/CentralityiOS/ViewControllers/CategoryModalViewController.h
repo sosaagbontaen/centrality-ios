@@ -16,11 +16,10 @@
 @end
 
 @interface CategoryModalViewController : UIViewController
-@property (weak, nonatomic) IBOutlet UITableView *categoryTableView;
 @property (nonatomic, weak) id <CategoryModalViewControllerDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UITableView *categoryTableView;
 @property (strong, nonatomic) NSMutableArray *arrayOfCategories;
 @property (weak, nonatomic) IBOutlet UIButton *addCategoryButton;
 @property (weak, nonatomic) IBOutlet UITextField *nameOfCategoryToAdd;
-
 -(void) fetchCategories;
 @end

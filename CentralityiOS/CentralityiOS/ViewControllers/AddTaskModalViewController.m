@@ -13,6 +13,14 @@
 @end
 
 @implementation AddTaskModalViewController
+- (IBAction)changeDueDateAction:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
+                                    @"Main" bundle:nil];
+    DueDateModalViewController *dueDateModalVC = [storyboard instantiateViewControllerWithIdentifier:@"DueDateModalViewController"];
+    dueDateModalVC.delegate = self;
+    [self presentViewController:dueDateModalVC animated:YES completion:^{}];
+}
+
 - (IBAction)changeCategoryAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
                                     @"Main" bundle:nil];
@@ -51,6 +59,10 @@
 - (void)didChangeCategory:(CategoryObject *)item toFeed:(CategoryModalViewController *)controller{
     self.taskCategory = item;
     [self.changeCategoryButton setTitle:self.taskCategory.categoryName forState:UIControlStateNormal];
+}
+
+- (void)didChangeDuedate:(NSDate *)item toFeed:(DueDateModalViewController *)controller{
+    
 }
 
 - (void)viewDidLoad {

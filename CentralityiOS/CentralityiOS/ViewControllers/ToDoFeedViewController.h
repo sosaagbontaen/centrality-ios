@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ToDoFeedViewController : UIViewController <AddTaskModalViewControllerDelegate, EditTaskModalViewControllerDelegate, CategoryModalViewControllerDelegate>
+@interface ToDoFeedViewController : UIViewController <AddTaskModalViewControllerDelegate, EditTaskModalViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *taskTableView;
 @property (strong, nonatomic) NSMutableArray *arrayOfTasks;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
