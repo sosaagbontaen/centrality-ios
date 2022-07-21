@@ -12,8 +12,6 @@
 @interface AddTaskModalViewController ()
 @end
 
-CategoryObject *taskCategory;
-
 @implementation AddTaskModalViewController
 - (IBAction)changeCategoryAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
@@ -36,7 +34,7 @@ CategoryObject *taskCategory;
     newTask.owner = [PFUser currentUser];
     newTask.taskTitle = self.taskTitleInput.text;
     newTask.taskDesc = self.taskDescInput.text;
-    newTask.category = taskCategory;
+    newTask.category = self.taskCategory;
     newTask.isCompleted = NO;
     
     [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -51,8 +49,8 @@ CategoryObject *taskCategory;
 }
 
 - (void)didChangeCategory:(CategoryObject *)item toFeed:(CategoryModalViewController *)controller{
-    taskCategory = item;
-    [self.changeCategoryButton setTitle:taskCategory.categoryName forState:UIControlStateNormal];
+    self.taskCategory = item;
+    [self.changeCategoryButton setTitle:self.taskCategory.categoryName forState:UIControlStateNormal];
 }
 
 - (void)viewDidLoad {

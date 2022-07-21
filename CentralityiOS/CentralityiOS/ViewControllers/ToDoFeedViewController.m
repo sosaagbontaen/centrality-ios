@@ -138,6 +138,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         editTaskModalVC.delegate = self;
         TaskObject *task = self.arrayOfTasks[indexPath.row];
         editTaskModalVC.taskFromFeed = task;
+        editTaskModalVC.taskCategory = task.category;
         [self presentViewController:editTaskModalVC animated:YES completion:^{}];
         completionHandler(YES);
     }];

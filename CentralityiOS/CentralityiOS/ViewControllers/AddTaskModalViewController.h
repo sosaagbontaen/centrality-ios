@@ -20,4 +20,5 @@
 @property (nonatomic, weak) id <AddTaskModalViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UITextField *taskTitleInput;
 @property (weak, nonatomic) IBOutlet UITextView *taskDescInput;
+@property CategoryObject *taskCategory;
 @end
