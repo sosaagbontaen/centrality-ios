@@ -66,15 +66,27 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Due Date : None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22D-Q7-t9d">
+                                                    <rect key="frame" x="135" y="108" width="106" height="20"/>
+                                                    <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="08c-8b-YI8"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="uOf-Na-dC0" firstAttribute="leading" secondItem="Vo2-sL-S0v" secondAttribute="trailing" constant="5" id="4eD-Ui-d5Y"/>
+                                                <constraint firstItem="22D-Q7-t9d" firstAttribute="top" secondItem="Ctu-8H-cZ6" secondAttribute="top" id="5Q7-Xg-6xT"/>
                                                 <constraint firstItem="Vo2-sL-S0v" firstAttribute="top" secondItem="xjk-6k-NKL" secondAttribute="top" constant="5" id="8gI-lv-ik8"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="qWG-2h-kLH" secondAttribute="trailing" constant="5" id="FsT-7k-ie4"/>
                                                 <constraint firstItem="Vo2-sL-S0v" firstAttribute="leading" secondItem="xjk-6k-NKL" secondAttribute="leading" constant="20" id="LIJ-Ot-52s"/>
                                                 <constraint firstItem="Ctu-8H-cZ6" firstAttribute="leading" secondItem="qWG-2h-kLH" secondAttribute="leading" id="WrI-Rn-ShH"/>
                                                 <constraint firstItem="qWG-2h-kLH" firstAttribute="top" secondItem="uOf-Na-dC0" secondAttribute="bottom" constant="5" id="Xb4-gV-s2y"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Ctu-8H-cZ6" secondAttribute="bottom" constant="5" id="b7Q-l7-2kZ"/>
+                                                <constraint firstItem="22D-Q7-t9d" firstAttribute="leading" secondItem="Ctu-8H-cZ6" secondAttribute="trailing" constant="4" id="h45-Ag-pnH"/>
                                                 <constraint firstItem="Ctu-8H-cZ6" firstAttribute="top" secondItem="qWG-2h-kLH" secondAttribute="bottom" constant="5" id="rIi-2U-g0S"/>
                                                 <constraint firstItem="uOf-Na-dC0" firstAttribute="top" secondItem="xjk-6k-NKL" secondAttribute="top" constant="7" id="wJM-Y7-aJ8"/>
                                                 <constraint firstItem="qWG-2h-kLH" firstAttribute="leading" secondItem="xjk-6k-NKL" secondAttribute="leadingMargin" constant="5" id="xq5-ts-vmn"/>
@@ -83,6 +95,7 @@
                                         <connections>
                                             <outlet property="categoryLabel" destination="Ctu-8H-cZ6" id="9vj-49-lXe"/>
                                             <outlet property="completeButton" destination="Vo2-sL-S0v" id="Kb5-Fk-iKI"/>
+                                            <outlet property="dueDateLabel" destination="22D-Q7-t9d" id="Gic-VI-HV0"/>
                                             <outlet property="taskDescLabel" destination="qWG-2h-kLH" id="X6A-2s-gug"/>
                                             <outlet property="taskNameLabel" destination="uOf-Na-dC0" id="rtR-aA-Jcj"/>
                                         </connections>

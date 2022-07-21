@@ -103,6 +103,16 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
     else{
         cell.categoryLabel.text = @"Category : None";
     }
+    if ([task fetchIfNeeded]){
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"MM/dd/yy";
+        NSString *formattedDate = [formatter stringFromDate:task.dueDate];
+        
+        cell.dueDateLabel.text = [NSString stringWithFormat:@"Due Date : %@", formattedDate];
+    }
+    else{
+        cell.dueDateLabel.text = @"Due Date : None";
+    }
     [cell refreshCell];
     return cell;
 }
