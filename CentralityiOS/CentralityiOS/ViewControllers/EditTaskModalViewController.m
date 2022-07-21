@@ -53,10 +53,10 @@
 
 - (void)didChangeDuedate:(NSDate *)item toFeed:(DueDateModalViewController *)controller{
     if (item){
-    self.taskDueDate = item;
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"MM/dd/yy";
-    NSString *formattedDate = [formatter stringFromDate:self.taskDueDate];
+        self.taskDueDate = item;
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"MM/dd/yy";
+        NSString *formattedDate = [formatter stringFromDate:self.taskDueDate];
         [self.changeDateButton setTitle:formattedDate forState:UIControlStateNormal];
     }
     else{
