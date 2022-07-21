@@ -583,7 +583,7 @@
         <!--Category Modal View Controller-->
         <scene sceneID="x0k-nV-ONC">
             <objects>
-                <viewController storyboardIdentifier="CategoryModalViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="IX8-M3-BQ2" customClass="CategoryModalViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CategoryModalViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="IX8-M3-BQ2" customClass="CategoryModalViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NcV-xR-MEo">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -693,7 +693,7 @@
         <!--Due Date Modal View Controller-->
         <scene sceneID="QlO-N6-Zvw">
             <objects>
-                <viewController storyboardIdentifier="DueDateModalViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="aoo-29-unG" customClass="DueDateModalViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DueDateModalViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="aoo-29-unG" customClass="DueDateModalViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MSz-ms-moO">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
