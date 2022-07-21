@@ -18,6 +18,7 @@
 @interface EditTaskModalViewController : UIViewController<CategoryModalViewControllerDelegate>
 @property (nonatomic, weak) id <EditTaskModalViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIButton *changeCategoryButton;
+@property (weak, nonatomic) IBOutlet UIButton *changeDateButton;
 @property (weak, nonatomic) IBOutlet UIButton *updateButton;
 @property (weak, nonatomic) IBOutlet UITextField *taskNameInput;
 @property (weak, nonatomic) IBOutlet UITextView *taskDescInput;

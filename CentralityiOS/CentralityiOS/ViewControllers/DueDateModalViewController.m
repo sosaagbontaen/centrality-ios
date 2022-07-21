@@ -24,5 +24,9 @@
 - (IBAction)cancelAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
+- (IBAction)updateAction:(id)sender {
+    [self.delegate didChangeDuedate:self.calendarView.selectedDate toFeed:self];
+    [self dismissViewControllerAnimated:YES completion:^{}];
+}
 
 @end

@@ -18,8 +18,10 @@
 
 @interface AddTaskModalViewController : UIViewController <CategoryModalViewControllerDelegate, DueDateModalViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *changeCategoryButton;
+@property (weak, nonatomic) IBOutlet UIButton *changeDateButton;
 @property (nonatomic, weak) id <AddTaskModalViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UITextField *taskTitleInput;
 @property (weak, nonatomic) IBOutlet UITextView *taskDescInput;
 @property CategoryObject *taskCategory;
+@property NSDate *taskDueDate;
 @end

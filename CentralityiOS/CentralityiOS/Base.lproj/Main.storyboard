@@ -286,6 +286,7 @@
                     </view>
                     <connections>
                         <outlet property="changeCategoryButton" destination="Yac-Kl-pGy" id="kbK-Ke-lmf"/>
+                        <outlet property="changeDateButton" destination="lcT-Mb-mch" id="D4B-Jj-X17"/>
                         <outlet property="taskDescInput" destination="fAf-Pc-EII" id="L9U-KE-Yak"/>
                         <outlet property="taskTitleInput" destination="kxh-8C-Hj3" id="eoF-0V-sgG"/>
                     </connections>
@@ -553,6 +554,7 @@
                     </view>
                     <connections>
                         <outlet property="changeCategoryButton" destination="wqd-Nw-U24" id="y8E-qc-hFr"/>
+                        <outlet property="changeDateButton" destination="nLA-Et-xwY" id="dMf-HR-16U"/>
                         <outlet property="taskDescInput" destination="pHH-BF-h5R" id="m1o-xo-Krr"/>
                         <outlet property="taskNameInput" destination="7xK-CD-6eC" id="rEg-Xa-f2P"/>
                         <outlet property="updateButton" destination="IfA-3Y-elr" id="WY7-Ie-iat"/>
@@ -707,6 +709,7 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="updateAction:" destination="eNe-ST-JBh" eventType="touchUpInside" id="45F-3H-j98"/>
+                                            <action selector="updateAction:" destination="aoo-29-unG" eventType="touchUpInside" id="cs0-FQ-bMX"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="smo-uf-MMX">

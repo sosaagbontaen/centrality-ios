@@ -43,6 +43,7 @@
     newTask.taskTitle = self.taskTitleInput.text;
     newTask.taskDesc = self.taskDescInput.text;
     newTask.category = self.taskCategory;
+    newTask.dueDate = self.taskDueDate;
     newTask.isCompleted = NO;
     
     [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -57,12 +58,27 @@
 }
 
 - (void)didChangeCategory:(CategoryObject *)item toFeed:(CategoryModalViewController *)controller{
-    self.taskCategory = item;
-    [self.changeCategoryButton setTitle:self.taskCategory.categoryName forState:UIControlStateNormal];
+    if (item){
+        self.taskCategory = item;
+        [self.changeCategoryButton setTitle:self.taskCategory.categoryName forState:UIControlStateNormal];
+    }
+    else{
+        [self.changeCategoryButton setTitle:@"None" forState:UIControlStateNormal];
+    }
 }
 
 - (void)didChangeDuedate:(NSDate *)item toFeed:(DueDateModalViewController *)controller{
-    
+    if (item){
+    self.taskDueDate = item;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"MM/dd/yy";
+    NSString *formattedDate = [formatter stringFromDate:self.taskDueDate];
+        [self.changeDateButton setTitle:formattedDate forState:UIControlStateNormal];
+    }
+    else{
+        NSLog(@"Invalid date selected.");
+        return;
+    }
 }
 
 - (void)viewDidLoad {
