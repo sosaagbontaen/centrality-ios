@@ -12,7 +12,7 @@
 @class CategoryModalViewController;
 
 @protocol CategoryModalViewControllerDelegate <NSObject>
-- (void)didChangeCategory:(TaskObject *)item toFeed:(CategoryModalViewController *)controller;
+- (void)didChangeCategory:(CategoryObject *)item toFeed:(CategoryModalViewController *)controller;
 @end
 
 @interface CategoryModalViewController : UIViewController

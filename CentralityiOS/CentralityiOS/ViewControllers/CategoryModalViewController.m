@@ -61,6 +61,13 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView
+didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    CategoryObject *category = self.arrayOfCategories[indexPath.row];
+    [self.delegate didChangeCategory:category toFeed:self];
+    [self dismissViewControllerAnimated:YES completion:^{}];
+}
+
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView
 trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
