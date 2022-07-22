@@ -93,12 +93,12 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     deleteAction.backgroundColor = [UIColor systemRedColor];
     
     UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
-    swipeActions.performsFirstActionWithFullSwipe=false;
+    swipeActions.performsFirstActionWithFullSwipe = NO;
     return swipeActions;
 }
 
 - (IBAction)addCategoryAction:(id)sender {
-    if ([self.nameOfCategoryToAdd.text isEqual: @""]){
+    if ([self.nameOfCategoryToAdd.text isEqualToString:@""]){
         NSLog(@"Empty category name");
         return;
     }
