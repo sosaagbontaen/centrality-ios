@@ -25,6 +25,11 @@ static NSInteger const kSecondsUntilTmrw = 86400;
     else if([self.modifyMode isEqualToString:kAddTaskMode]){
         [self initModalForAddTaskMode];
     }
+    
+    NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:self.taskTitleInput.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+    self.taskTitleInput.attributedText = toInput;
+    
     [self.taskTitleInput addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 }
 
