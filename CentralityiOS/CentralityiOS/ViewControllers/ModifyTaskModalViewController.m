@@ -24,9 +24,31 @@ static NSString * const kEditTaskMode = @"Editing";
     else if([self.modifyMode isEqualToString:kAddTaskMode]){
         [self initModalForAddTaskMode];
     }
+    [self.taskTitleInput addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 }
 
--(void)initModalForEditTaskMode{
+- (void)textFieldDidChange :(UITextField *) textField{
+    NSString *targetSubString = @"tomorrow";
+    
+    NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:textField.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+    if ([textField.text containsString:targetSubString]) {
+        NSLog(@"Found %@", targetSubString);
+        
+        NSInteger subStringStartLocation = [textField.text rangeOfString:targetSubString].location;
+        NSInteger subStringLength = targetSubString.length;
+        
+        NSRange highlightRange = NSMakeRange(subStringStartLocation, subStringLength);
+        [toInput addAttribute:NSBackgroundColorAttributeName value:[UIColor systemGreenColor] range:highlightRange];
+    }
+    else
+    {
+        NSLog(@"No matches.");
+    }
+    textField.attributedText = toInput;
+}
+
+- (void)initModalForEditTaskMode{
     self.taskTitleInput.text = self.taskFromFeed.taskTitle;
     self.taskDescInput.text = self.taskFromFeed.taskDesc;
     self.modalTitle.text = @"Edit Task";
@@ -49,7 +71,9 @@ static NSString * const kEditTaskMode = @"Editing";
 }
 
 -(void)initModalForAddTaskMode{
+    
     self.taskTitleInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Name this task" attributes:@{NSForegroundColorAttributeName: [UIColor systemGrayColor]}];
+    
     [self.modifyButton setTitle:@"Add Task" forState:UIControlStateNormal];
     self.modalTitle.text = @"Add a Task";
 }
