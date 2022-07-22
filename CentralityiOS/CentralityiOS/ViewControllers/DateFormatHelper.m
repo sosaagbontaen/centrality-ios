@@ -16,7 +16,21 @@
 
 + (NSString*)formatDateAsString:(NSDate*)dateToFormat{
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"MM/dd/yy";
+    if ([dateToFormat isSameDay:NSDate.date]){
+        return @"Today";
+    }
+    if ([dateToFormat isSameDay:[NSDate.date dateByAddingDays:1]]){
+        return @"Tomorrow";
+    }
+    if ([dateToFormat isSameDay:[NSDate.date dateBySubtractingDays:1]]){
+        return @"Yesterday";
+    }
+    if (dateToFormat.year == NSDate.date.year){
+        formatter.dateFormat = @"MM/dd";
+    }
+    else{
+        formatter.dateFormat = @"MM/dd/yy";
+    }
     return [formatter stringFromDate:dateToFormat];
 }
 @end
