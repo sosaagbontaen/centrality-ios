@@ -13,6 +13,7 @@
 
 static NSString * const kAddTaskMode = @"Addding";
 static NSString * const kEditTaskMode = @"Editing";
+static NSInteger const kSecondsUntilTmrw = 86400;
 
 @implementation ModifyTaskModalViewController
 
@@ -27,25 +28,48 @@ static NSString * const kEditTaskMode = @"Editing";
     [self.taskTitleInput addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 }
 
+
 - (void)textFieldDidChange :(UITextField *) textField{
-    NSString *targetSubString = @"tomorrow";
-    
     NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:textField.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
-    if ([textField.text containsString:targetSubString]) {
-        NSLog(@"Found %@", targetSubString);
-        
-        NSInteger subStringStartLocation = [textField.text rangeOfString:targetSubString].location;
-        NSInteger subStringLength = targetSubString.length;
-        
-        NSRange highlightRange = NSMakeRange(subStringStartLocation, subStringLength);
-        [toInput addAttribute:NSBackgroundColorAttributeName value:[UIColor systemGreenColor] range:highlightRange];
-    }
-    else
-    {
-        NSLog(@"No matches.");
-    }
     textField.attributedText = toInput;
+    
+    NSArray *todayKeywords = @[@"today", @"now", @"EOD"];
+        [self highlightKeyword:todayKeywords inInputField:textField methodToExecute:@selector(todayKeywordAction)];
+    
+    NSArray *tomorrowKeywords = @[@"tmrw", @"tomorrow", @"2mrw"];
+        [self highlightKeyword:tomorrowKeywords inInputField:textField methodToExecute:@selector(tomorrowKeywordAction)];
+}
+
+-(void)todayKeywordAction{
+    NSLog(@"Today Variant Found!");
+    self.taskDueDate = NSDate.date;
+    [self reloadDueDateView:self.taskDueDate];
+}
+-(void)tomorrowKeywordAction{
+    NSLog(@"Tomorrow Variant Found!");
+    self.taskDueDate = [NSDate dateWithTimeIntervalSinceNow:kSecondsUntilTmrw];
+    [self reloadDueDateView:self.taskDueDate];
+}
+
+- (void)highlightKeyword : (NSArray*) keywords inInputField:(UITextField*) inputField methodToExecute:(SEL)methodToExecute{
+    
+    NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:inputField.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+    for (NSString* keyword in keywords)
+    {
+        if ([inputField.text containsString:keyword]) {
+            NSInteger subStringStartLocation = [inputField.text rangeOfString:keyword].location;
+            NSInteger subStringLength = keyword.length;
+            
+            NSRange highlightRange = NSMakeRange(subStringStartLocation, subStringLength);
+            [toInput addAttribute:NSBackgroundColorAttributeName value:[UIColor systemGreenColor] range:highlightRange];
+            
+            [self performSelector:methodToExecute];
+            inputField.attributedText = toInput;
+        }
+    }
+    
 }
 
 - (void)initModalForEditTaskMode{
@@ -94,9 +118,9 @@ static NSString * const kEditTaskMode = @"Editing";
     [self presentViewController:dueDateModalVC animated:YES completion:^{}];
 }
 
-- (void)didChangeCategory:(CategoryObject *)item toFeed:(CategoryModalViewController *)controller{
-    if (item){
-        self.taskCategory = item;
+- (void)reloadCategoryView:(CategoryObject*)newCategory{
+    if (newCategory){
+        self.taskCategory = newCategory;
         [self.changeCategoryButton setTitle:self.taskCategory.categoryName forState:UIControlStateNormal];
     }
     else{
@@ -104,9 +128,13 @@ static NSString * const kEditTaskMode = @"Editing";
     }
 }
 
-- (void)didChangeDuedate:(NSDate *)item toFeed:(DueDateModalViewController *)controller{
-    if (item){
-        self.taskDueDate = item;
+- (void)didChangeCategory:(CategoryObject *)item toFeed:(CategoryModalViewController *)controller{
+    [self reloadCategoryView:item];
+}
+
+- (void)reloadDueDateView:(NSDate*)newDate{
+    if (newDate){
+        self.taskDueDate = newDate;
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"MM/dd/yy";
         NSString *formattedDate = [formatter stringFromDate:self.taskDueDate];
@@ -116,6 +144,10 @@ static NSString * const kEditTaskMode = @"Editing";
         NSLog(@"Invalid date selected.");
         return;
     }
+}
+
+- (void)didChangeDuedate:(NSDate *)item toFeed:(DueDateModalViewController *)controller{
+    [self reloadDueDateView:item];
 }
 
 - (IBAction)modifyTaskAction:(id)sender {
