@@ -7,6 +7,7 @@
 
 #import "ModifyTaskModalViewController.h"
 #import "DateFormatHelper.h"
+#import "DateTools.h"
 
 @interface ModifyTaskModalViewController ()
 
@@ -14,7 +15,6 @@
 
 static NSString * const kAddTaskMode = @"Addding";
 static NSString * const kEditTaskMode = @"Editing";
-static NSInteger const kSecondsUntilTmrw = 86400;
 
 @implementation ModifyTaskModalViewController
 
@@ -54,7 +54,8 @@ static NSInteger const kSecondsUntilTmrw = 86400;
 }
 -(void)tomorrowKeywordAction{
     NSLog(@"Tomorrow Variant Found!");
-    self.taskDueDate = [NSDate dateWithTimeIntervalSinceNow:kSecondsUntilTmrw];
+    NSDate *newDate = [NSDate.date dateByAddingDays:1];
+    self.taskDueDate = newDate;
     [self reloadDueDateView:self.taskDueDate];
 }
 
