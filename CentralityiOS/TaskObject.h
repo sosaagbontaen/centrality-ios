@@ -18,5 +18,4 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL isCompleted;
 @property (nonatomic, strong) CategoryObject *category;
 @end
-
 NS_ASSUME_NONNULL_END

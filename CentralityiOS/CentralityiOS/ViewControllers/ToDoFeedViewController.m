@@ -6,8 +6,6 @@
 //
 
 #import "ToDoFeedViewController.h"
-#import "AddTaskModalViewController.h"
-#import "EditTaskModalViewController.h"
 #import "Parse/Parse.h"
 #import "TaskCell.h"
 #import "TaskObject.h"
@@ -21,6 +19,8 @@ static const NSInteger kToDoFeedLimit = 20;
 static NSString * const kTaskClassName = @"TaskObject";
 static NSString * const kByOwnerQueryKey = @"owner";
 static NSString * const kCreatedAtQueryKey = @"createdAt";
+static NSString * const kAddTaskMode = @"Addding";
+static NSString * const kEditTaskMode = @"Editing";
 
 @implementation ToDoFeedViewController
 
@@ -40,17 +40,18 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
 - (IBAction)newTaskAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
                                     @"Main" bundle:nil];
-    AddTaskModalViewController *addTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"AddTaskModalViewController"];
-    addTaskModalVC.delegate = self;
-    [self presentViewController:addTaskModalVC animated:YES completion:^{}];
+    ModifyTaskModalViewController *modifyTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ModifyTaskModalViewController"];
+    modifyTaskModalVC.delegate = self;
+    modifyTaskModalVC.modifyMode = kAddTaskMode;
+    [self presentViewController:modifyTaskModalVC animated:YES completion:^{}];
 }
 
-- (void)didAddNewTask:(TaskObject*) newTask toFeed:(AddTaskModalViewController *)controller{
+- (void)didAddNewTask:(TaskObject*) newTask toFeed:(ModifyTaskModalViewController *)controller{
     [self.arrayOfTasks addObject:newTask];
     [self fetchData];
 }
 
-- (void)didEditTask:(TaskObject*) updatedTask toFeed:(EditTaskModalViewController *)controller{
+- (void)didEditTask:(TaskObject*) updatedTask toFeed:(ModifyTaskModalViewController *)controller{
     [updatedTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
             [self fetchData];
@@ -103,6 +104,16 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
     else{
         cell.categoryLabel.text = @"Category : None";
     }
+    if (task.dueDate){
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"MM/dd/yy";
+        NSString *formattedDate = [formatter stringFromDate:task.dueDate];
+        
+        cell.dueDateLabel.text = [NSString stringWithFormat:@"Due Date : %@", formattedDate];
+    }
+    else{
+        cell.dueDateLabel.text = @"Due Date : None";
+    }
     [cell refreshCell];
     return cell;
 }
@@ -134,12 +145,14 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
                                         @"Main" bundle:nil];
-        EditTaskModalViewController *editTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"EditTaskModalViewController"];
-        editTaskModalVC.delegate = self;
+        ModifyTaskModalViewController *modifyTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ModifyTaskModalViewController"];
+        modifyTaskModalVC.delegate = self;
+        modifyTaskModalVC.modifyMode = kEditTaskMode;
         TaskObject *task = self.arrayOfTasks[indexPath.row];
-        editTaskModalVC.taskFromFeed = task;
-        editTaskModalVC.taskCategory = task.category;
-        [self presentViewController:editTaskModalVC animated:YES completion:^{}];
+        modifyTaskModalVC.taskFromFeed = task;
+        modifyTaskModalVC.taskCategory = task.category;
+        modifyTaskModalVC.taskDueDate = task.dueDate;
+        [self presentViewController:modifyTaskModalVC animated:YES completion:^{}];
         completionHandler(YES);
     }];
     
