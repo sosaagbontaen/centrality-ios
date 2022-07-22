@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1A40F7E9288601B700BBAD4F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A40F7E8288601B700BBAD4F /* LoginViewController.m */; };
-		1A42BB1C2887665F003ACC4D /* EditTaskModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB1B2887665F003ACC4D /* EditTaskModalViewController.m */; };
 		1A42BB1F28889FA9003ACC4D /* CategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB1E28889FA9003ACC4D /* CategoryCell.m */; };
 		1A42BB222888A0C2003ACC4D /* CategoryModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB212888A0C2003ACC4D /* CategoryModalViewController.m */; };
 		1A5AAE662888AB9B0080FB4A /* CategoryObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A5AAE652888AB9B0080FB4A /* CategoryObject.m */; };
@@ -23,10 +22,10 @@
 		1A8D46AE2878E91900489744 /* CentralityiOSUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46AD2878E91900489744 /* CentralityiOSUITestsLaunchTests.m */; };
 		1A8D46BB2878E92B00489744 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1A8D46BA2878E92B00489744 /* Keys.plist */; };
 		1A8D46BE287C88BB00489744 /* TaskObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46BD287C88BB00489744 /* TaskObject.m */; };
-		1A8D46C1287CB31700489744 /* AddTaskModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46C0287CB31700489744 /* AddTaskModalViewController.m */; };
 		1A8D46C4287CC95F00489744 /* TaskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46C3287CC95F00489744 /* TaskCell.m */; };
 		1A8D46C7287CC9B200489744 /* ToDoFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46C6287CC9B200489744 /* ToDoFeedViewController.m */; };
 		1A9665302889CB36008C83B5 /* DueDateModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A96652F2889CB36008C83B5 /* DueDateModalViewController.m */; };
+		1AFCB4C6288A173F00E4187E /* ModifyTaskModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AFCB4C5288A173F00E4187E /* ModifyTaskModalViewController.m */; };
 		30EA6E6435DEE09DEF490E99 /* Pods_CentralityiOS_CentralityiOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF245DE8D2EC065EFAE3F006 /* Pods_CentralityiOS_CentralityiOSUITests.framework */; };
 		AA479B7522A11FCCD9B30CEC /* Pods_CentralityiOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECDFDD169A32BC9603FC1206 /* Pods_CentralityiOSTests.framework */; };
 		F46B5574DE61EC97B123E767 /* Pods_CentralityiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85CDD14683CBAF239C832798 /* Pods_CentralityiOS.framework */; };
@@ -52,8 +51,6 @@
 /* Begin PBXFileReference section */
 		1A40F7E7288601B700BBAD4F /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		1A40F7E8288601B700BBAD4F /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		1A42BB1A2887665F003ACC4D /* EditTaskModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditTaskModalViewController.h; sourceTree = "<group>"; };
-		1A42BB1B2887665F003ACC4D /* EditTaskModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditTaskModalViewController.m; sourceTree = "<group>"; };
 		1A42BB1D28889FA9003ACC4D /* CategoryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CategoryCell.h; sourceTree = "<group>"; };
 		1A42BB1E28889FA9003ACC4D /* CategoryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CategoryCell.m; sourceTree = "<group>"; };
 		1A42BB202888A0C2003ACC4D /* CategoryModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CategoryModalViewController.h; sourceTree = "<group>"; };
@@ -78,14 +75,14 @@
 		1A8D46BA2878E92B00489744 /* Keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 		1A8D46BC287C88BB00489744 /* TaskObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskObject.h; sourceTree = "<group>"; };
 		1A8D46BD287C88BB00489744 /* TaskObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskObject.m; sourceTree = "<group>"; };
-		1A8D46BF287CB31700489744 /* AddTaskModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddTaskModalViewController.h; sourceTree = "<group>"; };
-		1A8D46C0287CB31700489744 /* AddTaskModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddTaskModalViewController.m; sourceTree = "<group>"; };
 		1A8D46C2287CC95F00489744 /* TaskCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskCell.h; sourceTree = "<group>"; };
 		1A8D46C3287CC95F00489744 /* TaskCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskCell.m; sourceTree = "<group>"; };
 		1A8D46C5287CC9B200489744 /* ToDoFeedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToDoFeedViewController.h; sourceTree = "<group>"; };
 		1A8D46C6287CC9B200489744 /* ToDoFeedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToDoFeedViewController.m; sourceTree = "<group>"; };
 		1A96652E2889CB36008C83B5 /* DueDateModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DueDateModalViewController.h; sourceTree = "<group>"; };
 		1A96652F2889CB36008C83B5 /* DueDateModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DueDateModalViewController.m; sourceTree = "<group>"; };
+		1AFCB4C4288A173F00E4187E /* ModifyTaskModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyTaskModalViewController.h; sourceTree = "<group>"; };
+		1AFCB4C5288A173F00E4187E /* ModifyTaskModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyTaskModalViewController.m; sourceTree = "<group>"; };
 		1E1D11AFD2CAEFE0731C32FB /* Pods-CentralityiOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CentralityiOS.release.xcconfig"; path = "Target Support Files/Pods-CentralityiOS/Pods-CentralityiOS.release.xcconfig"; sourceTree = "<group>"; };
 		2BE402B7C32C57514C40319B /* Pods-CentralityiOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CentralityiOSTests.debug.xcconfig"; path = "Target Support Files/Pods-CentralityiOSTests/Pods-CentralityiOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3C25DB8CBDDC3A25EBFB90A0 /* Pods-CentralityiOS-CentralityiOSUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CentralityiOS-CentralityiOSUITests.release.xcconfig"; path = "Target Support Files/Pods-CentralityiOS-CentralityiOSUITests/Pods-CentralityiOS-CentralityiOSUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -223,18 +220,16 @@
 		1A8D46CD2880961E00489744 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				1A8D46BF287CB31700489744 /* AddTaskModalViewController.h */,
-				1A8D46C0287CB31700489744 /* AddTaskModalViewController.m */,
 				1A8D46C5287CC9B200489744 /* ToDoFeedViewController.h */,
 				1A8D46C6287CC9B200489744 /* ToDoFeedViewController.m */,
 				1A40F7E7288601B700BBAD4F /* LoginViewController.h */,
 				1A40F7E8288601B700BBAD4F /* LoginViewController.m */,
-				1A42BB1A2887665F003ACC4D /* EditTaskModalViewController.h */,
-				1A42BB1B2887665F003ACC4D /* EditTaskModalViewController.m */,
 				1A42BB202888A0C2003ACC4D /* CategoryModalViewController.h */,
 				1A42BB212888A0C2003ACC4D /* CategoryModalViewController.m */,
 				1A96652E2889CB36008C83B5 /* DueDateModalViewController.h */,
 				1A96652F2889CB36008C83B5 /* DueDateModalViewController.m */,
+				1AFCB4C4288A173F00E4187E /* ModifyTaskModalViewController.h */,
+				1AFCB4C5288A173F00E4187E /* ModifyTaskModalViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -491,15 +486,14 @@
 				1A40F7E9288601B700BBAD4F /* LoginViewController.m in Sources */,
 				1A42BB222888A0C2003ACC4D /* CategoryModalViewController.m in Sources */,
 				1A42BB1F28889FA9003ACC4D /* CategoryCell.m in Sources */,
+				1AFCB4C6288A173F00E4187E /* ModifyTaskModalViewController.m in Sources */,
 				1A8D46BE287C88BB00489744 /* TaskObject.m in Sources */,
-				1A8D46C1287CB31700489744 /* AddTaskModalViewController.m in Sources */,
 				1A9665302889CB36008C83B5 /* DueDateModalViewController.m in Sources */,
 				1A8D46872878E91800489744 /* AppDelegate.m in Sources */,
 				1A8D46C7287CC9B200489744 /* ToDoFeedViewController.m in Sources */,
 				1A8D46C4287CC95F00489744 /* TaskCell.m in Sources */,
 				1A5AAE662888AB9B0080FB4A /* CategoryObject.m in Sources */,
 				1A8D46982878E91800489744 /* main.m in Sources */,
-				1A42BB1C2887665F003ACC4D /* EditTaskModalViewController.m in Sources */,
 				1A8D468A2878E91800489744 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
