@@ -10,6 +10,7 @@
 #import "TaskCell.h"
 #import "TaskObject.h"
 #import "SceneDelegate.h"
+#import "DateFormatHelper.h"
 
 @interface ToDoFeedViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
@@ -105,9 +106,7 @@ static NSString * const kEditTaskMode = @"Editing";
         cell.categoryLabel.text = @"Category : None";
     }
     if (task.dueDate){
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        formatter.dateFormat = @"MM/dd/yy";
-        NSString *formattedDate = [formatter stringFromDate:task.dueDate];
+        NSString *formattedDate = [DateFormatHelper formatDateAsString:task.dueDate];
         
         cell.dueDateLabel.text = [NSString stringWithFormat:@"Due Date : %@", formattedDate];
     }

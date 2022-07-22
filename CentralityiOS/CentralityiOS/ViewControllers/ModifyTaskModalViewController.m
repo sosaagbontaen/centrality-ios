@@ -6,6 +6,7 @@
 //
 
 #import "ModifyTaskModalViewController.h"
+#import "DateFormatHelper.h"
 
 @interface ModifyTaskModalViewController ()
 
@@ -89,7 +90,7 @@ static NSInteger const kSecondsUntilTmrw = 86400;
         [self.changeCategoryButton setTitle:@"None" forState:UIControlStateNormal];
     }
     if (self.taskDueDate){
-        NSString* formattedDate = [self formatDateAsString:self.taskDueDate];
+        NSString* formattedDate = [DateFormatHelper formatDateAsString:self.taskDueDate];
         [self.changeDateButton setTitle:formattedDate forState:UIControlStateNormal];
     }
     else{
@@ -135,16 +136,10 @@ static NSInteger const kSecondsUntilTmrw = 86400;
     [self reloadCategoryView:item];
 }
 
-- (NSString*)formatDateAsString:(NSDate*)dateToFormat{
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"MM/dd/yy";
-    return [formatter stringFromDate:dateToFormat];
-}
-
 - (void)reloadDueDateView:(NSDate*)newDate{
     if (newDate){
         self.taskDueDate = newDate;
-        NSString* formattedDate = [self formatDateAsString:self.taskDueDate];
+        NSString* formattedDate = [DateFormatHelper formatDateAsString:self.taskDueDate];
         [self.changeDateButton setTitle:formattedDate forState:UIControlStateNormal];
     }
     else{
