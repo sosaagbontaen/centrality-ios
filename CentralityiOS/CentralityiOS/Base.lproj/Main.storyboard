@@ -283,17 +283,14 @@
                                 <rect key="frame" x="0.0" y="584" width="428" height="308"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggA-bk-xsa">
-                                        <rect key="frame" x="150" y="8" width="137" height="12"/>
+                                        <rect key="frame" x="146" y="8" width="136.33333333333337" height="20"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="xUF-T6-QCK">
-                                        <rect key="frame" x="20" y="28" width="388" height="208"/>
+                                        <rect key="frame" x="20" y="36" width="388" height="200"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="208" id="tdK-CV-jfT"/>
-                                        </constraints>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoryCell" rowHeight="61" id="iXP-Ox-PEQ" customClass="CategoryCell">
                                                 <rect key="frame" x="0.0" y="44.666666030883789" width="388" height="61"/>
@@ -368,7 +365,6 @@
                                     <constraint firstAttribute="height" constant="308" id="NRB-es-vUy"/>
                                     <constraint firstAttribute="bottom" secondItem="TBo-cz-XUM" secondAttribute="bottom" constant="30" id="QIx-XP-sqy"/>
                                     <constraint firstItem="gcl-rl-t3G" firstAttribute="bottom" secondItem="TBo-cz-XUM" secondAttribute="bottom" id="RUv-jD-oTs"/>
-                                    <constraint firstItem="ggA-bk-xsa" firstAttribute="leading" secondItem="046-PF-1pe" secondAttribute="leading" constant="150" id="acx-57-S7u"/>
                                     <constraint firstAttribute="trailing" secondItem="xUF-T6-QCK" secondAttribute="trailing" constant="20" id="bEe-fN-kOr"/>
                                     <constraint firstItem="gcl-rl-t3G" firstAttribute="top" secondItem="xUF-T6-QCK" secondAttribute="bottom" constant="7" id="cD1-GV-hyB"/>
                                     <constraint firstItem="IVc-ty-H7b" firstAttribute="top" secondItem="TBo-cz-XUM" secondAttribute="top" id="dA7-qf-9bO"/>
@@ -376,6 +372,7 @@
                                     <constraint firstItem="xUF-T6-QCK" firstAttribute="leading" secondItem="046-PF-1pe" secondAttribute="leading" constant="20" id="ddo-9s-Ckp"/>
                                     <constraint firstItem="xUF-T6-QCK" firstAttribute="top" secondItem="ggA-bk-xsa" secondAttribute="bottom" constant="8" id="pGZ-d3-hbx"/>
                                     <constraint firstItem="gcl-rl-t3G" firstAttribute="trailing" secondItem="xUF-T6-QCK" secondAttribute="trailing" id="sIl-AW-F4l"/>
+                                    <constraint firstItem="ggA-bk-xsa" firstAttribute="centerX" secondItem="046-PF-1pe" secondAttribute="centerX" id="tlW-y1-xsd"/>
                                     <constraint firstItem="gcl-rl-t3G" firstAttribute="height" secondItem="TBo-cz-XUM" secondAttribute="height" id="xxS-xa-6b5"/>
                                     <constraint firstItem="IVc-ty-H7b" firstAttribute="leading" secondItem="xUF-T6-QCK" secondAttribute="leading" id="zyl-Lh-dpC"/>
                                 </constraints>
