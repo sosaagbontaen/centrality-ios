@@ -409,20 +409,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NL3-ar-Mhx" userLabel="TaskContainer">
-                                <rect key="frame" x="0.0" y="540" width="428" height="308"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NL3-ar-Mhx" userLabel="TaskContainer">
+                                <rect key="frame" x="0.0" y="584" width="428" height="308"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Select a due date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQ8-f9-jR8">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a due date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQ8-f9-jR8">
                                         <rect key="frame" x="146" y="8" width="136" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xc6-Sx-X92">
-                                        <rect key="frame" x="301" y="253" width="107" height="35"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xc6-Sx-X92">
+                                        <rect key="frame" x="340" y="266" width="68" height="32"/>
                                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Update">
@@ -438,9 +435,8 @@
                                             <action selector="updateAction:" destination="aoo-29-unG" eventType="touchUpInside" id="cs0-FQ-bMX"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="smo-uf-MMX">
-                                        <rect key="frame" x="199" y="253" width="98" height="35"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="smo-uf-MMX">
+                                        <rect key="frame" x="270.66666666666669" y="266" width="65.333333333333314" height="32"/>
                                         <color key="backgroundColor" red="0.21071735929999999" green="0.21036192549999999" blue="0.21657046769999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Cancel">
@@ -458,16 +454,31 @@
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.12549020350000001" green="0.12549020350000001" blue="0.12549020350000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstItem="FQ8-f9-jR8" firstAttribute="top" secondItem="NL3-ar-Mhx" secondAttribute="top" constant="8" id="1ai-HX-mdD"/>
+                                    <constraint firstItem="xc6-Sx-X92" firstAttribute="leading" secondItem="smo-uf-MMX" secondAttribute="trailing" constant="4" id="4Mo-kx-ddd"/>
+                                    <constraint firstAttribute="bottom" secondItem="xc6-Sx-X92" secondAttribute="bottom" constant="10" id="B51-du-SEr"/>
+                                    <constraint firstItem="smo-uf-MMX" firstAttribute="width" secondItem="xc6-Sx-X92" secondAttribute="width" multiplier="0.960784" id="IQI-6R-O1b"/>
+                                    <constraint firstItem="smo-uf-MMX" firstAttribute="bottom" secondItem="xc6-Sx-X92" secondAttribute="bottom" id="Map-Pd-ZTa"/>
+                                    <constraint firstItem="smo-uf-MMX" firstAttribute="height" secondItem="xc6-Sx-X92" secondAttribute="height" id="Qb6-q9-sqG"/>
+                                    <constraint firstItem="smo-uf-MMX" firstAttribute="top" secondItem="xc6-Sx-X92" secondAttribute="top" id="WG9-3A-Rob"/>
+                                    <constraint firstItem="smo-uf-MMX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="NL3-ar-Mhx" secondAttribute="leading" constant="20" symbolic="YES" id="a2y-Ie-WeO"/>
+                                    <constraint firstItem="FQ8-f9-jR8" firstAttribute="centerX" secondItem="NL3-ar-Mhx" secondAttribute="centerX" id="f5G-NB-VWg"/>
+                                    <constraint firstAttribute="trailing" secondItem="xc6-Sx-X92" secondAttribute="trailing" constant="20" id="g2w-8I-bBm"/>
+                                    <constraint firstAttribute="height" constant="308" id="ht2-no-JNz"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="1"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Gj-Vk-gZm" customClass="FSCalendar">
-                                <rect key="frame" x="8" y="575" width="412" height="208"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Gj-Vk-gZm" customClass="FSCalendar">
+                                <rect key="frame" x="20" y="628" width="388" height="214"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="214" id="sfU-np-bwD"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="headerTitleColor">
                                         <color key="value" systemColor="systemGreenColor"/>
@@ -491,6 +502,15 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="R9G-D9-dul"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="R9G-D9-dul" firstAttribute="bottom" secondItem="NL3-ar-Mhx" secondAttribute="bottom" id="2b3-U2-ii8"/>
+                            <constraint firstItem="R9G-D9-dul" firstAttribute="trailing" secondItem="7Gj-Vk-gZm" secondAttribute="trailing" constant="20" id="7rg-VL-YHJ"/>
+                            <constraint firstItem="NL3-ar-Mhx" firstAttribute="trailing" secondItem="R9G-D9-dul" secondAttribute="trailing" id="Llo-NX-lUG"/>
+                            <constraint firstItem="R9G-D9-dul" firstAttribute="bottom" secondItem="7Gj-Vk-gZm" secondAttribute="bottom" constant="50" id="Pfi-EH-vRq"/>
+                            <constraint firstItem="smo-uf-MMX" firstAttribute="top" secondItem="7Gj-Vk-gZm" secondAttribute="bottom" constant="8" id="f7I-wD-9TK"/>
+                            <constraint firstItem="NL3-ar-Mhx" firstAttribute="leading" secondItem="R9G-D9-dul" secondAttribute="leading" id="xEu-is-rHv"/>
+                            <constraint firstItem="7Gj-Vk-gZm" firstAttribute="leading" secondItem="R9G-D9-dul" secondAttribute="leading" constant="20" id="yP6-fs-Ebr"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="calendarView" destination="7Gj-Vk-gZm" id="tc0-hC-exP"/>
