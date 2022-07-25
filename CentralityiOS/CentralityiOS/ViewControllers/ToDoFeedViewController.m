@@ -100,18 +100,18 @@ static NSString * const kEditTaskMode = @"Editing";
     cell.taskDescLabel.text = task.taskDesc;
     if ([task.category fetchIfNeeded]){
         
-        cell.categoryLabel.text = [NSString stringWithFormat:@"Category : %@", task.category.categoryName];
+        cell.categoryLabel.text = [NSString stringWithFormat:@"%@", task.category.categoryName];
     }
     else{
-        cell.categoryLabel.text = @"Category : None";
+        cell.categoryLabel.text = @"Uncategorized";
     }
     if (task.dueDate){
         NSString *formattedDate = [DateFormatHelper formatDateAsString:task.dueDate];
         
-        cell.dueDateLabel.text = [NSString stringWithFormat:@"Due Date : %@", formattedDate];
+        cell.dueDateLabel.text = [NSString stringWithFormat:@"Due %@", formattedDate];
     }
     else{
-        cell.dueDateLabel.text = @"Due Date : None";
+        cell.dueDateLabel.text = @"No due date";
     }
     [cell refreshCell];
     return cell;
