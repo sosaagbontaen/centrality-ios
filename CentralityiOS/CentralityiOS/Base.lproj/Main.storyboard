@@ -491,7 +491,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UXv-cf-4rh" userLabel="Modal">
                                 <rect key="frame" x="0.0" y="584" width="428" height="308"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" usesAttributedText="YES" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fll-Jp-QfV">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" usesAttributedText="YES" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fll-Jp-QfV">
                                         <rect key="frame" x="23" y="71" width="385" height="34"/>
                                         <color key="backgroundColor" red="0.24840931059999999" green="0.24840931059999999" blue="0.24840931059999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <attributedString key="attributedText"/>
@@ -503,7 +503,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hAB-Ie-bXX">
-                                        <rect key="frame" x="23" y="139" width="385" height="47"/>
+                                        <rect key="frame" x="23" y="139" width="385" height="37"/>
                                         <color key="backgroundColor" red="0.2470588088" green="0.2470588088" blue="0.2470588088" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -524,13 +524,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hEM-EC-p8n">
-                                        <rect key="frame" x="23" y="194" width="74" height="29"/>
+                                        <rect key="frame" x="23" y="184" width="74" height="29"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                         <color key="textColor" systemColor="systemGreenColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v56-ov-tJh">
-                                        <rect key="frame" x="342.33333333333331" y="253" width="65.666666666666686" height="35"/>
+                                        <rect key="frame" x="342.33333333333331" y="243" width="65.666666666666686" height="35"/>
                                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Modify">
@@ -547,7 +547,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HpK-g1-Eep">
-                                        <rect key="frame" x="272" y="253" width="65.333333333333314" height="35"/>
+                                        <rect key="frame" x="272" y="243" width="65.333333333333314" height="35"/>
                                         <color key="backgroundColor" red="0.21071735929999999" green="0.21036192549999999" blue="0.21657046769999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="kIn-KD-PWG"/>
@@ -574,7 +574,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tp2-cb-GV4">
-                                        <rect key="frame" x="100" y="194" width="54" height="29"/>
+                                        <rect key="frame" x="100" y="184" width="54" height="29"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="uTc-Pv-vv8"/>
                                         </constraints>
@@ -588,13 +588,13 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Due Date :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vsi-YX-hxx">
-                                        <rect key="frame" x="159" y="194" width="74" height="29"/>
+                                        <rect key="frame" x="159" y="184" width="74" height="29"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                         <color key="textColor" systemColor="systemGreenColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aM7-tu-utN">
-                                        <rect key="frame" x="238" y="194" width="54" height="29"/>
+                                        <rect key="frame" x="238" y="184" width="54" height="29"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="None">
                                             <fontDescription key="titleFontDescription" type="system" pointSize="12"/>
@@ -623,11 +623,12 @@
                                     <constraint firstAttribute="trailing" secondItem="Fll-Jp-QfV" secondAttribute="trailing" constant="20" id="Q0d-qJ-aDT"/>
                                     <constraint firstItem="Fll-Jp-QfV" firstAttribute="leading" secondItem="dV6-FA-4S4" secondAttribute="leading" id="USn-7v-Tme"/>
                                     <constraint firstItem="hAB-Ie-bXX" firstAttribute="leading" secondItem="Fll-Jp-QfV" secondAttribute="leading" id="WkN-Jo-L1A"/>
+                                    <constraint firstAttribute="trailing" secondItem="aM7-tu-utN" secondAttribute="trailing" constant="136" id="X3Q-64-4NP"/>
                                     <constraint firstItem="dV6-FA-4S4" firstAttribute="top" secondItem="UXv-cf-4rh" secondAttribute="top" constant="42" id="Y2k-M9-bfQ"/>
                                     <constraint firstAttribute="trailing" secondItem="v56-ov-tJh" secondAttribute="trailing" constant="20.000000000000057" id="YPh-uN-h6Z"/>
                                     <constraint firstItem="4BX-IT-A1Q" firstAttribute="leading" secondItem="dV6-FA-4S4" secondAttribute="leading" id="YuG-RI-m7y"/>
                                     <constraint firstItem="tp2-cb-GV4" firstAttribute="bottom" secondItem="aM7-tu-utN" secondAttribute="bottom" id="cMv-Th-ard"/>
-                                    <constraint firstAttribute="bottom" secondItem="HpK-g1-Eep" secondAttribute="bottom" constant="20" id="dA5-ii-rDy"/>
+                                    <constraint firstAttribute="bottom" secondItem="HpK-g1-Eep" secondAttribute="bottom" constant="30" id="dA5-ii-rDy"/>
                                     <constraint firstItem="vsi-YX-hxx" firstAttribute="bottom" secondItem="aM7-tu-utN" secondAttribute="bottom" id="dCM-wc-Uev"/>
                                     <constraint firstItem="vsi-YX-hxx" firstAttribute="leading" secondItem="tp2-cb-GV4" secondAttribute="trailing" constant="5" id="dGq-9u-Ie1"/>
                                     <constraint firstItem="hAB-Ie-bXX" firstAttribute="top" secondItem="4BX-IT-A1Q" secondAttribute="bottom" constant="8" id="ec0-Nw-f8o"/>

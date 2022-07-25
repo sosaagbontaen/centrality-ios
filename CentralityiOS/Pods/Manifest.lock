@@ -2,6 +2,7 @@ PODS:
   - Bolts/Tasks (1.9.1)
   - DateTools (2.0.0)
   - FSCalendar (2.8.4)
+  - IQKeyboardManager (6.5.10)
   - Parse (1.19.3):
     - Parse/Core (= 1.19.3)
   - Parse/Core (1.19.3):
@@ -10,6 +11,7 @@ PODS:
 DEPENDENCIES:
   - DateTools
   - FSCalendar
+  - IQKeyboardManager
   - Parse
 
 SPEC REPOS:
@@ -17,14 +19,16 @@ SPEC REPOS:
     - Bolts
     - DateTools
     - FSCalendar
+    - IQKeyboardManager
     - Parse
 
 SPEC CHECKSUMS:
   Bolts: 8c1e8aab2f603387b8b9924f57d1d64f43d3ffdc
   DateTools: 933ac9c490f21f92127cf690ccd8c397e0126caf
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
+  IQKeyboardManager: 45a1fa55c1a5b02c61ac0fd7fd5b62bb4ad20d97
   Parse: 0abb63a0ff6fa34a3f64b81d595a294e2ece143a
 
-PODFILE CHECKSUM: 027d3f21e6a6dac582f1ace5028aa0914e6aba47
+PODFILE CHECKSUM: 68310d3e025594ffc7d4c406999191be877a1aa4
 
 COCOAPODS: 1.11.3
