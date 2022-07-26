@@ -178,10 +178,10 @@
             </objects>
             <point key="canvasLocation" x="871.96261682242982" y="114.68682505399569"/>
         </scene>
-        <!--To-Do List-->
+        <!--To-Do Nav-->
         <scene sceneID="PJP-67-0ag">
             <objects>
-                <navigationController storyboardIdentifier="ToDoFeedNavigationController" title="To-Do List" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="dtH-pW-5m0" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ToDoFeedNavigationController" title="To-Do Nav" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="dtH-pW-5m0" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="To-Do List" image="checkmark.circle.fill" catalog="system" id="5mO-aP-hML"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="fyC-yW-c8r"/>
@@ -222,10 +222,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" red="0.97303964629999995" green="1" blue="0.89042923439999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <color key="selectedImageTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
                         <segue destination="dtH-pW-5m0" kind="relationship" relationship="viewControllers" id="Pz6-It-9Nq"/>
+                        <segue destination="Wz0-UQ-FOX" kind="relationship" relationship="viewControllers" id="iBs-bp-r2B"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gO9-xs-BEI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -822,10 +824,121 @@
             </objects>
             <point key="canvasLocation" x="1528" y="115"/>
         </scene>
+        <!--Usage Stats Nav-->
+        <scene sceneID="P1u-en-pep">
+            <objects>
+                <navigationController storyboardIdentifier="UsageStatsNavigationController" title="Usage Stats Nav" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="Wz0-UQ-FOX" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Usage Stats" image="gear" catalog="system" id="79x-SI-YMd"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="mbR-QM-fqI"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8lQ-VZ-Bp0">
+                        <rect key="frame" x="0.0" y="44" width="428" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" pointSize="6"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                        <navigationBarAppearance key="standardAppearance">
+                            <color key="backgroundColor" systemColor="systemGreenColor"/>
+                        </navigationBarAppearance>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yfo-XI-ncB">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="TKz-eA-U4b" kind="relationship" relationship="rootViewController" id="ymu-Ce-0bZ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ivf-eP-WtT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="132" y="819"/>
+        </scene>
+        <!--Centrality-->
+        <scene sceneID="DcR-1M-qm6">
+            <objects>
+                <viewController storyboardIdentifier="UsageDashboardViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TKz-eA-U4b" customClass="UsageDashboardViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Fdj-9z-1AL">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="NeD-yI-PH3">
+                                <rect key="frame" x="270" y="659" width="118" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="slidersValueChanged:" destination="TKz-eA-U4b" eventType="valueChanged" id="9Ps-8d-bPo"/>
+                                </connections>
+                            </slider>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="6VM-w6-KNZ">
+                                <rect key="frame" x="270" y="736" width="118" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="slidersValueChanged:" destination="TKz-eA-U4b" eventType="valueChanged" id="xgq-UZ-YEJ"/>
+                                </connections>
+                            </slider>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="X" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YNu-eB-H2B">
+                                <rect key="frame" x="281" y="617" width="97" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Y" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7ad-Do-lDw">
+                                <rect key="frame" x="281" y="696" width="97" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EqU-Ys-4Qw" customClass="PieChartView" customModule="Charts">
+                                <rect key="frame" x="20" y="117" width="388" height="463"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="XZk-Jw-Eqx"/>
+                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Centrality" id="F96-AV-mTA">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="qHi-9F-iTy">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="0f4-Eo-v66">
+                                <rect key="frame" x="20" y="5" width="95" height="34.333333333333336"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" systemColor="systemGreenColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Log Out">
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="logoutAction:" destination="TKz-eA-U4b" eventType="touchUpInside" id="qrk-Wd-b3s"/>
+                                </connections>
+                            </button>
+                            <connections>
+                                <action selector="logoutAction:" destination="TKz-eA-U4b" id="X2t-zw-Acd"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="logoutButton" destination="0f4-Eo-v66" id="yUm-eN-39d"/>
+                        <outlet property="pieChart" destination="EqU-Ys-4Qw" id="srg-QS-wM7"/>
+                        <outlet property="sliderTextX" destination="YNu-eB-H2B" id="9eS-oG-bLV"/>
+                        <outlet property="sliderTextY" destination="7ad-Do-lDw" id="Cxj-E6-8TC"/>
+                        <outlet property="sliderX" destination="NeD-yI-PH3" id="QEc-Mc-Gsc"/>
+                        <outlet property="sliderY" destination="6VM-w6-KNZ" id="KNr-wH-zHz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gvM-f5-PyN" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="871.96261682242982" y="817.71058315334778"/>
+        </scene>
     </scenes>
     <resources>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
         <image name="circle" catalog="system" width="128" height="121"/>
+        <image name="gear" catalog="system" width="128" height="119"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
