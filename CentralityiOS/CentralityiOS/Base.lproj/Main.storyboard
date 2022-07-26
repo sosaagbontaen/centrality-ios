@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--To-Do List-->
+        <!--Centrality-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="ToDoFeedViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ToDoFeedViewController" sceneMemberID="viewController">
@@ -28,19 +28,17 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOf-Na-dC0">
-                                                    <rect key="frame" x="49" y="6.9999999999999982" width="359" height="20.333333333333329"/>
+                                                    <rect key="frame" x="49" y="9.9999999999999982" width="359" height="20.333333333333329"/>
                                                     <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="18"/>
-                                                    <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qWG-2h-kLH">
-                                                    <rect key="frame" x="49" y="32.333333333333336" width="359" height="17"/>
+                                                    <rect key="frame" x="49" y="35.333333333333336" width="359" height="17"/>
                                                     <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="15"/>
-                                                    <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vo2-sL-S0v">
-                                                    <rect key="frame" x="20" y="5" width="25" height="25"/>
+                                                    <rect key="frame" x="20" y="10" width="25" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="hTU-NA-WrF"/>
                                                         <constraint firstAttribute="width" constant="25" id="p5v-63-OkZ"/>
@@ -97,12 +95,12 @@
                                                 <constraint firstItem="qWG-2h-kLH" firstAttribute="top" secondItem="uOf-Na-dC0" secondAttribute="bottom" constant="5" id="7Kv-iv-EB0"/>
                                                 <constraint firstItem="22D-Q7-t9d" firstAttribute="leading" secondItem="Ctu-8H-cZ6" secondAttribute="trailing" constant="6" id="Hyt-jg-eHd"/>
                                                 <constraint firstItem="qWG-2h-kLH" firstAttribute="trailing" secondItem="uOf-Na-dC0" secondAttribute="trailing" id="LsO-vU-AEs"/>
-                                                <constraint firstItem="uOf-Na-dC0" firstAttribute="top" secondItem="xjk-6k-NKL" secondAttribute="top" constant="7" id="Pei-tp-AWL"/>
-                                                <constraint firstItem="Vo2-sL-S0v" firstAttribute="top" secondItem="xjk-6k-NKL" secondAttribute="top" constant="5" id="Tax-rI-yJI"/>
+                                                <constraint firstItem="uOf-Na-dC0" firstAttribute="top" secondItem="xjk-6k-NKL" secondAttribute="top" constant="10" id="Pei-tp-AWL"/>
                                                 <constraint firstItem="Ctu-8H-cZ6" firstAttribute="top" relation="greaterThanOrEqual" secondItem="qWG-2h-kLH" secondAttribute="bottom" constant="5" id="XFs-Td-mZd"/>
                                                 <constraint firstItem="Ctu-8H-cZ6" firstAttribute="leading" secondItem="qWG-2h-kLH" secondAttribute="leading" id="YmL-uo-hhi"/>
                                                 <constraint firstItem="Vo2-sL-S0v" firstAttribute="leading" secondItem="xjk-6k-NKL" secondAttribute="leading" constant="20" id="c0c-nI-201"/>
                                                 <constraint firstItem="uOf-Na-dC0" firstAttribute="leading" secondItem="Vo2-sL-S0v" secondAttribute="trailing" constant="4" id="j1W-8I-OgI"/>
+                                                <constraint firstItem="Vo2-sL-S0v" firstAttribute="top" secondItem="uOf-Na-dC0" secondAttribute="top" id="nKB-YY-Akl"/>
                                                 <constraint firstItem="22D-Q7-t9d" firstAttribute="centerY" secondItem="Ctu-8H-cZ6" secondAttribute="centerY" id="yYO-no-CFg"/>
                                                 <constraint firstAttribute="trailing" secondItem="uOf-Na-dC0" secondAttribute="trailing" constant="20" id="z8Z-2X-3fA"/>
                                             </constraints>
@@ -141,7 +139,7 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="systemGreenColor"/>
                         <constraints>
                             <constraint firstItem="JYx-RT-54I" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="T8m-Xo-piA"/>
                             <constraint firstItem="JYx-RT-54I" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Tjk-0F-g8E"/>
@@ -151,14 +149,16 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="o8o-yS-qdD" secondAttribute="trailing" constant="41" id="fvn-hO-7gq"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="To-Do List" id="lb9-lw-AzU">
+                    <navigationItem key="navigationItem" title="Centrality" id="lb9-lw-AzU">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="ge7-e4-nOb">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="XjG-oH-lDn">
                                 <rect key="frame" x="20" y="5" width="95" height="34.333333333333336"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" systemColor="systemGreenColor"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Log Out"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Log Out">
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="logoutAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mfq-NE-vU7"/>
                                 </connections>
@@ -181,15 +181,30 @@
         <!--To-Do List-->
         <scene sceneID="PJP-67-0ag">
             <objects>
-                <navigationController storyboardIdentifier="ToDoFeedNavigationController" title="To-Do List" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="dtH-pW-5m0" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ToDoFeedNavigationController" title="To-Do List" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="dtH-pW-5m0" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="To-Do List" image="checkmark.circle.fill" catalog="system" id="5mO-aP-hML"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="fyC-yW-c8r"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="tUv-VH-TNo">
                         <rect key="frame" x="0.0" y="44" width="428" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" pointSize="6"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                        <navigationBarAppearance key="standardAppearance">
+                            <color key="backgroundColor" systemColor="systemGreenColor"/>
+                        </navigationBarAppearance>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="rjl-vL-wdA">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="woT-Mn-vVJ"/>
                     </connections>
