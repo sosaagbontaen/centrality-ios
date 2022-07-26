@@ -48,31 +48,12 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     
     textField.attributedText = toInput;
 
-    [self highlightKeyword:[DetectableKeywords getTodayKeywords] inInputField:textField methodToExecute:@selector(todayKeywordAction)];
-
-    [self highlightKeyword:[DetectableKeywords getTomorrowKeywords] inInputField:textField methodToExecute:@selector(tomorrowKeywordAction)];
-    
-    [self highlightKeyword:[DetectableKeywords getYesterdayKeywords] inInputField:textField methodToExecute:@selector(yesterdayKeywordAction)];
+    [self highlightKeyword:[DetectableKeywords getTodayKeywords] inInputField:textField newDate:NSDate.date];
+    [self highlightKeyword:[DetectableKeywords getTomorrowKeywords] inInputField:textField newDate:[NSDate.date dateByAddingDays:1]];
+    [self highlightKeyword:[DetectableKeywords getYesterdayKeywords] inInputField:textField newDate:[NSDate.date dateBySubtractingDays:1]];
 }
 
--(void)todayKeywordAction{
-    self.taskDueDate = NSDate.date;
-    [self reloadDueDateView:self.taskDueDate];
-}
-
--(void)tomorrowKeywordAction{
-    NSDate *newDate = [NSDate.date dateByAddingDays:1];
-    self.taskDueDate = newDate;
-    [self reloadDueDateView:self.taskDueDate];
-}
-
--(void)yesterdayKeywordAction{
-    NSDate *newDate = [NSDate.date dateBySubtractingDays:1];
-    self.taskDueDate = newDate;
-    [self reloadDueDateView:self.taskDueDate];
-}
-
-- (void)highlightKeyword : (NSArray<NSString *>*) keywords inInputField:(UITextField*) inputField methodToExecute:(SEL)methodToExecute{
+- (void)highlightKeyword : (NSArray<NSString *>*) keywords inInputField:(UITextField*) inputField newDate:(NSDate*)newDate{
     
     NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:inputField.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
@@ -84,8 +65,10 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
             
             NSRange highlightRange = NSMakeRange(subStringStartLocation, subStringLength);
             [toInput addAttribute:NSBackgroundColorAttributeName value:[UIColor systemGreenColor] range:highlightRange];
+
+            self.taskDueDate = newDate;
+            [self reloadDueDateView:self.taskDueDate];
             
-            [self performSelector:methodToExecute];
             inputField.attributedText = toInput;
         }
     }
