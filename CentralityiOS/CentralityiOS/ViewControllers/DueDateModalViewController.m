@@ -18,6 +18,9 @@
     [super viewDidLoad];
     self.calendarView.dataSource = self;
     self.calendarView.delegate = self;
+    if (self.previouslySelectedDate){
+        [self.calendarView selectDate:self.previouslySelectedDate];
+    }
     [self.view addSubview:self.calendarView];
 }
 

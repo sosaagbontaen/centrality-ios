@@ -19,5 +19,6 @@
 @interface DueDateModalViewController : UIViewController
 @property (nonatomic, weak) id <DueDateModalViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet FSCalendar *calendarView;
+@property NSDate* previouslySelectedDate;
 
 @end

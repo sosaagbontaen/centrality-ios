@@ -133,6 +133,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
                                     @"Main" bundle:nil];
     DueDateModalViewController *dueDateModalVC = [storyboard instantiateViewControllerWithIdentifier:@"DueDateModalViewController"];
     dueDateModalVC.delegate = self;
+    dueDateModalVC.previouslySelectedDate = self.taskDueDate;
     [self presentViewController:dueDateModalVC animated:YES completion:^{}];
 }
 
