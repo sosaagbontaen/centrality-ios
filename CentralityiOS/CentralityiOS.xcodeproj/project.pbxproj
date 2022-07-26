@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A1F54FF289088F50007AF5D /* DetectableKeywords.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1F54FE289088F50007AF5D /* DetectableKeywords.m */; };
 		1A40F7E9288601B700BBAD4F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A40F7E8288601B700BBAD4F /* LoginViewController.m */; };
 		1A42BB1F28889FA9003ACC4D /* CategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB1E28889FA9003ACC4D /* CategoryCell.m */; };
 		1A42BB222888A0C2003ACC4D /* CategoryModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB212888A0C2003ACC4D /* CategoryModalViewController.m */; };
@@ -50,6 +51,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A1F54FD289088F50007AF5D /* DetectableKeywords.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetectableKeywords.h; sourceTree = "<group>"; };
+		1A1F54FE289088F50007AF5D /* DetectableKeywords.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetectableKeywords.m; sourceTree = "<group>"; };
 		1A40F7E7288601B700BBAD4F /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		1A40F7E8288601B700BBAD4F /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		1A42BB1D28889FA9003ACC4D /* CategoryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CategoryCell.h; sourceTree = "<group>"; };
@@ -235,6 +238,8 @@
 				1AFCB4C5288A173F00E4187E /* ModifyTaskModalViewController.m */,
 				1AFCB4C7288B5D8F00E4187E /* DateFormatHelper.h */,
 				1AFCB4C8288B5D8F00E4187E /* DateFormatHelper.m */,
+				1A1F54FD289088F50007AF5D /* DetectableKeywords.h */,
+				1A1F54FE289088F50007AF5D /* DetectableKeywords.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -496,6 +501,7 @@
 				1A8D46BE287C88BB00489744 /* TaskObject.m in Sources */,
 				1A9665302889CB36008C83B5 /* DueDateModalViewController.m in Sources */,
 				1A8D46872878E91800489744 /* AppDelegate.m in Sources */,
+				1A1F54FF289088F50007AF5D /* DetectableKeywords.m in Sources */,
 				1A8D46C7287CC9B200489744 /* ToDoFeedViewController.m in Sources */,
 				1A8D46C4287CC95F00489744 /* TaskCell.m in Sources */,
 				1A5AAE662888AB9B0080FB4A /* CategoryObject.m in Sources */,

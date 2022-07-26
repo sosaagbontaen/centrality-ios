@@ -9,6 +9,7 @@
 #import "DateFormatHelper.h"
 #import "DateTools.h"
 #import "IQKeyboardManager.h"
+#import "DetectableKeywords.h"
 
 @interface ModifyTaskModalViewController () <UITextFieldDelegate, UITextViewDelegate>
 
@@ -46,22 +47,27 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:textField.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
     textField.attributedText = toInput;
+
+    [self highlightKeyword:[DetectableKeywords getTodayKeywords] inInputField:textField methodToExecute:@selector(todayKeywordAction)];
+
+    [self highlightKeyword:[DetectableKeywords getTomorrowKeywords] inInputField:textField methodToExecute:@selector(tomorrowKeywordAction)];
     
-    NSArray<NSString*> *todayKeywords = @[@"today", @"now", @"EOD"];
-        [self highlightKeyword:todayKeywords inInputField:textField methodToExecute:@selector(todayKeywordAction)];
-    
-    NSArray<NSString*> *tomorrowKeywords = @[@"tmrw", @"tomorrow", @"2mrw"];
-        [self highlightKeyword:tomorrowKeywords inInputField:textField methodToExecute:@selector(tomorrowKeywordAction)];
+    [self highlightKeyword:[DetectableKeywords getYesterdayKeywords] inInputField:textField methodToExecute:@selector(yesterdayKeywordAction)];
 }
 
 -(void)todayKeywordAction{
-    NSLog(@"Today Variant Found!");
     self.taskDueDate = NSDate.date;
     [self reloadDueDateView:self.taskDueDate];
 }
+
 -(void)tomorrowKeywordAction{
-    NSLog(@"Tomorrow Variant Found!");
     NSDate *newDate = [NSDate.date dateByAddingDays:1];
+    self.taskDueDate = newDate;
+    [self reloadDueDateView:self.taskDueDate];
+}
+
+-(void)yesterdayKeywordAction{
+    NSDate *newDate = [NSDate.date dateBySubtractingDays:1];
     self.taskDueDate = newDate;
     [self reloadDueDateView:self.taskDueDate];
 }
