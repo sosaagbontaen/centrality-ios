@@ -209,6 +209,14 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     return YES;
 }
 
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+    NSMutableAttributedString *stringWithSpaceAdded = [[NSMutableAttributedString alloc] initWithAttributedString:textField.attributedText];
+    [stringWithSpaceAdded appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" "]];
+    
+    textField.attributedText = stringWithSpaceAdded;
+    return YES;
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
