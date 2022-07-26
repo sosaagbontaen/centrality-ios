@@ -47,10 +47,10 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     
     textField.attributedText = toInput;
     
-    NSArray *todayKeywords = @[@"today", @"now", @"EOD"];
+    NSArray<NSString*> *todayKeywords = @[@"today", @"now", @"EOD"];
         [self highlightKeyword:todayKeywords inInputField:textField methodToExecute:@selector(todayKeywordAction)];
     
-    NSArray *tomorrowKeywords = @[@"tmrw", @"tomorrow", @"2mrw"];
+    NSArray<NSString*> *tomorrowKeywords = @[@"tmrw", @"tomorrow", @"2mrw"];
         [self highlightKeyword:tomorrowKeywords inInputField:textField methodToExecute:@selector(tomorrowKeywordAction)];
 }
 
@@ -66,7 +66,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     [self reloadDueDateView:self.taskDueDate];
 }
 
-- (void)highlightKeyword : (NSArray*) keywords inInputField:(UITextField*) inputField methodToExecute:(SEL)methodToExecute{
+- (void)highlightKeyword : (NSArray<NSString *>*) keywords inInputField:(UITextField*) inputField methodToExecute:(SEL)methodToExecute{
     
     NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:inputField.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
@@ -210,6 +210,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
 }
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+    //Adding space upon field deselect to prevent bug where attributes expand to entire text field after selecting a different field/view
     NSMutableAttributedString *stringWithSpaceAdded = [[NSMutableAttributedString alloc] initWithAttributedString:textField.attributedText];
     [stringWithSpaceAdded appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" "]];
     
