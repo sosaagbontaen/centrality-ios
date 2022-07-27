@@ -10,9 +10,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DetectableKeywords : UIViewController
-+(NSArray<NSString*>*)getTodayKeywords;
-+(NSArray<NSString*>*)getTomorrowKeywords;
-+(NSArray<NSString*>*)getYesterdayKeywords;
++(NSArray<NSString *> *)getTodayKeywords;
++(NSArray<NSString *> *)getTomorrowKeywords;
++(NSArray<NSString *> *)getYesterdayKeywords;
 @end
 
 NS_ASSUME_NONNULL_END

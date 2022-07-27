@@ -13,18 +13,18 @@
 
 @implementation DetectableKeywords
 
-+ (NSArray<NSString*>*)getTodayKeywords{
-    NSArray<NSString*> *todayKeywords = @[@"today", @"now", @"EOD"];
++ (NSArray<NSString *> *)getTodayKeywords{
+    NSArray<NSString *> *todayKeywords = @[@"today", @"now", @"EOD"];
     return todayKeywords;
 }
 
-+ (NSArray<NSString*>*)getTomorrowKeywords{
-    NSArray<NSString*> *tomorrowKeywords = @[@"tmrw", @"tomorrow", @"2mrw"];
++ (NSArray<NSString *> *)getTomorrowKeywords{
+    NSArray<NSString *> *tomorrowKeywords = @[@"tmrw", @"tomorrow", @"2mrw"];
     return tomorrowKeywords;
 }
 
-+ (NSArray<NSString*>*)getYesterdayKeywords{
-    NSArray<NSString*> *yesterdayKeywords = @[@"yesterday"];
++ (NSArray<NSString *> *)getYesterdayKeywords{
+    NSArray<NSString *> *yesterdayKeywords = @[@"yesterday"];
     return yesterdayKeywords;
 }
 
