@@ -84,7 +84,17 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
         }
         [self.taskTableView reloadData];
         [self.refreshControl endRefreshing];
+        [self detectEmptyFeed];
     }];
+}
+
+- (void)detectEmptyFeed{
+    if ([self arrayOfTasks].count == 0){
+        self.feedMessageLabel.hidden = FALSE;
+    }
+    else{
+        self.feedMessageLabel.hidden = true;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -143,6 +153,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
                 //Removes task from current view / local array
                 [self.arrayOfTasks removeObjectAtIndex:indexPath.row];
                 [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [self detectEmptyFeed];
             } else {
                 NSLog(@"%@", error.localizedDescription);
             }
@@ -184,7 +195,6 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchData) forControlEvents:UIControlEventValueChanged];
     [self.taskTableView insertSubview:self.refreshControl atIndex:0];
-    
     
 }
 
