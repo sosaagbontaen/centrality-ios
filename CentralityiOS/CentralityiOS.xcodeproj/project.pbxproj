@@ -25,6 +25,8 @@
 		1A8D46BE287C88BB00489744 /* TaskObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46BD287C88BB00489744 /* TaskObject.m */; };
 		1A8D46C4287CC95F00489744 /* TaskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46C3287CC95F00489744 /* TaskCell.m */; };
 		1A8D46C7287CC9B200489744 /* ToDoFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46C6287CC9B200489744 /* ToDoFeedViewController.m */; };
+		1A8DC3362891DBAE00123E1F /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8DC3352891DBAE00123E1F /* UserCell.m */; };
+		1A8DC3392891DC5C00123E1F /* ShareModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8DC3382891DC5C00123E1F /* ShareModalViewController.m */; };
 		1A9665302889CB36008C83B5 /* DueDateModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A96652F2889CB36008C83B5 /* DueDateModalViewController.m */; };
 		1AFCB4C6288A173F00E4187E /* ModifyTaskModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AFCB4C5288A173F00E4187E /* ModifyTaskModalViewController.m */; };
 		1AFCB4C9288B5D8F00E4187E /* DateFormatHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AFCB4C8288B5D8F00E4187E /* DateFormatHelper.m */; };
@@ -83,6 +85,10 @@
 		1A8D46C3287CC95F00489744 /* TaskCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskCell.m; sourceTree = "<group>"; };
 		1A8D46C5287CC9B200489744 /* ToDoFeedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToDoFeedViewController.h; sourceTree = "<group>"; };
 		1A8D46C6287CC9B200489744 /* ToDoFeedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToDoFeedViewController.m; sourceTree = "<group>"; };
+		1A8DC3342891DBAE00123E1F /* UserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
+		1A8DC3352891DBAE00123E1F /* UserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
+		1A8DC3372891DC5C00123E1F /* ShareModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareModalViewController.h; sourceTree = "<group>"; };
+		1A8DC3382891DC5C00123E1F /* ShareModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareModalViewController.m; sourceTree = "<group>"; };
 		1A96652E2889CB36008C83B5 /* DueDateModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DueDateModalViewController.h; sourceTree = "<group>"; };
 		1A96652F2889CB36008C83B5 /* DueDateModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DueDateModalViewController.m; sourceTree = "<group>"; };
 		1AFCB4C4288A173F00E4187E /* ModifyTaskModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyTaskModalViewController.h; sourceTree = "<group>"; };
@@ -219,6 +225,8 @@
 				1A8D46C3287CC95F00489744 /* TaskCell.m */,
 				1A42BB1D28889FA9003ACC4D /* CategoryCell.h */,
 				1A42BB1E28889FA9003ACC4D /* CategoryCell.m */,
+				1A8DC3342891DBAE00123E1F /* UserCell.h */,
+				1A8DC3352891DBAE00123E1F /* UserCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -240,6 +248,8 @@
 				1AFCB4C8288B5D8F00E4187E /* DateFormatHelper.m */,
 				1A1F54FD289088F50007AF5D /* DetectableKeywords.h */,
 				1A1F54FE289088F50007AF5D /* DetectableKeywords.m */,
+				1A8DC3372891DC5C00123E1F /* ShareModalViewController.h */,
+				1A8DC3382891DC5C00123E1F /* ShareModalViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -497,6 +507,7 @@
 				1AFCB4C9288B5D8F00E4187E /* DateFormatHelper.m in Sources */,
 				1A42BB222888A0C2003ACC4D /* CategoryModalViewController.m in Sources */,
 				1A42BB1F28889FA9003ACC4D /* CategoryCell.m in Sources */,
+				1A8DC3392891DC5C00123E1F /* ShareModalViewController.m in Sources */,
 				1AFCB4C6288A173F00E4187E /* ModifyTaskModalViewController.m in Sources */,
 				1A8D46BE287C88BB00489744 /* TaskObject.m in Sources */,
 				1A9665302889CB36008C83B5 /* DueDateModalViewController.m in Sources */,
@@ -506,6 +517,7 @@
 				1A8D46C4287CC95F00489744 /* TaskCell.m in Sources */,
 				1A5AAE662888AB9B0080FB4A /* CategoryObject.m in Sources */,
 				1A8D46982878E91800489744 /* main.m in Sources */,
+				1A8DC3362891DBAE00123E1F /* UserCell.m in Sources */,
 				1A8D468A2878E91800489744 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

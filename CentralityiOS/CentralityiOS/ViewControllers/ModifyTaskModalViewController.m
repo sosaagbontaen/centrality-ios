@@ -78,7 +78,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
 - (void)initModalForEditTaskMode{
     self.taskTitleInput.text = self.taskFromFeed.taskTitle;
     self.taskDescInput.text = self.taskFromFeed.taskDesc;
-    self.modalTitle.text = @"Edit Task";
+    self.modalTitle.text = @"Edit";
     [self.modifyButton setTitle:@"Update Task" forState:UIControlStateNormal];
     
     if (self.taskCategory){
@@ -101,8 +101,15 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     
     self.taskTitleInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Name this task" attributes:@{NSForegroundColorAttributeName: [UIColor systemGrayColor]}];
     
-    [self.modifyButton setTitle:@"Add Task" forState:UIControlStateNormal];
+    [self.modifyButton setTitle:@"Add" forState:UIControlStateNormal];
     self.modalTitle.text = @"Add a Task";
+}
+- (IBAction)shareAction:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
+                                    @"Main" bundle:nil];
+    ShareModalViewController *shareModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ShareModalViewController"];
+    shareModalVC.delegate = self;
+    [self presentViewController:shareModalVC animated:YES completion:^{}];
 }
 
 - (IBAction)changeCategoryAction:(id)sender {
