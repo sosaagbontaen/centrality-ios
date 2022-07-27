@@ -1,26 +1,44 @@
 PODS:
   - Bolts/Tasks (1.9.1)
+  - Charts (4.0.3):
+    - Charts/Core (= 4.0.3)
+  - Charts/Core (4.0.3):
+    - SwiftAlgorithms (~> 1.0)
+  - DateTools (2.0.0)
   - FSCalendar (2.8.4)
+  - IQKeyboardManager (6.5.10)
   - Parse (1.19.3):
     - Parse/Core (= 1.19.3)
   - Parse/Core (1.19.3):
     - Bolts/Tasks (= 1.9.1)
+  - SwiftAlgorithms (1.0.0)
 
 DEPENDENCIES:
+  - Charts
+  - DateTools
   - FSCalendar
+  - IQKeyboardManager
   - Parse
 
 SPEC REPOS:
   trunk:
     - Bolts
+    - Charts
+    - DateTools
     - FSCalendar
+    - IQKeyboardManager
     - Parse
+    - SwiftAlgorithms
 
 SPEC CHECKSUMS:
   Bolts: 8c1e8aab2f603387b8b9924f57d1d64f43d3ffdc
+  Charts: d959d6723c8eedfdd0735dfc28cb0a71762ac4d9
+  DateTools: 933ac9c490f21f92127cf690ccd8c397e0126caf
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
+  IQKeyboardManager: 45a1fa55c1a5b02c61ac0fd7fd5b62bb4ad20d97
   Parse: 0abb63a0ff6fa34a3f64b81d595a294e2ece143a
+  SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
 
-PODFILE CHECKSUM: 163546ef62d55725bcfdc2cd5d89e2a79345c57f
+PODFILE CHECKSUM: ecadf7b20b83a109fb18a1f2b0d354a9eeec6406
 
 COCOAPODS: 1.11.3

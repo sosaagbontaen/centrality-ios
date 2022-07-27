@@ -10,6 +10,7 @@
 #import "TaskCell.h"
 #import "TaskObject.h"
 #import "SceneDelegate.h"
+#import "DateFormatHelper.h"
 
 @interface ToDoFeedViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
@@ -99,20 +100,18 @@ static NSString * const kEditTaskMode = @"Editing";
     cell.taskDescLabel.text = task.taskDesc;
     if ([task.category fetchIfNeeded]){
         
-        cell.categoryLabel.text = [NSString stringWithFormat:@"Category : %@", task.category.categoryName];
+        cell.categoryLabel.text = [NSString stringWithFormat:@"%@", task.category.categoryName];
     }
     else{
-        cell.categoryLabel.text = @"Category : None";
+        cell.categoryLabel.text = @"Uncategorized";
     }
     if (task.dueDate){
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        formatter.dateFormat = @"MM/dd/yy";
-        NSString *formattedDate = [formatter stringFromDate:task.dueDate];
+        NSString *formattedDate = [DateFormatHelper formatDateAsString:task.dueDate];
         
-        cell.dueDateLabel.text = [NSString stringWithFormat:@"Due Date : %@", formattedDate];
+        cell.dueDateLabel.text = [NSString stringWithFormat:@"Due %@", formattedDate];
     }
     else{
-        cell.dueDateLabel.text = @"Due Date : None";
+        cell.dueDateLabel.text = @"No due date";
     }
     [cell refreshCell];
     return cell;
@@ -173,6 +172,8 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchData) forControlEvents:UIControlEventValueChanged];
     [self.taskTableView insertSubview:self.refreshControl atIndex:0];
+    
+    
 }
 
 @end

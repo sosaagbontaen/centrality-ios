@@ -6,13 +6,20 @@
 //
 
 #import "ModifyTaskModalViewController.h"
+#import "DateFormatHelper.h"
+#import "DateTools.h"
+#import "IQKeyboardManager.h"
+#import "DetectableKeywords.h"
 
-@interface ModifyTaskModalViewController ()
+@interface ModifyTaskModalViewController () <UITextFieldDelegate, UITextViewDelegate>
 
 @end
 
 static NSString * const kAddTaskMode = @"Addding";
 static NSString * const kEditTaskMode = @"Editing";
+static const CGFloat kKeyboardDistanceFromTitleInput = 130.0;
+static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
+
 
 @implementation ModifyTaskModalViewController
 
@@ -24,9 +31,51 @@ static NSString * const kEditTaskMode = @"Editing";
     else if([self.modifyMode isEqualToString:kAddTaskMode]){
         [self initModalForAddTaskMode];
     }
+    
+    NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:self.taskTitleInput.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+    self.taskTitleInput.attributedText = toInput;
+    
+    [self.taskTitleInput addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    self.taskTitleInput.delegate = self;
+    self.taskDescInput.delegate = self;
+    IQKeyboardManager.sharedManager.enable = true;
 }
 
--(void)initModalForEditTaskMode{
+
+- (void)textFieldDidChange :(UITextField *) textField{
+    NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:textField.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+    textField.attributedText = toInput;
+
+    [self highlightKeyword:[DetectableKeywords getTodayKeywords] inInputField:textField newDate:NSDate.date];
+    [self highlightKeyword:[DetectableKeywords getTomorrowKeywords] inInputField:textField newDate:[NSDate.date dateByAddingDays:1]];
+    [self highlightKeyword:[DetectableKeywords getYesterdayKeywords] inInputField:textField newDate:[NSDate.date dateBySubtractingDays:1]];
+}
+
+- (void)highlightKeyword : (NSArray<NSString *>*) keywords inInputField:(UITextField*) inputField newDate:(NSDate*)newDate{
+    
+    NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:inputField.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+    for (NSString* keyword in keywords)
+    {
+        if ([inputField.text containsString:keyword]) {
+            NSInteger subStringStartLocation = [inputField.text rangeOfString:keyword].location;
+            NSInteger subStringLength = keyword.length;
+            
+            NSRange highlightRange = NSMakeRange(subStringStartLocation, subStringLength);
+            [toInput addAttribute:NSBackgroundColorAttributeName value:[UIColor systemGreenColor] range:highlightRange];
+
+            self.taskDueDate = newDate;
+            [self reloadDueDateView:self.taskDueDate];
+            
+            inputField.attributedText = toInput;
+        }
+    }
+    
+}
+
+- (void)initModalForEditTaskMode{
     self.taskTitleInput.text = self.taskFromFeed.taskTitle;
     self.taskDescInput.text = self.taskFromFeed.taskDesc;
     self.modalTitle.text = @"Edit Task";
@@ -38,9 +87,7 @@ static NSString * const kEditTaskMode = @"Editing";
         [self.changeCategoryButton setTitle:@"None" forState:UIControlStateNormal];
     }
     if (self.taskDueDate){
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        formatter.dateFormat = @"MM/dd/yy";
-        NSString *formattedDate = [formatter stringFromDate:self.taskDueDate];
+        NSString* formattedDate = [DateFormatHelper formatDateAsString:self.taskDueDate];
         [self.changeDateButton setTitle:formattedDate forState:UIControlStateNormal];
     }
     else{
@@ -49,7 +96,9 @@ static NSString * const kEditTaskMode = @"Editing";
 }
 
 -(void)initModalForAddTaskMode{
+    
     self.taskTitleInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Name this task" attributes:@{NSForegroundColorAttributeName: [UIColor systemGrayColor]}];
+    
     [self.modifyButton setTitle:@"Add Task" forState:UIControlStateNormal];
     self.modalTitle.text = @"Add a Task";
 }
@@ -67,12 +116,13 @@ static NSString * const kEditTaskMode = @"Editing";
                                     @"Main" bundle:nil];
     DueDateModalViewController *dueDateModalVC = [storyboard instantiateViewControllerWithIdentifier:@"DueDateModalViewController"];
     dueDateModalVC.delegate = self;
+    dueDateModalVC.previouslySelectedDate = self.taskDueDate;
     [self presentViewController:dueDateModalVC animated:YES completion:^{}];
 }
 
-- (void)didChangeCategory:(CategoryObject *)item toFeed:(CategoryModalViewController *)controller{
-    if (item){
-        self.taskCategory = item;
+- (void)reloadCategoryView:(CategoryObject*)newCategory{
+    if (newCategory){
+        self.taskCategory = newCategory;
         [self.changeCategoryButton setTitle:self.taskCategory.categoryName forState:UIControlStateNormal];
     }
     else{
@@ -80,18 +130,24 @@ static NSString * const kEditTaskMode = @"Editing";
     }
 }
 
-- (void)didChangeDuedate:(NSDate *)item toFeed:(DueDateModalViewController *)controller{
-    if (item){
-        self.taskDueDate = item;
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        formatter.dateFormat = @"MM/dd/yy";
-        NSString *formattedDate = [formatter stringFromDate:self.taskDueDate];
+- (void)didChangeCategory:(CategoryObject *)item toFeed:(CategoryModalViewController *)controller{
+    [self reloadCategoryView:item];
+}
+
+- (void)reloadDueDateView:(NSDate*)newDate{
+    if (newDate){
+        self.taskDueDate = newDate;
+        NSString* formattedDate = [DateFormatHelper formatDateAsString:self.taskDueDate];
         [self.changeDateButton setTitle:formattedDate forState:UIControlStateNormal];
     }
     else{
         NSLog(@"Invalid date selected.");
         return;
     }
+}
+
+- (void)didChangeDuedate:(NSDate *)item toFeed:(DueDateModalViewController *)controller{
+    [self reloadDueDateView:item];
 }
 
 - (IBAction)modifyTaskAction:(id)sender {
@@ -136,6 +192,48 @@ static NSString * const kEditTaskMode = @"Editing";
 - (IBAction)cancelAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    IQKeyboardManager.sharedManager.keyboardDistanceFromTextField = kKeyboardDistanceFromTitleInput;
+    return YES;
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+    //Adding space upon field deselect to prevent bug where attributes expand to entire text field after selecting a different field/view
+    NSMutableAttributedString *stringWithSpaceAdded = [[NSMutableAttributedString alloc] initWithAttributedString:textField.attributedText];
+    [stringWithSpaceAdded appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" "]];
+    
+    textField.attributedText = stringWithSpaceAdded;
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    IQKeyboardManager.sharedManager.keyboardDistanceFromTextField = kKeyboardDistanceFromDescInput;
+    return YES;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    return YES;
+}
+
+
+
+
+
+#pragma mark - keyboard movements
+
 
 
 @end
