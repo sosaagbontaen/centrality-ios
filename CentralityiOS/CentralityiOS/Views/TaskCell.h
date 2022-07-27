@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *completeButton;
 @property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dueDateLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *spaceBetweenCategoryAndDate;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *spaceBetweenDateAndShared;
 @property TaskObject* task;
 - (void)refreshCell;
 @end

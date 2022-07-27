@@ -51,7 +51,7 @@
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ctu-8H-cZ6">
-                                                    <rect key="frame" x="49.000000000000007" y="114.33333333333333" width="87.666666666666686" height="13.666666666666671"/>
+                                                    <rect key="frame" x="49.000000000000007" y="114" width="87.666666666666686" height="14"/>
                                                     <color key="backgroundColor" red="0.27727538081959141" green="0.54874758376288657" blue="0.28278808886141316" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <attributedString key="attributedText">
                                                         <fragment content="Category : None">
@@ -70,10 +70,29 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22D-Q7-t9d">
-                                                    <rect key="frame" x="142.66666666666666" y="114.66666666666667" width="89.666666666666657" height="13.333333333333329"/>
+                                                    <rect key="frame" x="141.66666666666666" y="114" width="89.666666666666657" height="14"/>
                                                     <color key="backgroundColor" red="0.43897617273396472" green="0.70670908505154639" blue="0.24093624816612552" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <attributedString key="attributedText">
                                                         <fragment content="Due Date : None">
+                                                            <attributes>
+                                                                <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <font key="NSFont" size="12" name="ArialMT"/>
+                                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                            </attributes>
+                                                        </fragment>
+                                                    </attributedString>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="4"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwC-2o-1e1">
+                                                    <rect key="frame" x="236.33333333333334" y="114" width="39.000000000000028" height="14"/>
+                                                    <color key="backgroundColor" systemColor="systemPurpleColor"/>
+                                                    <attributedString key="attributedText">
+                                                        <fragment content="Shared">
                                                             <attributes>
                                                                 <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <font key="NSFont" size="12" name="ArialMT"/>
@@ -93,7 +112,9 @@
                                                 <constraint firstItem="qWG-2h-kLH" firstAttribute="leading" secondItem="uOf-Na-dC0" secondAttribute="leading" id="2xc-1X-hd7"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Ctu-8H-cZ6" secondAttribute="bottom" constant="5" id="34S-rx-w9J"/>
                                                 <constraint firstItem="qWG-2h-kLH" firstAttribute="top" secondItem="uOf-Na-dC0" secondAttribute="bottom" constant="5" id="7Kv-iv-EB0"/>
-                                                <constraint firstItem="22D-Q7-t9d" firstAttribute="leading" secondItem="Ctu-8H-cZ6" secondAttribute="trailing" constant="6" id="Hyt-jg-eHd"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="22D-Q7-t9d" secondAttribute="bottom" constant="5" id="90q-f3-fTp"/>
+                                                <constraint firstItem="HwC-2o-1e1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="qWG-2h-kLH" secondAttribute="bottom" constant="5" id="Eko-bH-1dO"/>
+                                                <constraint firstItem="22D-Q7-t9d" firstAttribute="leading" secondItem="Ctu-8H-cZ6" secondAttribute="trailing" constant="5" id="Hyt-jg-eHd"/>
                                                 <constraint firstItem="qWG-2h-kLH" firstAttribute="trailing" secondItem="uOf-Na-dC0" secondAttribute="trailing" id="LsO-vU-AEs"/>
                                                 <constraint firstItem="uOf-Na-dC0" firstAttribute="top" secondItem="xjk-6k-NKL" secondAttribute="top" constant="10" id="Pei-tp-AWL"/>
                                                 <constraint firstItem="Ctu-8H-cZ6" firstAttribute="top" relation="greaterThanOrEqual" secondItem="qWG-2h-kLH" secondAttribute="bottom" constant="5" id="XFs-Td-mZd"/>
@@ -101,7 +122,9 @@
                                                 <constraint firstItem="Vo2-sL-S0v" firstAttribute="leading" secondItem="xjk-6k-NKL" secondAttribute="leading" constant="20" id="c0c-nI-201"/>
                                                 <constraint firstItem="uOf-Na-dC0" firstAttribute="leading" secondItem="Vo2-sL-S0v" secondAttribute="trailing" constant="4" id="j1W-8I-OgI"/>
                                                 <constraint firstItem="Vo2-sL-S0v" firstAttribute="top" secondItem="uOf-Na-dC0" secondAttribute="top" id="nKB-YY-Akl"/>
-                                                <constraint firstItem="22D-Q7-t9d" firstAttribute="centerY" secondItem="Ctu-8H-cZ6" secondAttribute="centerY" id="yYO-no-CFg"/>
+                                                <constraint firstItem="22D-Q7-t9d" firstAttribute="top" relation="greaterThanOrEqual" secondItem="qWG-2h-kLH" secondAttribute="bottom" constant="5" id="pof-RQ-pTB"/>
+                                                <constraint firstItem="HwC-2o-1e1" firstAttribute="leading" secondItem="22D-Q7-t9d" secondAttribute="trailing" constant="5" id="xm1-UW-rqK"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="HwC-2o-1e1" secondAttribute="bottom" constant="5" id="yci-j2-mPj"/>
                                                 <constraint firstAttribute="trailing" secondItem="uOf-Na-dC0" secondAttribute="trailing" constant="20" id="z8Z-2X-3fA"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -109,6 +132,8 @@
                                             <outlet property="categoryLabel" destination="Ctu-8H-cZ6" id="9vj-49-lXe"/>
                                             <outlet property="completeButton" destination="Vo2-sL-S0v" id="Kb5-Fk-iKI"/>
                                             <outlet property="dueDateLabel" destination="22D-Q7-t9d" id="Gic-VI-HV0"/>
+                                            <outlet property="spaceBetweenCategoryAndDate" destination="Hyt-jg-eHd" id="vV9-SM-c9l"/>
+                                            <outlet property="spaceBetweenDateAndShared" destination="xm1-UW-rqK" id="ula-qR-Oyw"/>
                                             <outlet property="taskDescLabel" destination="qWG-2h-kLH" id="X6A-2s-gug"/>
                                             <outlet property="taskNameLabel" destination="uOf-Na-dC0" id="rtR-aA-Jcj"/>
                                         </connections>
@@ -831,6 +856,9 @@
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemPurpleColor">
+            <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

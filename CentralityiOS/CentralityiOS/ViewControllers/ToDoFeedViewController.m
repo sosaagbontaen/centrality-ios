@@ -22,6 +22,8 @@ static NSString * const kByOwnerQueryKey = @"owner";
 static NSString * const kCreatedAtQueryKey = @"createdAt";
 static NSString * const kAddTaskMode = @"Addding";
 static NSString * const kEditTaskMode = @"Editing";
+static NSInteger kLabelConstraintConstantWhenVisible = 5;
+static NSInteger kLabelConstraintConstantWhenInvisible = 0;
 
 @implementation ToDoFeedViewController
 
@@ -98,23 +100,33 @@ static NSString * const kEditTaskMode = @"Editing";
     cell.task = task;
     cell.taskNameLabel.text = task.taskTitle;
     cell.taskDescLabel.text = task.taskDesc;
+    
     if ([task.category fetchIfNeeded]){
-        
-        cell.categoryLabel.text = [NSString stringWithFormat:@"%@", task.category.categoryName];
+        [self updateLabel:cell.categoryLabel newText:[NSString stringWithFormat:@"Category : %@", task.category.categoryName] isHidden:FALSE];
+        cell.spaceBetweenCategoryAndDate.constant = kLabelConstraintConstantWhenVisible;
     }
     else{
-        cell.categoryLabel.text = @"Uncategorized";
+        [self updateLabel:cell.categoryLabel newText:@"" isHidden:TRUE];
+        cell.spaceBetweenCategoryAndDate.constant = kLabelConstraintConstantWhenInvisible;
     }
+    
     if (task.dueDate){
         NSString *formattedDate = [DateFormatHelper formatDateAsString:task.dueDate];
-        
-        cell.dueDateLabel.text = [NSString stringWithFormat:@"Due %@", formattedDate];
+        [self updateLabel:cell.dueDateLabel newText:[NSString stringWithFormat:@"Due %@", formattedDate] isHidden:FALSE];
+        cell.spaceBetweenDateAndShared.constant = kLabelConstraintConstantWhenVisible;
     }
     else{
-        cell.dueDateLabel.text = @"No due date";
+        [self updateLabel:cell.dueDateLabel newText:@"" isHidden:TRUE];
+        cell.spaceBetweenDateAndShared.constant = kLabelConstraintConstantWhenInvisible;
     }
+    
     [cell refreshCell];
     return cell;
+}
+
+- (void) updateLabel:(UILabel*)label newText:(NSString*)newText isHidden:(BOOL)isHidden{
+    label.text = newText;
+    label.hidden = isHidden;
 }
 
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView
