@@ -80,18 +80,20 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     self.taskDescInput.text = self.taskFromFeed.taskDesc;
     self.modalTitle.text = @"Edit Task";
     [self.modifyButton setTitle:@"Update Task" forState:UIControlStateNormal];
+    
     if (self.taskCategory){
         [self.changeCategoryButton setTitle:self.taskCategory.categoryName forState:UIControlStateNormal];
     }
     else{
         [self.changeCategoryButton setTitle:@"None" forState:UIControlStateNormal];
     }
+    
     if (self.taskDueDate){
         NSString* formattedDate = [DateFormatHelper formatDateAsString:self.taskDueDate];
         [self.changeDateButton setTitle:formattedDate forState:UIControlStateNormal];
     }
     else{
-        [self.changeCategoryButton setTitle:@"None" forState:UIControlStateNormal];
+        [self.changeDateButton setTitle:@"None" forState:UIControlStateNormal];
     }
 }
 
