@@ -20,4 +20,5 @@
 @property (weak, nonatomic) IBOutlet UITableView *userTableView;
 @property (weak, nonatomic) IBOutlet UITextField *userNameField;
 @property (strong, nonatomic) NSMutableArray *arrayOfUsers;
+@property (weak, nonatomic) TaskObject *taskToShare;
 @end

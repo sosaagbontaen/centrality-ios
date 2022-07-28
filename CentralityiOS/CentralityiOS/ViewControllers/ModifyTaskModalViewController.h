@@ -31,5 +31,5 @@
 @property CategoryObject *taskCategory;
 @property NSDate *taskDueDate;
 @property NSString *modifyMode;
-@property (nonatomic, strong) NSMutableArray<PFUser*>*taskSharedOwners;
+@property NSMutableArray<PFUser*>*taskSharedOwners;
 @end

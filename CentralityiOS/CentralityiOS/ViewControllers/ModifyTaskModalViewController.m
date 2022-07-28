@@ -160,7 +160,10 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
 }
 
 - (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller{
-    [self.taskSharedOwners addObject:PFUser.currentUser];
+    if (self.taskSharedOwners == NULL){
+        self.taskSharedOwners = [[NSMutableArray alloc] init];
+    }
+    [self.taskSharedOwners addObject:user];
 }
 
 - (IBAction)modifyTaskAction:(id)sender {

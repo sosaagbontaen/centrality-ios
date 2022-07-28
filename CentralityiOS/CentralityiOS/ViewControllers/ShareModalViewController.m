@@ -64,7 +64,6 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
         return;
     }
     [self.delegate didUpdateSharing:PFUser.currentUser toFeed:self];
-    NSLog(@"Added %@", PFUser.currentUser);
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
 - (IBAction)cancelAction:(id)sender {

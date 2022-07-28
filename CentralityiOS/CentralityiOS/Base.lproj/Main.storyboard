@@ -133,6 +133,7 @@
                                             <outlet property="categoryLabel" destination="Ctu-8H-cZ6" id="9vj-49-lXe"/>
                                             <outlet property="completeButton" destination="Vo2-sL-S0v" id="Kb5-Fk-iKI"/>
                                             <outlet property="dueDateLabel" destination="22D-Q7-t9d" id="Gic-VI-HV0"/>
+                                            <outlet property="sharedLabel" destination="HwC-2o-1e1" id="Vg7-y4-dLg"/>
                                             <outlet property="spaceBetweenCategoryAndDate" destination="Hyt-jg-eHd" id="vV9-SM-c9l"/>
                                             <outlet property="spaceBetweenDateAndShared" destination="xm1-UW-rqK" id="ula-qR-Oyw"/>
                                             <outlet property="taskDescLabel" destination="qWG-2h-kLH" id="X6A-2s-gug"/>

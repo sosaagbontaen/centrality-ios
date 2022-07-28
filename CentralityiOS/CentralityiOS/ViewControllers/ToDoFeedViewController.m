@@ -130,6 +130,21 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
         cell.spaceBetweenDateAndShared.constant = kLabelConstraintConstantWhenInvisible;
     }
     
+    if (task.sharedOwners.count > 0){
+        NSString* allUsers = @"";
+        for (NSInteger index = 0; index < task.sharedOwners.count; index++){
+            allUsers = [allUsers stringByAppendingString:[task.sharedOwners[index] fetchIfNeeded].username];
+            if (index < task.sharedOwners.count-1){
+                allUsers = [NSString stringWithFormat:@"%@, ",allUsers];
+            }
+        }
+        NSString* displayMessage = [NSString stringWithFormat:@"Shared with : %@",allUsers];
+        [self updateLabel:cell.sharedLabel newText:displayMessage isHidden:FALSE];
+    }
+    else{
+        [self updateLabel:cell.sharedLabel newText:@"" isHidden:TRUE];
+    }
+    
     [cell refreshCell];
     return cell;
 }
@@ -174,6 +189,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         modifyTaskModalVC.taskFromFeed = task;
         modifyTaskModalVC.taskCategory = task.category;
         modifyTaskModalVC.taskDueDate = task.dueDate;
+        modifyTaskModalVC.taskSharedOwners = task.sharedOwners;
         [self presentViewController:modifyTaskModalVC animated:YES completion:^{}];
         completionHandler(YES);
     }];
