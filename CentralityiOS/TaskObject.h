@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TaskObject : PFObject<PFSubclassing>
 @property (nonatomic) NSInteger taskID;
 @property (nonatomic, strong) PFUser *owner;
+@property (nonatomic, strong) NSMutableArray<PFUser*>*sharedOwners;
 @property (nonatomic, strong) NSDate *dueDate;
 @property (nonatomic, strong) NSString *taskTitle;
 @property (nonatomic, strong) NSString *taskDesc;

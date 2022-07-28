@@ -159,6 +159,10 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     [self reloadDueDateView:item];
 }
 
+- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller{
+    [self.taskSharedOwners addObject:PFUser.currentUser];
+}
+
 - (IBAction)modifyTaskAction:(id)sender {
     if ([self.modifyMode isEqualToString:kAddTaskMode]){
         if ([self.taskTitleInput.text isEqualToString:@""]){
@@ -173,6 +177,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
         newTask.category = self.taskCategory;
         newTask.dueDate = self.taskDueDate;
         newTask.isCompleted = NO;
+        newTask.sharedOwners = [[NSMutableArray alloc] init];
         
         [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
@@ -193,6 +198,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
         self.taskFromFeed.taskDesc = self.taskDescInput.text;
         self.taskFromFeed.category = self.taskCategory;
         self.taskFromFeed.dueDate = self.taskDueDate;
+        self.taskFromFeed.sharedOwners = self.taskSharedOwners;
         [self.delegate didEditTask:self.taskFromFeed toFeed:self];
         [self dismissViewControllerAnimated:YES completion:^{}];
     }

@@ -961,7 +961,7 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="categoryNameLabel" destination="wWG-8w-6SG" id="yia-n2-aYx"/>
+                                                    <outlet property="userNameLabel" destination="wWG-8w-6SG" id="Evj-gC-vId"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -1018,7 +1018,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="addCategoryAction:" destination="W1i-vN-AZd" eventType="touchUpInside" id="5aE-kg-M1z"/>
+                                            <action selector="addUserAction:" destination="W1i-vN-AZd" eventType="touchUpInside" id="cEb-HK-DZL"/>
                                         </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TED-ZQ-OdA">
@@ -1061,6 +1061,10 @@
                             <constraint firstItem="blK-ZP-Ttz" firstAttribute="trailing" secondItem="B8W-Ph-mTP" secondAttribute="trailing" id="rgt-jD-ftp"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="userNameField" destination="TED-ZQ-OdA" id="Oj3-lX-Fbs"/>
+                        <outlet property="userTableView" destination="Rpm-by-pzk" id="wA3-Bl-P8R"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lrR-Hr-M2s" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

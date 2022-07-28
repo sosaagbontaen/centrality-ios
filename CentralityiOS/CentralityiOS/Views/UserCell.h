@@ -10,6 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UserCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 
 @end
 

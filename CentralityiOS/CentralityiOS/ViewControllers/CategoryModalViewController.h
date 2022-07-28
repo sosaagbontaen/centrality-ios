@@ -21,5 +21,6 @@
 @property (strong, nonatomic) NSMutableArray *arrayOfCategories;
 @property (weak, nonatomic) IBOutlet UIButton *addCategoryButton;
 @property (weak, nonatomic) IBOutlet UITextField *nameOfCategoryToAdd;
+@property (weak, nonatomic) TaskObject *taskFromFeed;
 -(void) fetchCategories;
 @end

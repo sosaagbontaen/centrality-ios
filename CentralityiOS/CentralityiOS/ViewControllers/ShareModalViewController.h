@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Parse/Parse.h"
+#import "TaskObject.h"
 
 @class ShareModalViewController;
 
@@ -17,4 +18,6 @@
 @interface ShareModalViewController : UIViewController
 @property (nonatomic, weak) id <ShareModalViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UITableView *userTableView;
+@property (weak, nonatomic) IBOutlet UITextField *userNameField;
+@property (strong, nonatomic) NSMutableArray *arrayOfUsers;
 @end
