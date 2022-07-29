@@ -16,7 +16,7 @@
 
 @end
 
-static NSString * const kAddTaskMode = @"Addding";
+static NSString * const kAddTaskMode = @"Adding";
 static NSString * const kEditTaskMode = @"Editing";
 static const CGFloat kKeyboardDistanceFromTitleInput = 130.0;
 static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
@@ -41,8 +41,22 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     self.taskTitleInput.delegate = self;
     self.taskDescInput.delegate = self;
     IQKeyboardManager.sharedManager.enable = true;
+    
+    
+    
+    [self.shareButton setTitle:[self updateShareDisplayMessage] forState:UIControlStateNormal];
 }
 
+- (NSString*)updateShareDisplayMessage{
+    NSString* shareDisplayMessage = [[NSString alloc]init];
+    if (self.taskSharedOwners.count == 1){
+        shareDisplayMessage = @"Sharing w/ 1 user";
+    }
+    else{
+        shareDisplayMessage = [NSString stringWithFormat:@"Sharing w/ %lu users",(unsigned long)self.taskSharedOwners.count];
+    }
+    return shareDisplayMessage;
+}
 
 - (void)textFieldDidChange :(UITextField *) textField{
     NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:textField.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
@@ -170,7 +184,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     if (![userObjectIds containsObject:user.objectId]){
         [self.taskSharedOwners addObject:user];
     }
-    
+    [self.shareButton setTitle:[self updateShareDisplayMessage] forState:UIControlStateNormal];
 }
 
 - (IBAction)modifyTaskAction:(id)sender {
