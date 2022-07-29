@@ -20,5 +20,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *userTableView;
 @property (weak, nonatomic) IBOutlet UITextField *userNameField;
 @property NSMutableArray<PFUser*>*arrayOfUsers;
+@property (weak, nonatomic) TaskObject *taskToUpdate;
 + (NSMutableArray<NSString*>*)getArrayOfObjectIds:(NSMutableArray<PFUser*>*)userArray;
 @end

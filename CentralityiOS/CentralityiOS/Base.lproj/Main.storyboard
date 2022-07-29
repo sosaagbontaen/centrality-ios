@@ -46,7 +46,7 @@
                                                     </constraints>
                                                     <color key="tintColor" systemColor="systemGreenColor"/>
                                                     <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" image="button:Vo2-sL-S0v:image" catalog="system" title=""/>
+                                                    <buttonConfiguration key="configuration" style="plain" image="button:Vo2-sL-S0v:image" title=""/>
                                                     <connections>
                                                         <action selector="completeAction:" destination="rNX-i0-KMq" eventType="touchUpInside" id="d6F-01-vYE"/>
                                                     </connections>
@@ -868,6 +868,7 @@
                                     <constraint firstItem="vsi-YX-hxx" firstAttribute="top" secondItem="aM7-tu-utN" secondAttribute="top" id="8rL-6u-Gkh"/>
                                     <constraint firstAttribute="height" constant="308" id="9Tb-wc-L5U"/>
                                     <constraint firstItem="zLE-6r-Gl4" firstAttribute="top" secondItem="UXv-cf-4rh" secondAttribute="top" constant="8" id="D29-PH-pBy"/>
+                                    <constraint firstItem="HpK-g1-Eep" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="PZl-aQ-mY2" secondAttribute="trailing" constant="5" id="F56-0C-0u7"/>
                                     <constraint firstItem="v56-ov-tJh" firstAttribute="height" secondItem="HpK-g1-Eep" secondAttribute="height" id="IhR-oP-C8c"/>
                                     <constraint firstItem="PZl-aQ-mY2" firstAttribute="leading" secondItem="hEM-EC-p8n" secondAttribute="leading" id="NW3-Le-cLl"/>
                                     <constraint firstAttribute="trailing" secondItem="Fll-Jp-QfV" secondAttribute="trailing" constant="20" id="Q0d-qJ-aDT"/>
@@ -894,6 +895,7 @@
                                     <constraint firstItem="4BX-IT-A1Q" firstAttribute="trailing" secondItem="dV6-FA-4S4" secondAttribute="trailing" id="vTK-5l-hZj"/>
                                     <constraint firstItem="PZl-aQ-mY2" firstAttribute="centerY" secondItem="HpK-g1-Eep" secondAttribute="centerY" id="xi2-2O-Iyg"/>
                                     <constraint firstItem="v56-ov-tJh" firstAttribute="bottom" secondItem="HpK-g1-Eep" secondAttribute="bottom" id="yde-I5-q6L"/>
+                                    <constraint firstItem="vsi-YX-hxx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tp2-cb-GV4" secondAttribute="trailing" constant="5" id="yeG-ga-hFl"/>
                                     <constraint firstItem="aM7-tu-utN" firstAttribute="top" secondItem="hAB-Ie-bXX" secondAttribute="bottom" constant="8" id="z7k-yt-8mA"/>
                                     <constraint firstItem="hEM-EC-p8n" firstAttribute="top" secondItem="tp2-cb-GV4" secondAttribute="top" id="zvI-Cb-5rW"/>
                                 </constraints>
@@ -955,14 +957,23 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Privacy Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gZa-Bt-0qq">
+                                                            <rect key="frame" x="264" y="20" width="109" height="21"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" systemColor="systemBlueColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="wWG-8w-6SG" firstAttribute="centerY" secondItem="rDp-RN-I5W" secondAttribute="centerY" id="5So-9J-iQV"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="wWG-8w-6SG" secondAttribute="trailing" id="7cX-gf-6O4"/>
+                                                        <constraint firstItem="gZa-Bt-0qq" firstAttribute="centerY" secondItem="wWG-8w-6SG" secondAttribute="centerY" id="CGD-60-l31"/>
+                                                        <constraint firstAttribute="trailing" secondItem="gZa-Bt-0qq" secondAttribute="trailing" constant="15" id="Fde-OD-xcT"/>
                                                         <constraint firstItem="wWG-8w-6SG" firstAttribute="leading" secondItem="rDp-RN-I5W" secondAttribute="leadingMargin" id="uZK-FP-QgY"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
+                                                    <outlet property="privacyStatusLabel" destination="gZa-Bt-0qq" id="J36-J2-fym"/>
                                                     <outlet property="userNameLabel" destination="wWG-8w-6SG" id="Evj-gC-vId"/>
                                                 </connections>
                                             </tableViewCell>
@@ -1074,7 +1085,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="button:Vo2-sL-S0v:image" catalog="system" width="128" height="121">
+        <image name="button:Vo2-sL-S0v:image" width="128" height="121">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF8QD05T
 S2V5ZWRBcmNoaXZlctEICVRyb290gAGvEBELDBscIRkmKywzNjlDS0xQU1UkbnVsbNcNDg8QERITFBUW
@@ -17753,6 +17764,9 @@ AAAAD0GWA
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemCyanColor">
             <color red="0.19607843137254902" green="0.67843137254901964" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

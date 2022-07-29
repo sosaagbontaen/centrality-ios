@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UserCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
-
+@property (weak, nonatomic) IBOutlet UILabel *privacyStatusLabel;
 @end
 
 NS_ASSUME_NONNULL_END

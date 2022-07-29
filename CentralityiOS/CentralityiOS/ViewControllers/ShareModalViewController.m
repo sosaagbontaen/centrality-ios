@@ -35,15 +35,25 @@ static NSString * const kSharedUsersQueryKey = @"sharedOwners";
     return returnArray;
 }
 
-- (PFQuery*)querySharedUsers{
-    PFQuery *query = [PFUser query];
-    [query whereKey:@"objectId" containedIn:[ShareModalViewController getArrayOfObjectIds:self.arrayOfUsers]];
-    query.limit = kFeedLimit;
-    return query;
+- (PFQuery*)queryAllSharedUsers{
+    
+    PFQuery *sendingUser = [PFUser query];
+    [sendingUser whereKey:@"objectId" equalTo:self.taskToUpdate.owner.objectId];
+    
+    PFQuery *receivingUsers = [PFUser query];
+    [receivingUsers whereKey:@"objectId" containedIn:[ShareModalViewController getArrayOfObjectIds:self.arrayOfUsers]];
+    
+    PFQuery *currentUser = [PFUser query];
+    [currentUser whereKey:@"objectId" equalTo:PFUser.currentUser.objectId];
+    
+    PFQuery *allSharedUsers = [PFQuery orQueryWithSubqueries:@[sendingUser,receivingUsers,currentUser]];
+    allSharedUsers.limit = kFeedLimit;
+    
+    return allSharedUsers;
 }
 
 - (void)fetchUsers{
-    PFQuery *query = [self querySharedUsers];
+    PFQuery *query = [self queryAllSharedUsers];
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
         if (users != nil) {
@@ -64,6 +74,14 @@ static NSString * const kSharedUsersQueryKey = @"sharedOwners";
     PFUser *user = self.arrayOfUsers[indexPath.row];
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
     cell.userNameLabel.text = user.username;
+    if ([user.objectId isEqualToString:self.taskToUpdate.owner.objectId]){
+        cell.privacyStatusLabel.text = @"Owner";
+        cell.privacyStatusLabel.textColor = [UIColor systemPurpleColor];
+    }
+    else{
+        cell.privacyStatusLabel.text = @"Can Edit";
+        cell.privacyStatusLabel.textColor = [UIColor systemTealColor];
+    }
     return cell;
 }
 
