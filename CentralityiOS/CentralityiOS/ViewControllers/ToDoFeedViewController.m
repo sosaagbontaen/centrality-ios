@@ -145,7 +145,16 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
                 allUsers = [NSString stringWithFormat:@"%@, ",allUsers];
             }
         }
-        NSString* displayMessage = [NSString stringWithFormat:@"Shared with : %@",allUsers];
+        NSString* displayMessage = [[NSString alloc]init];
+        if ([task.owner.objectId isEqualToString:PFUser.currentUser.objectId]){
+            displayMessage = [NSString stringWithFormat:@"Shared with : %@",allUsers];
+            cell.sharedLabel.backgroundColor = [UIColor systemTealColor];
+        }
+        else{
+            [task.owner fetchIfNeeded];
+            displayMessage = [NSString stringWithFormat:@"Owned by %@", task.owner.username];
+            cell.sharedLabel.backgroundColor = [UIColor systemPurpleColor];
+        }
         [self updateLabel:cell.sharedLabel newText:displayMessage isHidden:FALSE];
     }
     else{
