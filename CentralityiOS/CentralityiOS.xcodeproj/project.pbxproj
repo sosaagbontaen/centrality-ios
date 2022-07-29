@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A1F54FF289088F50007AF5D /* DetectableKeywords.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1F54FE289088F50007AF5D /* DetectableKeywords.m */; };
+		1A273EE928937B40001A8C19 /* CentralityHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A273EE828937B40001A8C19 /* CentralityHelpers.m */; };
 		1A40F7E9288601B700BBAD4F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A40F7E8288601B700BBAD4F /* LoginViewController.m */; };
 		1A42BB1F28889FA9003ACC4D /* CategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB1E28889FA9003ACC4D /* CategoryCell.m */; };
 		1A42BB222888A0C2003ACC4D /* CategoryModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB212888A0C2003ACC4D /* CategoryModalViewController.m */; };
@@ -55,6 +56,8 @@
 /* Begin PBXFileReference section */
 		1A1F54FD289088F50007AF5D /* DetectableKeywords.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetectableKeywords.h; sourceTree = "<group>"; };
 		1A1F54FE289088F50007AF5D /* DetectableKeywords.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetectableKeywords.m; sourceTree = "<group>"; };
+		1A273EE728937B40001A8C19 /* CentralityHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CentralityHelpers.h; sourceTree = "<group>"; };
+		1A273EE828937B40001A8C19 /* CentralityHelpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CentralityHelpers.m; sourceTree = "<group>"; };
 		1A40F7E7288601B700BBAD4F /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		1A40F7E8288601B700BBAD4F /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		1A42BB1D28889FA9003ACC4D /* CategoryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CategoryCell.h; sourceTree = "<group>"; };
@@ -250,6 +253,8 @@
 				1A1F54FE289088F50007AF5D /* DetectableKeywords.m */,
 				1A8DC3372891DC5C00123E1F /* ShareModalViewController.h */,
 				1A8DC3382891DC5C00123E1F /* ShareModalViewController.m */,
+				1A273EE728937B40001A8C19 /* CentralityHelpers.h */,
+				1A273EE828937B40001A8C19 /* CentralityHelpers.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -504,6 +509,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A40F7E9288601B700BBAD4F /* LoginViewController.m in Sources */,
+				1A273EE928937B40001A8C19 /* CentralityHelpers.m in Sources */,
 				1AFCB4C9288B5D8F00E4187E /* DateFormatHelper.m in Sources */,
 				1A42BB222888A0C2003ACC4D /* CategoryModalViewController.m in Sources */,
 				1A42BB1F28889FA9003ACC4D /* CategoryCell.m in Sources */,

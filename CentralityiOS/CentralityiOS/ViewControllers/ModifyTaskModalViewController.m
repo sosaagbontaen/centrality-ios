@@ -10,6 +10,7 @@
 #import "DateTools.h"
 #import "IQKeyboardManager.h"
 #import "DetectableKeywords.h"
+#import "CentralityHelpers.h"
 
 @interface ModifyTaskModalViewController () <UITextFieldDelegate, UITextViewDelegate>
 
@@ -109,6 +110,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
                                     @"Main" bundle:nil];
     ShareModalViewController *shareModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ShareModalViewController"];
     shareModalVC.delegate = self;
+    shareModalVC.arrayOfUsers = self.taskSharedOwners;
     [self presentViewController:shareModalVC animated:YES completion:^{}];
 }
 
@@ -163,16 +165,20 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     if (self.taskSharedOwners == NULL){
         self.taskSharedOwners = [[NSMutableArray alloc] init];
     }
-    [self.taskSharedOwners addObject:user];
+    NSMutableArray<NSString*>* userObjectIds = [ShareModalViewController getArrayOfObjectIds:self.taskSharedOwners];
+    
+    if (![userObjectIds containsObject:user.objectId]){
+        [self.taskSharedOwners addObject:user];
+    }
+    
 }
 
 - (IBAction)modifyTaskAction:(id)sender {
+    if ([self.taskTitleInput.text isEqualToString:@""]){
+        [CentralityHelpers showAlert:@"Empty Task Name" alertMessage:@"Please name this task" currentVC:self];
+        return;
+    }
     if ([self.modifyMode isEqualToString:kAddTaskMode]){
-        if ([self.taskTitleInput.text isEqualToString:@""]){
-            NSLog(@"Empty title");
-            return;
-        }
-            
         TaskObject *newTask = [TaskObject new];
         newTask.owner = [PFUser currentUser];
         newTask.taskTitle = self.taskTitleInput.text;
@@ -180,7 +186,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
         newTask.category = self.taskCategory;
         newTask.dueDate = self.taskDueDate;
         newTask.isCompleted = NO;
-        newTask.sharedOwners = [[NSMutableArray alloc] init];
+        newTask.sharedOwners = self.taskSharedOwners;
         
         [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
@@ -193,15 +199,12 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
         }];
     }
     else if([self.modifyMode isEqualToString:kEditTaskMode]){
-        if ([self.taskTitleInput.text isEqualToString:@""]){
-            NSLog(@"Empty title");
-            return;
-        }
         self.taskFromFeed.taskTitle = self.taskTitleInput.text;
         self.taskFromFeed.taskDesc = self.taskDescInput.text;
         self.taskFromFeed.category = self.taskCategory;
         self.taskFromFeed.dueDate = self.taskDueDate;
         self.taskFromFeed.sharedOwners = self.taskSharedOwners;
+        
         [self.delegate didEditTask:self.taskFromFeed toFeed:self];
         [self dismissViewControllerAnimated:YES completion:^{}];
     }

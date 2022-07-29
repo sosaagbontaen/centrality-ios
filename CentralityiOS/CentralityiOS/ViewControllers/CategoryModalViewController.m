@@ -7,6 +7,7 @@
 
 #import "CategoryModalViewController.h"
 #import "CategoryCell.h"
+#import "CentralityHelpers.h"
 
 @interface CategoryModalViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -99,7 +100,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
 
 - (IBAction)addCategoryAction:(id)sender {
     if ([self.nameOfCategoryToAdd.text isEqualToString:@""]){
-        NSLog(@"Empty category name");
+        [CentralityHelpers showAlert:@"Empty Category Name" alertMessage:@"Please name this category" currentVC:self];
         return;
     }
     

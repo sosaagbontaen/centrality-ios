@@ -19,6 +19,6 @@
 @property (nonatomic, weak) id <ShareModalViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UITableView *userTableView;
 @property (weak, nonatomic) IBOutlet UITextField *userNameField;
-@property (strong, nonatomic) NSMutableArray *arrayOfUsers;
-@property (weak, nonatomic) TaskObject *taskToShare;
+@property NSMutableArray<PFUser*>*arrayOfUsers;
++ (NSMutableArray<NSString*>*)getArrayOfObjectIds:(NSMutableArray<PFUser*>*)userArray;
 @end
