@@ -77,8 +77,13 @@ static NSString * const kSharedUsersQueryKey = @"sharedOwners";
     
     PFUser* userToAdd = [query getFirstObject];
     if (userToAdd){
-        [self.delegate didUpdateSharing:userToAdd toFeed:self];
-        [self dismissViewControllerAnimated:YES completion:^{}];
+        if (![userToAdd.objectId isEqualToString:PFUser.currentUser.objectId]){
+            [self.delegate didUpdateSharing:userToAdd toFeed:self];
+            [self dismissViewControllerAnimated:YES completion:^{}];
+        }
+        else{
+            [CentralityHelpers showAlert:@"Cannot share task with yourself" alertMessage:@"You already own this task" currentVC:self];
+        }
     }
     else{
         [CentralityHelpers showAlert:@"Invalid username" alertMessage:@"User could not be found" currentVC:self];

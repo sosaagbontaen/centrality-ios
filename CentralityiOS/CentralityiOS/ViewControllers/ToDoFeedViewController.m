@@ -19,6 +19,7 @@
 static const NSInteger kToDoFeedLimit = 20;
 static NSString * const kTaskClassName = @"TaskObject";
 static NSString * const kByOwnerQueryKey = @"owner";
+static NSString * const kBySharedOwnerQueryKey = @"sharedOwners";
 static NSString * const kCreatedAtQueryKey = @"createdAt";
 static NSString * const kAddTaskMode = @"Addding";
 static NSString * const kEditTaskMode = @"Editing";
