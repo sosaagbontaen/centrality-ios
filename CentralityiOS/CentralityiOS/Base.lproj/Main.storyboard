@@ -89,15 +89,15 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwC-2o-1e1">
-                                                    <rect key="frame" x="236.33333333333334" y="114" width="39.000000000000028" height="14"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwC-2o-1e1">
+                                                    <rect key="frame" x="236.33333333333337" y="114" width="103" height="14"/>
                                                     <color key="backgroundColor" systemColor="systemPurpleColor"/>
                                                     <attributedString key="attributedText">
-                                                        <fragment content="Shared">
+                                                        <fragment content="Shared with : None">
                                                             <attributes>
                                                                 <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <font key="NSFont" size="12" name="ArialMT"/>
-                                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                             </attributes>
                                                         </fragment>
                                                     </attributedString>
@@ -120,6 +120,7 @@
                                                 <constraint firstItem="uOf-Na-dC0" firstAttribute="top" secondItem="xjk-6k-NKL" secondAttribute="top" constant="10" id="Pei-tp-AWL"/>
                                                 <constraint firstItem="Ctu-8H-cZ6" firstAttribute="top" relation="greaterThanOrEqual" secondItem="qWG-2h-kLH" secondAttribute="bottom" constant="5" id="XFs-Td-mZd"/>
                                                 <constraint firstItem="Ctu-8H-cZ6" firstAttribute="leading" secondItem="qWG-2h-kLH" secondAttribute="leading" id="YmL-uo-hhi"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HwC-2o-1e1" secondAttribute="trailing" constant="5" id="ZGx-oi-Zz7"/>
                                                 <constraint firstItem="Vo2-sL-S0v" firstAttribute="leading" secondItem="xjk-6k-NKL" secondAttribute="leading" constant="20" id="c0c-nI-201"/>
                                                 <constraint firstItem="uOf-Na-dC0" firstAttribute="leading" secondItem="Vo2-sL-S0v" secondAttribute="trailing" constant="4" id="j1W-8I-OgI"/>
                                                 <constraint firstItem="Vo2-sL-S0v" firstAttribute="top" secondItem="uOf-Na-dC0" secondAttribute="top" id="nKB-YY-Akl"/>
