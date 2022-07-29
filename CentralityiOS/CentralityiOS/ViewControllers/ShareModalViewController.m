@@ -35,12 +35,7 @@ static NSString * const kSharedUsersQueryKey = @"sharedOwners";
     return returnArray;
 }
 
-- (PFQuery*)queryAllSharedUsers{
-    
-    NSLog(@"TaskOwner : %@", self.taskToUpdate.owner.objectId);
-    NSLog(@"ArrayOfUsers: %@", self.arrayOfUsers);
-    
-    
+- (PFQuery*)queryAllSharedUsers{    
     PFQuery *sendingUser = [PFUser query];
     [sendingUser whereKey:@"objectId" equalTo:self.taskToUpdate.owner.objectId];
     
