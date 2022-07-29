@@ -52,13 +52,13 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
 
 - (void)didAddNewTask:(TaskObject*) newTask toFeed:(ModifyTaskModalViewController *)controller{
     [self.arrayOfTasks addObject:newTask];
-    [self fetchData];
+    [self fetchTasks];
 }
 
 - (void)didEditTask:(TaskObject*) updatedTask toFeed:(ModifyTaskModalViewController *)controller{
     [updatedTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
-            [self fetchData];
+            [self fetchTasks];
         }
         else{
             NSLog(@"Task not updated on Parse : %@", error.localizedDescription);
@@ -67,14 +67,20 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
 }
 
 - (PFQuery*)makeQuery{
-    PFQuery *query = [PFQuery queryWithClassName:kTaskClassName];
-    [query orderByDescending:kCreatedAtQueryKey];
-    [query whereKey:kByOwnerQueryKey equalTo:[PFUser currentUser]];
-    query.limit = kToDoFeedLimit;
-    return query;
+    PFQuery *tasksOwnedByMe = [PFQuery queryWithClassName:kTaskClassName];
+    [tasksOwnedByMe whereKey:kByOwnerQueryKey equalTo:[PFUser currentUser]];
+    
+    PFQuery *tasksSharedWithMe = [PFQuery queryWithClassName:kTaskClassName];
+    [tasksSharedWithMe whereKey:kBySharedOwnerQueryKey equalTo:[PFUser currentUser]];
+    
+    PFQuery *tasksOwnedOrShared = [PFQuery orQueryWithSubqueries:@[tasksOwnedByMe, tasksSharedWithMe]];
+    [tasksOwnedOrShared orderByDescending:kCreatedAtQueryKey];
+    tasksOwnedOrShared.limit = kToDoFeedLimit;
+    
+    return tasksOwnedOrShared;
 }
 
-- (void)fetchData{
+- (void)fetchTasks{
     PFQuery *query = [self makeQuery];
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
@@ -207,10 +213,10 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     [super viewDidLoad];
     self.taskTableView.dataSource = self;
     self.taskTableView.delegate = self;
-    [self fetchData];
+    [self fetchTasks];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(fetchData) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl addTarget:self action:@selector(fetchTasks) forControlEvents:UIControlEventValueChanged];
     [self.taskTableView insertSubview:self.refreshControl atIndex:0];
     
 }

@@ -37,7 +37,6 @@ static NSString * const kSharedUsersQueryKey = @"sharedOwners";
 
 - (PFQuery*)querySharedUsers{
     PFQuery *query = [PFUser query];
-    [query orderByDescending:kCreatedAtQueryKey];
     [query whereKey:@"objectId" containedIn:[ShareModalViewController getArrayOfObjectIds:self.arrayOfUsers]];
     query.limit = kFeedLimit;
     return query;
