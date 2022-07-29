@@ -37,6 +37,10 @@ static NSString * const kSharedUsersQueryKey = @"sharedOwners";
 
 - (PFQuery*)queryAllSharedUsers{
     
+    NSLog(@"TaskOwner : %@", self.taskToUpdate.owner.objectId);
+    NSLog(@"ArrayOfUsers: %@", self.arrayOfUsers);
+    
+    
     PFQuery *sendingUser = [PFUser query];
     [sendingUser whereKey:@"objectId" equalTo:self.taskToUpdate.owner.objectId];
     
@@ -74,6 +78,7 @@ static NSString * const kSharedUsersQueryKey = @"sharedOwners";
     PFUser *user = self.arrayOfUsers[indexPath.row];
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
     cell.userNameLabel.text = user.username;
+    
     if ([user.objectId isEqualToString:self.taskToUpdate.owner.objectId]){
         cell.privacyStatusLabel.text = @"Owner";
         cell.privacyStatusLabel.textColor = [UIColor systemPurpleColor];

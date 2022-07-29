@@ -124,8 +124,19 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
                                     @"Main" bundle:nil];
     ShareModalViewController *shareModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ShareModalViewController"];
     shareModalVC.delegate = self;
-    shareModalVC.arrayOfUsers = self.taskSharedOwners;
-    shareModalVC.taskToUpdate = self.taskFromFeed;
+    if (self.taskSharedOwners){
+        shareModalVC.arrayOfUsers = self.taskSharedOwners;
+    }
+    else{
+        shareModalVC.arrayOfUsers = [[NSMutableArray alloc]init];
+    }
+    if (self.taskFromFeed){
+        shareModalVC.taskToUpdate = self.taskFromFeed;
+    }
+    else{
+        shareModalVC.taskToUpdate = [TaskObject new];
+        shareModalVC.taskToUpdate.owner = PFUser.currentUser;
+    }
     [self presentViewController:shareModalVC animated:YES completion:^{}];
 }
 
