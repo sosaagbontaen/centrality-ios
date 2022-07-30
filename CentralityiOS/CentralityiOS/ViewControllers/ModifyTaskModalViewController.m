@@ -22,6 +22,8 @@ static NSString* const kAccessReadAndWrite = @"Read and Write";
 static NSString* const kAccessReadOnly = @"Read Only";
 static NSString* const kShareMode = @"Share Mode";
 static NSString* const kUnshareMode = @"Unshare Mode";
+static NSString* const kMakeReadOnlyMode = @"Make Read Only";
+static NSString* const kMakeWritableMode = @"Make Writable";
 static const CGFloat kKeyboardDistanceFromTitleInput = 130.0;
 static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
 
@@ -233,6 +235,22 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
                 [self.taskReadAndWriteUsers addObject:user];
             }
         }
+    }
+    else if (updateType == kMakeReadOnlyMode){
+            for (int i = 0; i < self.taskReadAndWriteUsers.count; i++) {
+                if ([self.taskReadAndWriteUsers[i].objectId isEqualToString:user.objectId]){
+                    [self.taskReadOnlyUsers addObject:user];
+                    [self.taskReadAndWriteUsers removeObjectAtIndex:i];
+                }
+            }
+    }
+    else if (updateType == kMakeWritableMode){
+            for (int i = 0; i < self.taskReadOnlyUsers.count; i++) {
+                if ([self.taskReadOnlyUsers[i].objectId isEqualToString:user.objectId]){
+                    [self.taskReadAndWriteUsers addObject:user];
+                    [self.taskReadOnlyUsers removeObjectAtIndex:i];
+                }
+            }
     }
     
     

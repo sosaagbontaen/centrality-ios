@@ -21,6 +21,8 @@ static NSString* const kAccessReadAndWrite = @"Read and Write";
 static NSString* const kAccessReadOnly = @"Read Only";
 static NSString* const kShareMode = @"Share Mode";
 static NSString* const kUnshareMode = @"Unshare Mode";
+static NSString* const kMakeReadOnlyMode = @"Make Read Only";
+static NSString* const kMakeWritableMode = @"Make Writable";
 @implementation ShareModalViewController
 
 - (void)viewDidLoad {
@@ -87,7 +89,7 @@ static NSString* const kUnshareMode = @"Unshare Mode";
     }
     if ([readOnlyObjIds containsObject:user.objectId]){
         cell.privacyStatusLabel.text = @"Read-Only";
-        cell.privacyStatusLabel.textColor = [UIColor systemRedColor];
+        cell.privacyStatusLabel.textColor = [UIColor systemOrangeColor];
     }
     if ([user.objectId isEqualToString:self.taskToUpdate.owner.objectId]){
         cell.privacyStatusLabel.text = @"Owner";
@@ -99,7 +101,7 @@ static NSString* const kUnshareMode = @"Unshare Mode";
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView
 trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Delete" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+    UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Unshare" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
         PFQuery *query = [self queryAllSharedUsers];
         
@@ -118,11 +120,45 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         
     }];
     
-    deleteAction.backgroundColor = [UIColor systemRedColor];
+    UIContextualAction *readOnlyAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Read-Only" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        
+        PFQuery *query = [self queryAllSharedUsers];
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
+            if (users != nil) {
+                [self.delegate didUpdateSharing:self.arrayOfUsers[indexPath.row] toFeed:self userPermission:@"" updateType:kMakeReadOnlyMode];
+                [self fetchUsers];
+            } else {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+        
+        completionHandler(YES);
+    }];
     
+    UIContextualAction *allowEditingAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Writable" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        
+        PFQuery *query = [self queryAllSharedUsers];
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
+            if (users != nil) {
+                [self.delegate didUpdateSharing:self.arrayOfUsers[indexPath.row] toFeed:self userPermission:@"" updateType:kMakeWritableMode];
+                [self fetchUsers];
+            } else {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+        
+        completionHandler(YES);
+    }];
+    
+    allowEditingAction.backgroundColor = [UIColor systemTealColor];
+    readOnlyAction.backgroundColor = [UIColor systemOrangeColor];
+    deleteAction.backgroundColor = [UIColor systemRedColor];
+
     UISwipeActionsConfiguration *swipeActions;
     if (![self.arrayOfUsers[indexPath.row].objectId isEqualToString: self.taskToUpdate.owner.objectId]){
-    swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+    swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, readOnlyAction, allowEditingAction]];
     }
     swipeActions.performsFirstActionWithFullSwipe = NO;
     return swipeActions;
