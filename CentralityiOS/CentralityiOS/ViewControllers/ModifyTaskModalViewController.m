@@ -20,6 +20,8 @@ static NSString * const kAddTaskMode = @"Adding";
 static NSString * const kEditTaskMode = @"Editing";
 static NSString* const kAccessReadAndWrite = @"Read and Write";
 static NSString* const kAccessReadOnly = @"Read Only";
+static NSString* const kShareMode = @"Share Mode";
+static NSString* const kUnshareMode = @"Unshare Mode";
 static const CGFloat kKeyboardDistanceFromTitleInput = 130.0;
 static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
 
@@ -193,22 +195,47 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     [self reloadDueDateView:item];
 }
 
-- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission{
-    if (self.taskSharedOwners == NULL){
-        self.taskSharedOwners = [[NSMutableArray alloc] init];
-    }
+- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission updateType:(NSString*)updateType{
+    
     NSMutableArray<NSString*>* userObjectIds = [ShareModalViewController getArrayOfObjectIds:self.taskSharedOwners];
     
-    if (![userObjectIds containsObject:user.objectId]){
-        [self.taskSharedOwners addObject:user];
-        
-        if ([userPermission isEqualToString:kAccessReadOnly]){
-            [self.taskReadOnlyUsers addObject:user];
+    if(updateType == kUnshareMode){
+        for (PFUser *user in self.taskSharedOwners) {
+            if ([userObjectIds containsObject:user.objectId]){
+                [self.taskSharedOwners removeObject:user];
+                break;
+            }
         }
-        else if([userPermission isEqualToString:kAccessReadAndWrite]){
-            [self.taskReadAndWriteUsers addObject:user];
+        for (PFUser *user in self.taskReadOnlyUsers) {
+            if ([userObjectIds containsObject:user.objectId]){
+                [self.taskReadOnlyUsers removeObject:user];
+                break;
+            }
+        }
+        for (PFUser *user in self.taskReadAndWriteUsers) {
+            if ([userObjectIds containsObject:user.objectId]){
+                [self.taskReadAndWriteUsers removeObject:user];
+                break;
+            }
         }
     }
+    else if(updateType == kShareMode){
+        if (self.taskSharedOwners == NULL){
+            self.taskSharedOwners = [[NSMutableArray alloc] init];
+        }
+        
+        if (![userObjectIds containsObject:user.objectId]){
+            [self.taskSharedOwners addObject:user];
+            
+            if ([userPermission isEqualToString:kAccessReadOnly]){
+                [self.taskReadOnlyUsers addObject:user];
+            }
+            else if([userPermission isEqualToString:kAccessReadAndWrite]){
+                [self.taskReadAndWriteUsers addObject:user];
+            }
+        }
+    }
+    
     
     [self.shareButton setTitle:[self updateShareDisplayMessage] forState:UIControlStateNormal];
 }

@@ -19,7 +19,8 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
 static NSString * const kSharedUsersQueryKey = @"sharedOwners";
 static NSString* const kAccessReadAndWrite = @"Read and Write";
 static NSString* const kAccessReadOnly = @"Read Only";
-
+static NSString* const kShareMode = @"Share Mode";
+static NSString* const kUnshareMode = @"Unshare Mode";
 @implementation ShareModalViewController
 
 - (void)viewDidLoad {
@@ -102,9 +103,9 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         
         PFQuery *query = [self queryAllSharedUsers];
         
-        [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
-            if (tasks != nil) {
-                [self.arrayOfUsers[indexPath.row] deleteInBackground];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
+            if (users != nil) {
+                [self.delegate didUpdateSharing:self.arrayOfUsers[indexPath.row] toFeed:self userPermission:kAccessReadAndWrite updateType:kUnshareMode];
                 [self.arrayOfUsers removeObjectAtIndex:indexPath.row];
                 [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                 [self fetchUsers];
@@ -119,7 +120,10 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     deleteAction.backgroundColor = [UIColor systemRedColor];
     
-    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+    UISwipeActionsConfiguration *swipeActions;
+    if (![self.arrayOfUsers[indexPath.row].objectId isEqualToString: self.taskToUpdate.owner.objectId]){
+    swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+    }
     swipeActions.performsFirstActionWithFullSwipe = NO;
     return swipeActions;
 }
@@ -134,7 +138,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     PFUser* userToAdd = [query getFirstObject];
     if (userToAdd){
         if (![userToAdd.objectId isEqualToString:PFUser.currentUser.objectId]){
-            [self.delegate didUpdateSharing:userToAdd toFeed:self userPermission:kAccessReadAndWrite];
+            [self.delegate didUpdateSharing:userToAdd toFeed:self userPermission:kAccessReadAndWrite updateType:kShareMode];
             [self.arrayOfUsers addObject:userToAdd];
             [self fetchUsers];
         }
