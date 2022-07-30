@@ -18,6 +18,8 @@
 
 static NSString * const kAddTaskMode = @"Adding";
 static NSString * const kEditTaskMode = @"Editing";
+static NSString* const kAccessReadAndWrite = @"Read and Write";
+static NSString* const kAccessReadOnly = @"Read Only";
 static const CGFloat kKeyboardDistanceFromTitleInput = 130.0;
 static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
 
@@ -41,10 +43,14 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     self.taskTitleInput.delegate = self;
     self.taskDescInput.delegate = self;
     IQKeyboardManager.sharedManager.enable = true;
-    
-    
-    
     [self.shareButton setTitle:[self updateShareDisplayMessage] forState:UIControlStateNormal];
+    
+    if (!self.taskReadOnlyUsers){
+        self.taskReadOnlyUsers = [[NSMutableArray alloc] init];
+    }
+    if (!self.taskReadAndWriteUsers){
+        self.taskReadAndWriteUsers = [[NSMutableArray alloc] init];
+    }
 }
 
 - (NSString*)updateShareDisplayMessage{
@@ -187,7 +193,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     [self reloadDueDateView:item];
 }
 
-- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller{
+- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission{
     if (self.taskSharedOwners == NULL){
         self.taskSharedOwners = [[NSMutableArray alloc] init];
     }
@@ -195,7 +201,15 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     
     if (![userObjectIds containsObject:user.objectId]){
         [self.taskSharedOwners addObject:user];
+        
+        if ([userPermission isEqualToString:kAccessReadOnly]){
+            [self.taskReadOnlyUsers addObject:user];
+        }
+        else if([userPermission isEqualToString:kAccessReadAndWrite]){
+            [self.taskReadAndWriteUsers addObject:user];
+        }
     }
+    
     [self.shareButton setTitle:[self updateShareDisplayMessage] forState:UIControlStateNormal];
 }
 
@@ -213,6 +227,8 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
         newTask.dueDate = self.taskDueDate;
         newTask.isCompleted = NO;
         newTask.sharedOwners = self.taskSharedOwners;
+        newTask.readOnlyUsers = self.taskReadOnlyUsers;
+        newTask.readAndWriteUsers = self.taskReadAndWriteUsers;
         
         [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
@@ -230,7 +246,8 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
         self.taskFromFeed.category = self.taskCategory;
         self.taskFromFeed.dueDate = self.taskDueDate;
         self.taskFromFeed.sharedOwners = self.taskSharedOwners;
-        
+        self.taskFromFeed.readOnlyUsers = self.taskReadOnlyUsers;
+        self.taskFromFeed.readAndWriteUsers = self.taskReadAndWriteUsers;
         [self.delegate didEditTask:self.taskFromFeed toFeed:self];
         [self dismissViewControllerAnimated:YES completion:^{}];
     }

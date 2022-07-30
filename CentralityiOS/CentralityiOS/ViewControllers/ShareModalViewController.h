@@ -12,7 +12,7 @@
 @class ShareModalViewController;
 
 @protocol ShareModalViewControllerDelegate <NSObject>
-- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller;
+- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission;
 @end
 
 @interface ShareModalViewController : UIViewController

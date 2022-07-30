@@ -11,7 +11,8 @@
 @dynamic taskID;
 @dynamic owner;
 @dynamic sharedOwners;
-@dynamic privacyAccess;
+@dynamic readOnlyUsers;
+@dynamic readAndWriteUsers;
 @dynamic dueDate;
 @dynamic taskTitle;
 @dynamic taskDesc;

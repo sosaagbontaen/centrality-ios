@@ -1002,7 +1002,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="cancelAction:" destination="W1i-vN-AZd" eventType="touchUpInside" id="G0Y-xb-zR4"/>
+                                            <action selector="closeAction:" destination="W1i-vN-AZd" eventType="touchUpInside" id="zd3-nA-1ZR"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qju-ta-4rS">

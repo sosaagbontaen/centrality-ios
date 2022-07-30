@@ -205,7 +205,9 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         modifyTaskModalVC.taskFromFeed = task;
         modifyTaskModalVC.taskCategory = task.category;
         modifyTaskModalVC.taskDueDate = task.dueDate;
-        modifyTaskModalVC.taskSharedOwners = task.sharedOwners;
+        modifyTaskModalVC.taskSharedOwners = [task.sharedOwners mutableCopy];
+        modifyTaskModalVC.taskReadOnlyUsers = [task.readOnlyUsers mutableCopy];
+        modifyTaskModalVC.taskReadAndWriteUsers = [task.readAndWriteUsers mutableCopy];
         [self presentViewController:modifyTaskModalVC animated:YES completion:^{}];
         completionHandler(YES);
     }];

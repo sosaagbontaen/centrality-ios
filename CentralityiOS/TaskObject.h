@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSInteger taskID;
 @property (nonatomic, strong) PFUser *owner;
 @property (nonatomic, strong) NSMutableArray<PFUser*>*sharedOwners;
-@property (nonatomic, strong) NSString*privacyAccess;
+@property (nonatomic, strong) NSMutableArray<PFUser*>*readOnlyUsers;
+@property (nonatomic, strong) NSMutableArray<PFUser*>*readAndWriteUsers;
 @property (nonatomic, strong) NSDate *dueDate;
 @property (nonatomic, strong) NSString *taskTitle;
 @property (nonatomic, strong) NSString *taskDesc;

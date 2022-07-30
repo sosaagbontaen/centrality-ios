@@ -17,6 +17,8 @@ static const NSInteger kFeedLimit = 20;
 static NSString * const kCategoryClassName = @"CategoryObject";
 static NSString * const kCreatedAtQueryKey = @"createdAt";
 static NSString * const kSharedUsersQueryKey = @"sharedOwners";
+static NSString* const kAccessReadAndWrite = @"Read and Write";
+static NSString* const kAccessReadOnly = @"Read Only";
 
 @implementation ShareModalViewController
 
@@ -74,15 +76,52 @@ static NSString * const kSharedUsersQueryKey = @"sharedOwners";
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
     cell.userNameLabel.text = user.username;
     
+    NSMutableArray* readAndWriteObjIds = [ShareModalViewController getArrayOfObjectIds:self.taskToUpdate.readAndWriteUsers];
+    
+    NSMutableArray* readOnlyObjIds = [ShareModalViewController getArrayOfObjectIds:self.taskToUpdate.readOnlyUsers];
+    
+    if ([readAndWriteObjIds containsObject:user.objectId]){
+        cell.privacyStatusLabel.text = @"Can Edit";
+        cell.privacyStatusLabel.textColor = [UIColor systemTealColor];
+    }
+    if ([readOnlyObjIds containsObject:user.objectId]){
+        cell.privacyStatusLabel.text = @"Read-Only";
+        cell.privacyStatusLabel.textColor = [UIColor systemRedColor];
+    }
     if ([user.objectId isEqualToString:self.taskToUpdate.owner.objectId]){
         cell.privacyStatusLabel.text = @"Owner";
         cell.privacyStatusLabel.textColor = [UIColor systemPurpleColor];
     }
-    else{
-        cell.privacyStatusLabel.text = @"Can Edit";
-        cell.privacyStatusLabel.textColor = [UIColor systemTealColor];
-    }
     return cell;
+}
+
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView
+trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Delete" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        
+        PFQuery *query = [self queryAllSharedUsers];
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
+            if (tasks != nil) {
+                [self.arrayOfUsers[indexPath.row] deleteInBackground];
+                [self.arrayOfUsers removeObjectAtIndex:indexPath.row];
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [self fetchUsers];
+            } else {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+        
+        completionHandler(YES);
+        
+    }];
+    
+    deleteAction.backgroundColor = [UIColor systemRedColor];
+    
+    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+    swipeActions.performsFirstActionWithFullSwipe = NO;
+    return swipeActions;
 }
 
 - (IBAction)addUserAction:(id)sender {
@@ -95,8 +134,9 @@ static NSString * const kSharedUsersQueryKey = @"sharedOwners";
     PFUser* userToAdd = [query getFirstObject];
     if (userToAdd){
         if (![userToAdd.objectId isEqualToString:PFUser.currentUser.objectId]){
-            [self.delegate didUpdateSharing:userToAdd toFeed:self];
-            [self dismissViewControllerAnimated:YES completion:^{}];
+            [self.delegate didUpdateSharing:userToAdd toFeed:self userPermission:kAccessReadAndWrite];
+            [self.arrayOfUsers addObject:userToAdd];
+            [self fetchUsers];
         }
         else{
             [CentralityHelpers showAlert:@"Cannot share task with yourself" alertMessage:@"You already own this task" currentVC:self];
@@ -114,7 +154,7 @@ static NSString * const kSharedUsersQueryKey = @"sharedOwners";
     return query;
 }
 
-- (IBAction)cancelAction:(id)sender {
+- (IBAction)closeAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
