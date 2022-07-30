@@ -11,6 +11,7 @@
 #import "TaskObject.h"
 #import "SceneDelegate.h"
 #import "DateFormatHelper.h"
+#import "CentralityHelpers.h"
 
 @interface ToDoFeedViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
@@ -173,6 +174,8 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView
 trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    TaskObject *task = self.arrayOfTasks[indexPath.row];
+    
     UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Delete" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
         PFQuery *query = [self makeQuery];
@@ -201,7 +204,6 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         ModifyTaskModalViewController *modifyTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ModifyTaskModalViewController"];
         modifyTaskModalVC.delegate = self;
         modifyTaskModalVC.modifyMode = kEditTaskMode;
-        TaskObject *task = self.arrayOfTasks[indexPath.row];
         modifyTaskModalVC.taskFromFeed = task;
         modifyTaskModalVC.taskCategory = task.category;
         modifyTaskModalVC.taskDueDate = task.dueDate;
@@ -212,10 +214,65 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         completionHandler(YES);
     }];
     
+    UIContextualAction *unfollowAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Unfollow" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        
+        
+        PFQuery *query = [self makeQuery];
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
+            if (tasks != nil) {
+                for (int i = 0; i < task.sharedOwners.count; i++) {
+                    if ([task.sharedOwners[i].objectId isEqualToString:PFUser.currentUser.objectId]){
+                        NSMutableArray *tempArrayOfSharedOwners = [task.sharedOwners mutableCopy];
+                        [tempArrayOfSharedOwners removeObjectAtIndex:i];
+                        task.sharedOwners = tempArrayOfSharedOwners;
+                    }
+                }
+                for (int i = 0; i < task.readOnlyUsers.count; i++) {
+                    if ([task.readOnlyUsers[i].objectId isEqualToString:PFUser.currentUser.objectId]){
+                        NSMutableArray *tempArrayOfReadOnlyUsers = [task.readOnlyUsers mutableCopy];
+                        [tempArrayOfReadOnlyUsers removeObjectAtIndex:i];
+                        task.readOnlyUsers = tempArrayOfReadOnlyUsers;
+                    }
+                }
+                for (int i = 0; i < task.readAndWriteUsers.count; i++) {
+                    if ([task.readAndWriteUsers[i].objectId isEqualToString:PFUser.currentUser.objectId]){
+                        NSMutableArray *tempArrayOfReadAndWriteUsers = [task.readAndWriteUsers mutableCopy];
+                        [tempArrayOfReadAndWriteUsers removeObjectAtIndex:i];
+                        task.readAndWriteUsers = tempArrayOfReadAndWriteUsers;
+                    }
+                }
+                [task saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
+                    if (succeeded) {
+                        [self fetchTasks];
+                        [self detectEmptyFeed];
+                    }
+                    else{
+                        NSLog(@"Task not updated on Parse : %@", error.localizedDescription);
+                    }
+                }];
+                [self.arrayOfTasks removeObjectAtIndex:indexPath.row];
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            } else {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+        completionHandler(YES);
+        
+    }];
+    
     deleteAction.backgroundColor = [UIColor systemRedColor];
     editAction.backgroundColor = [UIColor systemGreenColor];
+        unfollowAction.backgroundColor = [UIColor systemTealColor];
     
-    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction,editAction]];
+    UISwipeActionsConfiguration *swipeActions;
+    NSMutableArray<NSString*>* readOnlyObjIds = [CentralityHelpers getArrayOfObjectIds:task.readOnlyUsers];
+    if ([readOnlyObjIds containsObject:PFUser.currentUser.objectId]){
+        swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[unfollowAction]];
+    }
+    else{
+    swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction,editAction]];
+    }
     swipeActions.performsFirstActionWithFullSwipe=false;
     return swipeActions;
 }

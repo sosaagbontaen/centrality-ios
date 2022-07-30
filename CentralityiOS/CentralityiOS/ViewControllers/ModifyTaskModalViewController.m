@@ -201,7 +201,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
 
 - (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission updateType:(NSString*)updateType{
     
-    NSMutableArray<NSString*>* userObjectIds = [ShareModalViewController getArrayOfObjectIds:self.taskSharedOwners];
+    NSMutableArray<NSString*>* userObjectIds = [CentralityHelpers getArrayOfObjectIds:self.taskSharedOwners];
     
     if(updateType == kUnshareMode){
         for (int i = 0; i < self.taskSharedOwners.count; i++) {

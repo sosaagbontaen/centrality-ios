@@ -6,7 +6,7 @@
 //
 
 #import "CentralityHelpers.h"
-
+#import "Parse/Parse.h"
 @interface CentralityHelpers ()
 
 @end
@@ -22,5 +22,13 @@
 
     [alert addAction:defaultAction];
     [currentVC presentViewController:alert animated:YES completion:nil];
+}
+
++ (NSMutableArray*)getArrayOfObjectIds:(NSMutableArray<PFUser*>*)userArray{
+    NSMutableArray* returnArray = [[NSMutableArray alloc] init];
+    for (PFUser* user in userArray) {
+        [returnArray addObject:user.objectId];
+    }
+    return returnArray;
 }
 @end

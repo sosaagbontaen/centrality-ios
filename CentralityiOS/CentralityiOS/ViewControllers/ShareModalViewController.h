@@ -21,5 +21,4 @@
 @property (weak, nonatomic) IBOutlet UITextField *userNameField;
 @property NSMutableArray<PFUser*>*arrayOfUsers;
 @property (strong, nonatomic) TaskObject *taskToUpdate;
-+ (NSMutableArray<NSString*>*)getArrayOfObjectIds:(NSMutableArray<PFUser*>*)userArray;
 @end

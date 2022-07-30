@@ -32,20 +32,12 @@ static NSString* const kMakeWritableMode = @"Make Writable";
     [self fetchUsers];
 }
 
-+ (NSMutableArray*)getArrayOfObjectIds:(NSMutableArray<PFUser*>*)userArray{
-    NSMutableArray* returnArray = [[NSMutableArray alloc] init];
-    for (PFUser* user in userArray) {
-        [returnArray addObject:user.objectId];
-    }
-    return returnArray;
-}
-
 - (PFQuery*)queryAllSharedUsers{    
     PFQuery *sendingUser = [PFUser query];
     [sendingUser whereKey:@"objectId" equalTo:self.taskToUpdate.owner.objectId];
     
     PFQuery *receivingUsers = [PFUser query];
-    [receivingUsers whereKey:@"objectId" containedIn:[ShareModalViewController getArrayOfObjectIds:self.arrayOfUsers]];
+    [receivingUsers whereKey:@"objectId" containedIn:[CentralityHelpers getArrayOfObjectIds:self.arrayOfUsers]];
     
     PFQuery *currentUser = [PFUser query];
     [currentUser whereKey:@"objectId" equalTo:PFUser.currentUser.objectId];
@@ -79,9 +71,9 @@ static NSString* const kMakeWritableMode = @"Make Writable";
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
     cell.userNameLabel.text = user.username;
     
-    NSMutableArray* readAndWriteObjIds = [ShareModalViewController getArrayOfObjectIds:self.taskToUpdate.readAndWriteUsers];
+    NSMutableArray* readAndWriteObjIds = [CentralityHelpers getArrayOfObjectIds:self.taskToUpdate.readAndWriteUsers];
     
-    NSMutableArray* readOnlyObjIds = [ShareModalViewController getArrayOfObjectIds:self.taskToUpdate.readOnlyUsers];
+    NSMutableArray* readOnlyObjIds = [CentralityHelpers getArrayOfObjectIds:self.taskToUpdate.readOnlyUsers];
     
     if ([readAndWriteObjIds containsObject:user.objectId]){
         cell.privacyStatusLabel.text = @"Can Edit";
