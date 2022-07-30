@@ -144,6 +144,8 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     else{
         shareModalVC.taskToUpdate = [TaskObject new];
         shareModalVC.taskToUpdate.owner = PFUser.currentUser;
+        shareModalVC.taskToUpdate.readAndWriteUsers = self.taskReadAndWriteUsers;
+        shareModalVC.taskToUpdate.readOnlyUsers = self.taskReadOnlyUsers;
     }
     [self presentViewController:shareModalVC animated:YES completion:^{}];
 }
@@ -200,22 +202,19 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     NSMutableArray<NSString*>* userObjectIds = [ShareModalViewController getArrayOfObjectIds:self.taskSharedOwners];
     
     if(updateType == kUnshareMode){
-        for (PFUser *user in self.taskSharedOwners) {
-            if ([userObjectIds containsObject:user.objectId]){
-                [self.taskSharedOwners removeObject:user];
-                break;
+        for (int i = 0; i < self.taskSharedOwners.count; i++) {
+            if ([self.taskSharedOwners[i].objectId isEqualToString:user.objectId]){
+                [self.taskSharedOwners removeObjectAtIndex:i];
             }
         }
-        for (PFUser *user in self.taskReadOnlyUsers) {
-            if ([userObjectIds containsObject:user.objectId]){
-                [self.taskReadOnlyUsers removeObject:user];
-                break;
+        for (int i = 0; i < self.taskReadOnlyUsers.count; i++) {
+            if ([self.taskReadOnlyUsers[i].objectId isEqualToString:user.objectId]){
+                [self.taskReadOnlyUsers removeObjectAtIndex:i];
             }
         }
-        for (PFUser *user in self.taskReadAndWriteUsers) {
-            if ([userObjectIds containsObject:user.objectId]){
-                [self.taskReadAndWriteUsers removeObject:user];
-                break;
+        for (int i = 0; i < self.taskReadAndWriteUsers.count; i++) {
+            if ([self.taskReadAndWriteUsers[i].objectId isEqualToString:user.objectId]){
+                [self.taskReadAndWriteUsers removeObjectAtIndex:i];
             }
         }
     }
