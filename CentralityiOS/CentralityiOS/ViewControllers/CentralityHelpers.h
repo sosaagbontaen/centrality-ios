@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CentralityHelpers : UIViewController
 + (void)showAlert:(NSString*)alertTitle alertMessage:(NSString*)alertMessage currentVC:(UIViewController*)currentVC;
 + (NSMutableArray*)getArrayOfObjectIds:(NSMutableArray*)userArray;
++ (void) updateLabel:(UILabel*)label newText:(NSString*)newText isHidden:(BOOL)isHidden;
 @end
 
 NS_ASSUME_NONNULL_END

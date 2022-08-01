@@ -1217,6 +1217,12 @@
                                                         <constraint firstItem="Feb-Lw-86I" firstAttribute="leading" secondItem="lAf-i2-pUA" secondAttribute="leading" id="zbm-PW-EFt"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="taskDescLabel" destination="Feb-Lw-86I" id="Tdc-64-S5z"/>
+                                                    <outlet property="taskNameLabel" destination="lAf-i2-pUA" id="3uS-xZ-uXQ"/>
+                                                    <outlet property="taskOwnerLabel" destination="Zy9-M9-Mpa" id="UyB-co-UH4"/>
+                                                    <outlet property="taskSharerLabel" destination="gmE-qp-dGb" id="oP1-0M-4Xu"/>
+                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
                                     </tableView>

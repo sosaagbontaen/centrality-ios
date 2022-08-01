@@ -7,6 +7,7 @@
 
 #import "AlertsModalViewController.h"
 #import "ReceiverCell.h"
+#import "CentralityHelpers.h"
 
 @interface AlertsModalViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -14,6 +15,7 @@
 
 
 static NSString * const kTaskClassName = @"TaskObject";
+static NSString * const kSharedUsersQueryKey = @"sharedOwners";
 
 @implementation AlertsModalViewController
 
@@ -34,13 +36,38 @@ static NSString * const kTaskClassName = @"TaskObject";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TaskObject *task = self.arrayOfPendingSharedTasks[indexPath.row];
+    [task.owner fetchIfNeeded];
     ReceiverCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReceiverCell" forIndexPath:indexPath];
+    cell.taskNameLabel.text = task.taskTitle;
+    cell.taskDescLabel.text = task.taskDesc;
+    cell.taskOwnerLabel.text = [NSString stringWithFormat:@"Owned by : %@", task.owner.username];
+    
+    NSString* allUsers = @"";
+    NSString* displayMessage = [[NSString alloc] init];
+    if (task.acceptedUsers.count > 0){
+        for (NSInteger index = 0; index < task.sharedOwners.count; index++){
+            allUsers = [allUsers stringByAppendingString:[task.sharedOwners[index] fetchIfNeeded].username];
+            if (index < task.sharedOwners.count-1){
+                allUsers = [NSString stringWithFormat:@"%@, ",allUsers];
+            }
+        }
+        displayMessage = [NSString stringWithFormat:@"Accessible by : %@",allUsers];
+        cell.taskSharerLabel.hidden = FALSE;
+    }
+    else{
+        displayMessage = @"";
+        cell.taskSharerLabel.hidden = TRUE;
+    }
+        
+    cell.taskSharerLabel.text = displayMessage;
+    
     return cell;
 }
 
 - (PFQuery*)queryAllReceivedTasks{
-    PFQuery *receivedTasks = [PFQuery queryWithClassName:kTaskClassName];
-    return receivedTasks;
+    PFQuery *receivedTasksQuery = [PFQuery queryWithClassName:kTaskClassName];
+    [receivedTasksQuery whereKey:kSharedUsersQueryKey equalTo:PFUser.currentUser];
+    return receivedTasksQuery;
 }
 
 - (void)fetchReceivedTasks{
@@ -54,6 +81,95 @@ static NSString * const kTaskClassName = @"TaskObject";
         }
         [self.receiverTableView reloadData];
     }];
+}
+
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView
+trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    TaskObject *task = self.arrayOfPendingSharedTasks[indexPath.row];
+    
+    UIContextualAction *declineAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Decline" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        
+        
+        PFQuery *query = [self queryAllReceivedTasks];
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
+            if (tasks != nil) {
+                for (int i = 0; i < task.sharedOwners.count; i++) {
+                    if ([task.sharedOwners[i].objectId isEqualToString:PFUser.currentUser.objectId]){
+                        NSMutableArray *tempArrayOfSharedOwners = [task.sharedOwners mutableCopy];
+                        [tempArrayOfSharedOwners removeObjectAtIndex:i];
+                        task.sharedOwners = tempArrayOfSharedOwners;
+                    }
+                }
+                for (int i = 0; i < task.readOnlyUsers.count; i++) {
+                    if ([task.readOnlyUsers[i].objectId isEqualToString:PFUser.currentUser.objectId]){
+                        NSMutableArray *tempArrayOfReadOnlyUsers = [task.readOnlyUsers mutableCopy];
+                        [tempArrayOfReadOnlyUsers removeObjectAtIndex:i];
+                        task.readOnlyUsers = tempArrayOfReadOnlyUsers;
+                    }
+                }
+                for (int i = 0; i < task.readAndWriteUsers.count; i++) {
+                    if ([task.readAndWriteUsers[i].objectId isEqualToString:PFUser.currentUser.objectId]){
+                        NSMutableArray *tempArrayOfReadAndWriteUsers = [task.readAndWriteUsers mutableCopy];
+                        [tempArrayOfReadAndWriteUsers removeObjectAtIndex:i];
+                        task.readAndWriteUsers = tempArrayOfReadAndWriteUsers;
+                    }
+                }
+                [task saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
+                    if (succeeded) {
+                        [self fetchReceivedTasks];
+                    }
+                    else{
+                        NSLog(@"Task not updated on Parse : %@", error.localizedDescription);
+                    }
+                }];
+                [self.arrayOfPendingSharedTasks removeObjectAtIndex:indexPath.row];
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            } else {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+        completionHandler(YES);
+        
+    }];
+    
+    UIContextualAction *acceptAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Accept" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        
+        
+        PFQuery *query = [self queryAllReceivedTasks];
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
+            if (tasks != nil) {
+                for (int i = 0; i < task.sharedOwners.count; i++) {
+                    if ([task.sharedOwners[i].objectId isEqualToString:PFUser.currentUser.objectId]){
+                        [task.acceptedUsers addObject:PFUser.currentUser];
+                    }
+                }
+                [task saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
+                    if (succeeded) {
+                        [self fetchReceivedTasks];
+                    }
+                    else{
+                        NSLog(@"Task not updated on Parse : %@", error.localizedDescription);
+                    }
+                }];
+                [self.arrayOfPendingSharedTasks removeObjectAtIndex:indexPath.row];
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            } else {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+        completionHandler(YES);
+        
+    }];
+    
+    acceptAction.backgroundColor = [UIColor systemGreenColor];
+    declineAction.backgroundColor = [UIColor systemRedColor];
+
+    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[acceptAction, declineAction]];
+    swipeActions.performsFirstActionWithFullSwipe = NO;
+    return swipeActions;
 }
 
 @end

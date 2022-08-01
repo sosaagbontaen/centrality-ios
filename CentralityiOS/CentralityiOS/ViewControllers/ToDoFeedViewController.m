@@ -128,21 +128,21 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
     cell.taskDescLabel.text = task.taskDesc;
     
     if ([task.category fetchIfNeeded]){
-        [self updateLabel:cell.categoryLabel newText:[NSString stringWithFormat:@"Category : %@", task.category.categoryName] isHidden:FALSE];
+        [CentralityHelpers updateLabel:cell.categoryLabel newText:[NSString stringWithFormat:@"Category : %@", task.category.categoryName] isHidden:FALSE];
         cell.spaceBetweenCategoryAndDate.constant = kLabelConstraintConstantWhenVisible;
     }
     else{
-        [self updateLabel:cell.categoryLabel newText:@"" isHidden:TRUE];
+        [CentralityHelpers updateLabel:cell.categoryLabel newText:@"" isHidden:TRUE];
         cell.spaceBetweenCategoryAndDate.constant = kLabelConstraintConstantWhenInvisible;
     }
     
     if (task.dueDate){
         NSString *formattedDate = [DateFormatHelper formatDateAsString:task.dueDate];
-        [self updateLabel:cell.dueDateLabel newText:[NSString stringWithFormat:@"Due %@", formattedDate] isHidden:FALSE];
+        [CentralityHelpers updateLabel:cell.dueDateLabel newText:[NSString stringWithFormat:@"Due %@", formattedDate] isHidden:FALSE];
         cell.spaceBetweenDateAndShared.constant = kLabelConstraintConstantWhenVisible;
     }
     else{
-        [self updateLabel:cell.dueDateLabel newText:@"" isHidden:TRUE];
+        [CentralityHelpers updateLabel:cell.dueDateLabel newText:@"" isHidden:TRUE];
         cell.spaceBetweenDateAndShared.constant = kLabelConstraintConstantWhenInvisible;
     }
     
@@ -164,19 +164,14 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
             displayMessage = [NSString stringWithFormat:@"Owned by %@", task.owner.username];
             cell.sharedLabel.backgroundColor = [UIColor systemPurpleColor];
         }
-        [self updateLabel:cell.sharedLabel newText:displayMessage isHidden:FALSE];
+        [CentralityHelpers updateLabel:cell.sharedLabel newText:displayMessage isHidden:FALSE];
     }
     else{
-        [self updateLabel:cell.sharedLabel newText:@"" isHidden:TRUE];
+        [CentralityHelpers updateLabel:cell.sharedLabel newText:@"" isHidden:TRUE];
     }
     
     [cell refreshCell];
     return cell;
-}
-
-- (void) updateLabel:(UILabel*)label newText:(NSString*)newText isHidden:(BOOL)isHidden{
-    label.text = newText;
-    label.hidden = isHidden;
 }
 
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView

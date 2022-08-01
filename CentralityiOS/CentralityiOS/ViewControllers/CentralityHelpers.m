@@ -31,4 +31,9 @@
     }
     return returnArray;
 }
+
++ (void) updateLabel:(UILabel*)label newText:(NSString*)newText isHidden:(BOOL)isHidden{
+    label.text = newText;
+    label.hidden = isHidden;
+}
 @end

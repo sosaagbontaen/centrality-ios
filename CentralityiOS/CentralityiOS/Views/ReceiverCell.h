@@ -10,7 +10,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ReceiverCell : UITableViewCell
-
+@property (weak, nonatomic) IBOutlet UILabel *taskNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *taskDescLabel;
+@property (weak, nonatomic) IBOutlet UILabel *taskOwnerLabel;
+@property (weak, nonatomic) IBOutlet UILabel *taskSharerLabel;
 @end
 
 NS_ASSUME_NONNULL_END
