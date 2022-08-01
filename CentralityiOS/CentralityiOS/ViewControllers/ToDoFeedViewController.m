@@ -232,6 +232,13 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
                         task.sharedOwners = tempArrayOfSharedOwners;
                     }
                 }
+                for (int i = 0; i < task.acceptedUsers.count; i++) {
+                    if ([task.acceptedUsers[i].objectId isEqualToString:PFUser.currentUser.objectId]){
+                        NSMutableArray *tempArrayOfAcceptedUsers = [task.acceptedUsers mutableCopy];
+                        [tempArrayOfAcceptedUsers removeObjectAtIndex:i];
+                        task.acceptedUsers = tempArrayOfAcceptedUsers;
+                    }
+                }
                 for (int i = 0; i < task.readOnlyUsers.count; i++) {
                     if ([task.readOnlyUsers[i].objectId isEqualToString:PFUser.currentUser.objectId]){
                         NSMutableArray *tempArrayOfReadOnlyUsers = [task.readOnlyUsers mutableCopy];
@@ -267,7 +274,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     deleteAction.backgroundColor = [UIColor systemRedColor];
     editAction.backgroundColor = [UIColor systemGreenColor];
-        unfollowAction.backgroundColor = [UIColor systemTealColor];
+    unfollowAction.backgroundColor = [UIColor systemTealColor];
     
     UISwipeActionsConfiguration *swipeActions;
     NSMutableArray<NSString*>* readOnlyObjIds = [CentralityHelpers getArrayOfObjectIds:task.readOnlyUsers];
@@ -275,7 +282,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[unfollowAction]];
     }
     else{
-    swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction,editAction]];
+    swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction,editAction, unfollowAction]];
     }
     swipeActions.performsFirstActionWithFullSwipe=false;
     return swipeActions;

@@ -16,6 +16,7 @@
 
 static NSString * const kTaskClassName = @"TaskObject";
 static NSString * const kSharedUsersQueryKey = @"sharedOwners";
+static NSString * const kAcceptedUsersQueryKey = @"acceptedUsers";
 
 @implementation AlertsModalViewController
 
@@ -46,7 +47,7 @@ static NSString * const kSharedUsersQueryKey = @"sharedOwners";
     NSString* displayMessage = [[NSString alloc] init];
     if (task.acceptedUsers.count > 0){
         for (NSInteger index = 0; index < task.sharedOwners.count; index++){
-            allUsers = [allUsers stringByAppendingString:[task.sharedOwners[index] fetchIfNeeded].username];
+            allUsers = [allUsers stringByAppendingString:[task.acceptedUsers[index] fetchIfNeeded].username];
             if (index < task.sharedOwners.count-1){
                 allUsers = [NSString stringWithFormat:@"%@, ",allUsers];
             }
@@ -64,14 +65,15 @@ static NSString * const kSharedUsersQueryKey = @"sharedOwners";
     return cell;
 }
 
-- (PFQuery*)queryAllReceivedTasks{
+- (PFQuery*)queryAllPendingTasks{
     PFQuery *receivedTasksQuery = [PFQuery queryWithClassName:kTaskClassName];
     [receivedTasksQuery whereKey:kSharedUsersQueryKey equalTo:PFUser.currentUser];
+    [receivedTasksQuery whereKey:kAcceptedUsersQueryKey notEqualTo:PFUser.currentUser];
     return receivedTasksQuery;
 }
 
 - (void)fetchReceivedTasks{
-    PFQuery *query = [self queryAllReceivedTasks];
+    PFQuery *query = [self queryAllPendingTasks];
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
         if (users != nil) {
@@ -88,10 +90,10 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     TaskObject *task = self.arrayOfPendingSharedTasks[indexPath.row];
     
-    UIContextualAction *declineAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Decline" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+    UIContextualAction *declineAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Decline" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
         
-        PFQuery *query = [self queryAllReceivedTasks];
+        PFQuery *query = [self queryAllPendingTasks];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
@@ -137,13 +139,15 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     UIContextualAction *acceptAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Accept" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
         
-        PFQuery *query = [self queryAllReceivedTasks];
+        PFQuery *query = [self queryAllPendingTasks];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
                 for (int i = 0; i < task.sharedOwners.count; i++) {
                     if ([task.sharedOwners[i].objectId isEqualToString:PFUser.currentUser.objectId]){
-                        [task.acceptedUsers addObject:PFUser.currentUser];
+                        NSMutableArray *tempArrayOfAcceptedUsers = [task.acceptedUsers mutableCopy];
+                        [tempArrayOfAcceptedUsers addObject:PFUser.currentUser];
+                        task.acceptedUsers = tempArrayOfAcceptedUsers;
                     }
                 }
                 [task saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
