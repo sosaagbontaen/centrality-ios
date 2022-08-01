@@ -249,7 +249,15 @@
                                 <rect key="frame" x="313" y="5" width="95" height="34.333333333333336"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="bell.fill" catalog="system" title="">
+                                <buttonConfiguration key="configuration" style="plain" image="bell.fill" catalog="system">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="0">
+                                            <attributes>
+                                                <font key="NSFont" size="12" name="Helvetica"/>
+                                                <font key="NSOriginalFont" size="12" name="Helvetica"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
@@ -260,6 +268,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addTaskButton" destination="o8o-yS-qdD" id="7LW-aq-GMq"/>
+                        <outlet property="alertButton" destination="q2k-O9-1Ir" id="S0v-0X-yd3"/>
                         <outlet property="feedMessageLabel" destination="GUf-qh-jsG" id="93L-wa-V4o"/>
                         <outlet property="logoutButton" destination="XjG-oH-lDn" id="pgG-SI-wSc"/>
                         <outlet property="taskTableView" destination="JYx-RT-54I" id="2Dl-Mv-QWv"/>

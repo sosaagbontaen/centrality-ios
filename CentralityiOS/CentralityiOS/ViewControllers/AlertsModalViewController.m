@@ -92,7 +92,6 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UIContextualAction *declineAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Decline" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
-        
         PFQuery *query = [self queryAllPendingTasks];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
@@ -153,6 +152,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
                 [task saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                     if (succeeded) {
                         [self fetchReceivedTasks];
+                        [self.delegate didAcceptOrDeclineTask:task toFeed:self];
                     }
                     else{
                         NSLog(@"Task not updated on Parse : %@", error.localizedDescription);
@@ -171,7 +171,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     acceptAction.backgroundColor = [UIColor systemGreenColor];
     declineAction.backgroundColor = [UIColor systemRedColor];
 
-    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[acceptAction, declineAction]];
+    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[declineAction, acceptAction]];
     swipeActions.performsFirstActionWithFullSwipe = NO;
     return swipeActions;
 }

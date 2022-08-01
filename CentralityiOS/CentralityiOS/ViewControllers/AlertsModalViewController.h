@@ -11,7 +11,7 @@
 @class AlertsModalViewController;
 
 @protocol AlertsModalViewControllerDelegate <NSObject>
-- (void)didAcceptTask:(TaskObject *)acceptedTask toFeed:(AlertsModalViewController *)controller;
+- (void)didAcceptOrDeclineTask:(TaskObject *)acceptedTask toFeed:(AlertsModalViewController *)controller;
 @end
 
 @interface AlertsModalViewController : UIViewController

@@ -75,6 +75,10 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
     }];
 }
 
+- (void)didAcceptOrDeclineTask:(TaskObject *)acceptedTask toFeed:(AlertsModalViewController *)controller{
+    [self fetchTasks];
+}
+
 - (PFQuery*)makeQuery{
     PFQuery *tasksOwnedByMe = [PFQuery queryWithClassName:kTaskClassName];
     [tasksOwnedByMe whereKey:kByOwnerQueryKey equalTo:[PFUser currentUser]];
@@ -90,9 +94,9 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
 }
 
 - (void)fetchTasks{
-    PFQuery *query = [self makeQuery];
+    PFQuery *queryForFeedTasks = [self makeQuery];
     
-    [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
+    [queryForFeedTasks findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
         if (tasks != nil) {
             self.arrayOfTasks = [tasks mutableCopy];
         } else {
@@ -102,6 +106,20 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
         [self.refreshControl endRefreshing];
         [self detectEmptyFeed];
     }];
+    
+    PFQuery *queryForPendingAlerts = [self queryToUpdatePendingAlerts];
+    NSInteger numberOfAlerts = [queryForPendingAlerts countObjects];
+    NSString *alertsAsString = [NSString stringWithFormat:@"%ld", (long)numberOfAlerts];
+    NSLog(@"%@",alertsAsString);
+    [self.alertButton setTitle:alertsAsString forState:UIControlStateNormal];
+    
+}
+
+- (PFQuery*)queryToUpdatePendingAlerts{
+    PFQuery *receivedTasksQuery = [PFQuery queryWithClassName:kTaskClassName];
+    [receivedTasksQuery whereKey:kBySharedOwnerQueryKey equalTo:PFUser.currentUser];
+    [receivedTasksQuery whereKey:kByAcceptedUserQueryKey notEqualTo:PFUser.currentUser];
+    return receivedTasksQuery;
 }
 
 - (void)detectEmptyFeed{
@@ -285,7 +303,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, editAction]];
     }
     else{
-        swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, editAction, unfollowAction]];
+        swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[editAction, unfollowAction]];
     }
     swipeActions.performsFirstActionWithFullSwipe=false;
     return swipeActions;
