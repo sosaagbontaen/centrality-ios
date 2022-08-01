@@ -12,17 +12,6 @@
 @interface ShareModalViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @end
-
-static const NSInteger kFeedLimit = 20;
-static NSString * const kCategoryClassName = @"CategoryObject";
-static NSString * const kCreatedAtQueryKey = @"createdAt";
-static NSString * const kSharedUsersQueryKey = @"sharedOwners";
-static NSString* const kAccessReadAndWrite = @"Read and Write";
-static NSString* const kAccessReadOnly = @"Read Only";
-static NSString* const kShareMode = @"Share Mode";
-static NSString* const kUnshareMode = @"Unshare Mode";
-static NSString* const kMakeReadOnlyMode = @"Make Read Only";
-static NSString* const kMakeWritableMode = @"Make Writable";
 @implementation ShareModalViewController
 
 - (void)viewDidLoad {

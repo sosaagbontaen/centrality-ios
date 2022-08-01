@@ -16,17 +16,6 @@
 
 @end
 
-static NSString * const kAddTaskMode = @"Adding";
-static NSString * const kEditTaskMode = @"Editing";
-static NSString* const kAccessReadAndWrite = @"Read and Write";
-static NSString* const kAccessReadOnly = @"Read Only";
-static NSString* const kShareMode = @"Share Mode";
-static NSString* const kUnshareMode = @"Unshare Mode";
-static NSString* const kMakeReadOnlyMode = @"Make Read Only";
-static NSString* const kMakeWritableMode = @"Make Writable";
-static const CGFloat kKeyboardDistanceFromTitleInput = 130.0;
-static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
-
 
 @implementation ModifyTaskModalViewController
 

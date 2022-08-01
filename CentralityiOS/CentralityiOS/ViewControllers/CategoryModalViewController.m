@@ -13,11 +13,6 @@
 
 @end
 
-static const NSInteger kToDoFeedLimit = 20;
-static NSString * const kCategoryClassName = @"CategoryObject";
-static NSString * const kByOwnerQueryKey = @"owner";
-static NSString * const kCreatedAtQueryKey = @"createdAt";
-
 @implementation CategoryModalViewController
 
 - (void)viewDidLoad {
@@ -29,8 +24,8 @@ static NSString * const kCreatedAtQueryKey = @"createdAt";
 
 
 - (PFQuery*)makeQuery{
-    PFQuery *query = [PFQuery queryWithClassName:kCategoryClassName];
-    [query orderByDescending:kCreatedAtQueryKey];
+    PFQuery *query = [PFQuery queryWithClassName:kByCategoryClassName];
+    [query orderByDescending:kByCreatedAtQueryKey];
     [query whereKey:kByOwnerQueryKey equalTo:[PFUser currentUser]];
     query.limit = kToDoFeedLimit;
     return query;

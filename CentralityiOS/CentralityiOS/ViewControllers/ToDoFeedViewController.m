@@ -17,17 +17,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @end
 
-static const NSInteger kToDoFeedLimit = 20;
-static NSString * const kTaskClassName = @"TaskObject";
-static NSString * const kByOwnerQueryKey = @"owner";
-static NSString * const kBySharedOwnerQueryKey = @"sharedOwners";
-static NSString * const kByAcceptedUserQueryKey = @"acceptedUsers";
-static NSString * const kCreatedAtQueryKey = @"createdAt";
-static NSString * const kAddTaskMode = @"Adding";
-static NSString * const kEditTaskMode = @"Editing";
-static NSInteger kLabelConstraintConstantWhenVisible = 5;
-static NSInteger kLabelConstraintConstantWhenInvisible = 0;
-
 @implementation ToDoFeedViewController
 
 - (IBAction)logoutAction:(id)sender {
@@ -84,10 +73,10 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
     [tasksOwnedByMe whereKey:kByOwnerQueryKey equalTo:[PFUser currentUser]];
     
     PFQuery *tasksIAccepted = [PFQuery queryWithClassName:kTaskClassName];
-    [tasksIAccepted whereKey:kByAcceptedUserQueryKey equalTo:[PFUser currentUser]];
+    [tasksIAccepted whereKey:kByAcceptedUsersQueryKey equalTo:[PFUser currentUser]];
     
     PFQuery *tasksOwnedOrShared = [PFQuery orQueryWithSubqueries:@[tasksOwnedByMe, tasksIAccepted]];
-    [tasksOwnedOrShared orderByDescending:kCreatedAtQueryKey];
+    [tasksOwnedOrShared orderByDescending:kByCreatedAtQueryKey];
     tasksOwnedOrShared.limit = kToDoFeedLimit;
     
     return tasksOwnedOrShared;
@@ -118,7 +107,7 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
 - (PFQuery*)queryToUpdatePendingAlerts{
     PFQuery *receivedTasksQuery = [PFQuery queryWithClassName:kTaskClassName];
     [receivedTasksQuery whereKey:kBySharedOwnerQueryKey equalTo:PFUser.currentUser];
-    [receivedTasksQuery whereKey:kByAcceptedUserQueryKey notEqualTo:PFUser.currentUser];
+    [receivedTasksQuery whereKey:kByAcceptedUsersQueryKey notEqualTo:PFUser.currentUser];
     return receivedTasksQuery;
 }
 

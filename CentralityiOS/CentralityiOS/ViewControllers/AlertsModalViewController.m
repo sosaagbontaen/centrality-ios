@@ -13,11 +13,6 @@
 
 @end
 
-
-static NSString * const kTaskClassName = @"TaskObject";
-static NSString * const kSharedUsersQueryKey = @"sharedOwners";
-static NSString * const kAcceptedUsersQueryKey = @"acceptedUsers";
-
 @implementation AlertsModalViewController
 
 - (void)viewDidLoad {
@@ -67,8 +62,8 @@ static NSString * const kAcceptedUsersQueryKey = @"acceptedUsers";
 
 - (PFQuery*)queryAllPendingTasks{
     PFQuery *receivedTasksQuery = [PFQuery queryWithClassName:kTaskClassName];
-    [receivedTasksQuery whereKey:kSharedUsersQueryKey equalTo:PFUser.currentUser];
-    [receivedTasksQuery whereKey:kAcceptedUsersQueryKey notEqualTo:PFUser.currentUser];
+    [receivedTasksQuery whereKey:kBySharedOwnerQueryKey equalTo:PFUser.currentUser];
+    [receivedTasksQuery whereKey:kByAcceptedUsersQueryKey notEqualTo:PFUser.currentUser];
     return receivedTasksQuery;
 }
 

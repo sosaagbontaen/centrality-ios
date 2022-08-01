@@ -12,6 +12,7 @@
 @end
 
 @implementation CentralityHelpers
+
 + (void)showAlert:(NSString*)alertTitle alertMessage:(NSString*)alertMessage currentVC:(UIViewController*)currentVC{
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:alertTitle
                                message:alertMessage
