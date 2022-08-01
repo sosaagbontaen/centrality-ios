@@ -281,8 +281,11 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     if ([readOnlyObjIds containsObject:PFUser.currentUser.objectId]){
         swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[unfollowAction]];
     }
+    else if ([PFUser.currentUser.objectId isEqualToString:task.owner.objectId]){
+    swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, editAction]];
+    }
     else{
-    swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction,editAction, unfollowAction]];
+        swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, editAction, unfollowAction]];
     }
     swipeActions.performsFirstActionWithFullSwipe=false;
     return swipeActions;

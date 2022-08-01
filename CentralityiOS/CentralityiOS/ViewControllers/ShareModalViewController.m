@@ -157,7 +157,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     deleteAction.backgroundColor = [UIColor systemRedColor];
 
     UISwipeActionsConfiguration *swipeActions;
-    if (![self.arrayOfUsers[indexPath.row].objectId isEqualToString: self.taskToUpdate.owner.objectId]){
+    if (![self.arrayOfUsers[indexPath.row].objectId isEqualToString: self.taskToUpdate.owner.objectId] && [PFUser.currentUser.objectId isEqualToString:self.taskToUpdate.owner.objectId]){
     swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, readOnlyAction, allowEditingAction]];
     }
     swipeActions.performsFirstActionWithFullSwipe = NO;
