@@ -21,6 +21,7 @@ static const NSInteger kToDoFeedLimit = 20;
 static NSString * const kTaskClassName = @"TaskObject";
 static NSString * const kByOwnerQueryKey = @"owner";
 static NSString * const kBySharedOwnerQueryKey = @"sharedOwners";
+static NSString * const kByAcceptedUserQueryKey = @"acceptedUsers";
 static NSString * const kCreatedAtQueryKey = @"createdAt";
 static NSString * const kAddTaskMode = @"Adding";
 static NSString * const kEditTaskMode = @"Editing";
@@ -40,6 +41,13 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
             [self dismissViewControllerAnimated:YES completion:^{}];
         }
     }];
+}
+- (IBAction)viewAlertsAction:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
+                                    @"Main" bundle:nil];
+    AlertsModalViewController *alertsModalVC = [storyboard instantiateViewControllerWithIdentifier:@"AlertsModalViewController"];
+    alertsModalVC.delegate = self;
+    [self presentViewController:alertsModalVC animated:YES completion:^{}];
 }
 
 - (IBAction)newTaskAction:(id)sender {
@@ -71,10 +79,10 @@ static NSInteger kLabelConstraintConstantWhenInvisible = 0;
     PFQuery *tasksOwnedByMe = [PFQuery queryWithClassName:kTaskClassName];
     [tasksOwnedByMe whereKey:kByOwnerQueryKey equalTo:[PFUser currentUser]];
     
-    PFQuery *tasksSharedWithMe = [PFQuery queryWithClassName:kTaskClassName];
-    [tasksSharedWithMe whereKey:kBySharedOwnerQueryKey equalTo:[PFUser currentUser]];
+    PFQuery *tasksIAccepted = [PFQuery queryWithClassName:kTaskClassName];
+    [tasksIAccepted whereKey:kByAcceptedUserQueryKey equalTo:[PFUser currentUser]];
     
-    PFQuery *tasksOwnedOrShared = [PFQuery orQueryWithSubqueries:@[tasksOwnedByMe, tasksSharedWithMe]];
+    PFQuery *tasksOwnedOrShared = [PFQuery orQueryWithSubqueries:@[tasksOwnedByMe, tasksIAccepted]];
     [tasksOwnedOrShared orderByDescending:kCreatedAtQueryKey];
     tasksOwnedOrShared.limit = kToDoFeedLimit;
     
@@ -208,6 +216,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         modifyTaskModalVC.taskCategory = task.category;
         modifyTaskModalVC.taskDueDate = task.dueDate;
         modifyTaskModalVC.taskSharedOwners = [task.sharedOwners mutableCopy];
+        modifyTaskModalVC.taskAcceptedUsers = [task.acceptedUsers mutableCopy];
         modifyTaskModalVC.taskReadOnlyUsers = task.readOnlyUsers;
         modifyTaskModalVC.taskReadAndWriteUsers = task.readAndWriteUsers;
         [self presentViewController:modifyTaskModalVC animated:YES completion:^{}];

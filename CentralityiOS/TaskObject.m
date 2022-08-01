@@ -13,6 +13,7 @@
 @dynamic sharedOwners;
 @dynamic readOnlyUsers;
 @dynamic readAndWriteUsers;
+@dynamic acceptedUsers;
 @dynamic dueDate;
 @dynamic taskTitle;
 @dynamic taskDesc;

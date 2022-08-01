@@ -12,6 +12,8 @@
 		1A40F7E9288601B700BBAD4F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A40F7E8288601B700BBAD4F /* LoginViewController.m */; };
 		1A42BB1F28889FA9003ACC4D /* CategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB1E28889FA9003ACC4D /* CategoryCell.m */; };
 		1A42BB222888A0C2003ACC4D /* CategoryModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB212888A0C2003ACC4D /* CategoryModalViewController.m */; };
+		1A4E54E728984E8E0014DE82 /* AlertsModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E54E628984E8E0014DE82 /* AlertsModalViewController.m */; };
+		1A4E54EA289850EE0014DE82 /* ReceiverCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E54E9289850EE0014DE82 /* ReceiverCell.m */; };
 		1A5AAE662888AB9B0080FB4A /* CategoryObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A5AAE652888AB9B0080FB4A /* CategoryObject.m */; };
 		1A8D46872878E91800489744 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46862878E91800489744 /* AppDelegate.m */; };
 		1A8D468A2878E91800489744 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46892878E91800489744 /* SceneDelegate.m */; };
@@ -64,6 +66,10 @@
 		1A42BB1E28889FA9003ACC4D /* CategoryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CategoryCell.m; sourceTree = "<group>"; };
 		1A42BB202888A0C2003ACC4D /* CategoryModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CategoryModalViewController.h; sourceTree = "<group>"; };
 		1A42BB212888A0C2003ACC4D /* CategoryModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CategoryModalViewController.m; sourceTree = "<group>"; };
+		1A4E54E528984E8E0014DE82 /* AlertsModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlertsModalViewController.h; sourceTree = "<group>"; };
+		1A4E54E628984E8E0014DE82 /* AlertsModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlertsModalViewController.m; sourceTree = "<group>"; };
+		1A4E54E8289850EE0014DE82 /* ReceiverCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReceiverCell.h; sourceTree = "<group>"; };
+		1A4E54E9289850EE0014DE82 /* ReceiverCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReceiverCell.m; sourceTree = "<group>"; };
 		1A5AAE642888AB9B0080FB4A /* CategoryObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CategoryObject.h; sourceTree = "<group>"; };
 		1A5AAE652888AB9B0080FB4A /* CategoryObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CategoryObject.m; sourceTree = "<group>"; };
 		1A8D46822878E91800489744 /* CentralityiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CentralityiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -230,6 +236,8 @@
 				1A42BB1E28889FA9003ACC4D /* CategoryCell.m */,
 				1A8DC3342891DBAE00123E1F /* UserCell.h */,
 				1A8DC3352891DBAE00123E1F /* UserCell.m */,
+				1A4E54E8289850EE0014DE82 /* ReceiverCell.h */,
+				1A4E54E9289850EE0014DE82 /* ReceiverCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -255,6 +263,8 @@
 				1A8DC3382891DC5C00123E1F /* ShareModalViewController.m */,
 				1A273EE728937B40001A8C19 /* CentralityHelpers.h */,
 				1A273EE828937B40001A8C19 /* CentralityHelpers.m */,
+				1A4E54E528984E8E0014DE82 /* AlertsModalViewController.h */,
+				1A4E54E628984E8E0014DE82 /* AlertsModalViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -517,6 +527,7 @@
 				1AFCB4C6288A173F00E4187E /* ModifyTaskModalViewController.m in Sources */,
 				1A8D46BE287C88BB00489744 /* TaskObject.m in Sources */,
 				1A9665302889CB36008C83B5 /* DueDateModalViewController.m in Sources */,
+				1A4E54E728984E8E0014DE82 /* AlertsModalViewController.m in Sources */,
 				1A8D46872878E91800489744 /* AppDelegate.m in Sources */,
 				1A1F54FF289088F50007AF5D /* DetectableKeywords.m in Sources */,
 				1A8D46C7287CC9B200489744 /* ToDoFeedViewController.m in Sources */,
@@ -524,6 +535,7 @@
 				1A5AAE662888AB9B0080FB4A /* CategoryObject.m in Sources */,
 				1A8D46982878E91800489744 /* main.m in Sources */,
 				1A8DC3362891DBAE00123E1F /* UserCell.m in Sources */,
+				1A4E54EA289850EE0014DE82 /* ReceiverCell.m in Sources */,
 				1A8D468A2878E91800489744 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

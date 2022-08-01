@@ -55,6 +55,9 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     if (!self.taskReadAndWriteUsers){
         self.taskReadAndWriteUsers = [[NSMutableArray alloc] init];
     }
+    if (!self.taskAcceptedUsers){
+        self.taskAcceptedUsers = [[NSMutableArray alloc] init];
+    }
 }
 
 - (NSString*)updateShareDisplayMessage{
@@ -148,6 +151,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
         shareModalVC.taskToUpdate.owner = PFUser.currentUser;
         shareModalVC.taskToUpdate.readAndWriteUsers = self.taskReadAndWriteUsers;
         shareModalVC.taskToUpdate.readOnlyUsers = self.taskReadOnlyUsers;
+        shareModalVC.taskToUpdate.acceptedUsers = self.taskAcceptedUsers;
     }
     [self presentViewController:shareModalVC animated:YES completion:^{}];
 }
@@ -219,6 +223,11 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
                 [self.taskReadAndWriteUsers removeObjectAtIndex:i];
             }
         }
+        for (int i = 0; i < self.taskAcceptedUsers.count; i++) {
+            if ([self.taskAcceptedUsers[i].objectId isEqualToString:user.objectId]){
+                [self.taskAcceptedUsers removeObjectAtIndex:i];
+            }
+        }
     }
     else if(updateType == kShareMode){
         if (self.taskSharedOwners == NULL){
@@ -273,6 +282,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
         newTask.sharedOwners = self.taskSharedOwners;
         newTask.readOnlyUsers = self.taskReadOnlyUsers;
         newTask.readAndWriteUsers = self.taskReadAndWriteUsers;
+        newTask.acceptedUsers = self.taskAcceptedUsers;
         
         [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
@@ -292,6 +302,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
         self.taskFromFeed.sharedOwners = self.taskSharedOwners;
         self.taskFromFeed.readOnlyUsers = self.taskReadOnlyUsers;
         self.taskFromFeed.readAndWriteUsers = self.taskReadAndWriteUsers;
+        self.taskFromFeed.acceptedUsers = self.taskAcceptedUsers;
         [self.delegate didEditTask:self.taskFromFeed toFeed:self];
         [self dismissViewControllerAnimated:YES completion:^{}];
     }

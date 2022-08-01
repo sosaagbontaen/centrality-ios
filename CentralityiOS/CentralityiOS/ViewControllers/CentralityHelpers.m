@@ -24,7 +24,7 @@
     [currentVC presentViewController:alert animated:YES completion:nil];
 }
 
-+ (NSMutableArray*)getArrayOfObjectIds:(NSMutableArray<PFUser*>*)userArray{
++ (NSMutableArray*)getArrayOfObjectIds:(NSMutableArray*)userArray{
     NSMutableArray* returnArray = [[NSMutableArray alloc] init];
     for (PFUser* user in userArray) {
         [returnArray addObject:user.objectId];

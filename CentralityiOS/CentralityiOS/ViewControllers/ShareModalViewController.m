@@ -75,13 +75,21 @@ static NSString* const kMakeWritableMode = @"Make Writable";
     
     NSMutableArray* readOnlyObjIds = [CentralityHelpers getArrayOfObjectIds:self.taskToUpdate.readOnlyUsers];
     
-    if ([readAndWriteObjIds containsObject:user.objectId]){
-        cell.privacyStatusLabel.text = @"Can Edit";
-        cell.privacyStatusLabel.textColor = [UIColor systemTealColor];
+    NSMutableArray* acceptedObjIds = [CentralityHelpers getArrayOfObjectIds:self.taskToUpdate.acceptedUsers];
+    
+    if ([acceptedObjIds containsObject:user.objectId]){
+        if ([readAndWriteObjIds containsObject:user.objectId]){
+            cell.privacyStatusLabel.text = @"Can Edit";
+            cell.privacyStatusLabel.textColor = [UIColor systemTealColor];
+        }
+        if ([readOnlyObjIds containsObject:user.objectId]){
+            cell.privacyStatusLabel.text = @"Read-Only";
+            cell.privacyStatusLabel.textColor = [UIColor systemOrangeColor];
+        }
     }
-    if ([readOnlyObjIds containsObject:user.objectId]){
-        cell.privacyStatusLabel.text = @"Read-Only";
-        cell.privacyStatusLabel.textColor = [UIColor systemOrangeColor];
+    else{
+        cell.privacyStatusLabel.text = @"Pending";
+        cell.privacyStatusLabel.textColor = [UIColor systemYellowColor];
     }
     if ([user.objectId isEqualToString:self.taskToUpdate.owner.objectId]){
         cell.privacyStatusLabel.text = @"Owner";

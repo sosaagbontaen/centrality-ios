@@ -34,6 +34,5 @@
 @property NSMutableArray<PFUser*>*taskSharedOwners;
 @property NSMutableArray<PFUser*>*taskReadOnlyUsers;
 @property NSMutableArray<PFUser*>*taskReadAndWriteUsers;
-@property NSMutableArray<PFUser*>*preSavedReadOnlyUsers;
-@property NSMutableArray<PFUser*>*preSavedReadAndWriteUsers;
+@property NSMutableArray<PFUser*>*taskAcceptedUsers;
 @end

@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CentralityHelpers : UIViewController
 + (void)showAlert:(NSString*)alertTitle alertMessage:(NSString*)alertMessage currentVC:(UIViewController*)currentVC;
-+ (NSMutableArray*)getArrayOfObjectIds:(NSMutableArray<PFUser*>*)userArray;
++ (NSMutableArray*)getArrayOfObjectIds:(NSMutableArray*)userArray;
 @end
 
 NS_ASSUME_NONNULL_END
