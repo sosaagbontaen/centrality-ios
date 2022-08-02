@@ -149,11 +149,11 @@
     }
     
     if (task.sharedOwners.count > 0){
-        NSString* allUsers = @"";
+        NSMutableString* allUsers = [[NSMutableString alloc] initWithString:@""];
         for (NSInteger index = 0; index < task.sharedOwners.count; index++){
-            allUsers = [allUsers stringByAppendingString:[task.sharedOwners[index] fetchIfNeeded].username];
+            [allUsers appendString:[task.sharedOwners[index] fetchIfNeeded].username];
             if (index < task.sharedOwners.count-1){
-                allUsers = [NSString stringWithFormat:@"%@, ",allUsers];
+                [allUsers appendString:@", "];
             }
         }
         NSString* displayMessage = [[NSString alloc]init];

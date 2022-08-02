@@ -38,13 +38,13 @@
     cell.taskDescLabel.text = task.taskDesc;
     cell.taskOwnerLabel.text = [NSString stringWithFormat:@"Owned by : %@", task.owner.username];
     
-    NSString* allUsers = @"";
+    NSMutableString* allUsers = [[NSMutableString alloc] initWithString:@""];
     NSString* displayMessage = [[NSString alloc] init];
     if (task.acceptedUsers.count > 0){
-        for (NSInteger index = 0; index < task.sharedOwners.count; index++){
-            allUsers = [allUsers stringByAppendingString:[task.acceptedUsers[index] fetchIfNeeded].username];
-            if (index < task.sharedOwners.count-1){
-                allUsers = [NSString stringWithFormat:@"%@, ",allUsers];
+        for (NSInteger index = 0; index < task.sharedOwners.count-1; index++){
+            [allUsers appendString:[task.acceptedUsers[index] fetchIfNeeded].username];
+            if (index < task.sharedOwners.count-2){
+                [allUsers appendString:@", "];
             }
         }
         displayMessage = [NSString stringWithFormat:@"Accessible by : %@",allUsers];
