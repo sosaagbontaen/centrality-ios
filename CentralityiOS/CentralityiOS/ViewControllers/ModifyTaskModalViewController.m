@@ -35,7 +35,7 @@
     [self.taskTitleInput addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     self.taskTitleInput.delegate = self;
     self.taskDescInput.delegate = self;
-    IQKeyboardManager.sharedManager.enable = true;
+    IQKeyboardManager.sharedManager.enable = YES;
     [self.shareButton setTitle:[self updateShareDisplayMessage] forState:UIControlStateNormal];
     
     if (!self.taskReadOnlyUsers){
@@ -219,7 +219,7 @@
         }
     }
     else if(updateType == kShareMode){
-        if (self.taskSharedOwners == NULL){
+        if (self.taskSharedOwners == nil){
             self.taskSharedOwners = [[NSMutableArray alloc] init];
         }
         

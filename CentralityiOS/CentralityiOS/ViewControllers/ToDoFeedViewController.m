@@ -112,12 +112,7 @@
 }
 
 - (void)detectEmptyFeed{
-    if ([self arrayOfTasks].count == 0){
-        self.feedMessageLabel.hidden = FALSE;
-    }
-    else{
-        self.feedMessageLabel.hidden = true;
-    }
+    self.feedMessageLabel.hidden = !([self arrayOfTasks].count == 0);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -135,21 +130,21 @@
     cell.taskDescLabel.text = task.taskDesc;
     
     if ([task.category fetchIfNeeded]){
-        [CentralityHelpers updateLabel:cell.categoryLabel newText:[NSString stringWithFormat:@"Category : %@", task.category.categoryName] isHidden:FALSE];
+        [CentralityHelpers updateLabel:cell.categoryLabel newText:[NSString stringWithFormat:@"Category : %@", task.category.categoryName] isHidden:NO];
         cell.spaceBetweenCategoryAndDate.constant = kLabelConstraintConstantWhenVisible;
     }
     else{
-        [CentralityHelpers updateLabel:cell.categoryLabel newText:@"" isHidden:TRUE];
+        [CentralityHelpers updateLabel:cell.categoryLabel newText:@"" isHidden:YES];
         cell.spaceBetweenCategoryAndDate.constant = kLabelConstraintConstantWhenInvisible;
     }
     
     if (task.dueDate){
         NSString *formattedDate = [DateFormatHelper formatDateAsString:task.dueDate];
-        [CentralityHelpers updateLabel:cell.dueDateLabel newText:[NSString stringWithFormat:@"Due %@", formattedDate] isHidden:FALSE];
+        [CentralityHelpers updateLabel:cell.dueDateLabel newText:[NSString stringWithFormat:@"Due %@", formattedDate] isHidden:NO];
         cell.spaceBetweenDateAndShared.constant = kLabelConstraintConstantWhenVisible;
     }
     else{
-        [CentralityHelpers updateLabel:cell.dueDateLabel newText:@"" isHidden:TRUE];
+        [CentralityHelpers updateLabel:cell.dueDateLabel newText:@"" isHidden:YES];
         cell.spaceBetweenDateAndShared.constant = kLabelConstraintConstantWhenInvisible;
     }
     
@@ -171,10 +166,10 @@
             displayMessage = [NSString stringWithFormat:@"Owned by %@", task.owner.username];
             cell.sharedLabel.backgroundColor = [UIColor systemPurpleColor];
         }
-        [CentralityHelpers updateLabel:cell.sharedLabel newText:displayMessage isHidden:FALSE];
+        [CentralityHelpers updateLabel:cell.sharedLabel newText:displayMessage isHidden:NO];
     }
     else{
-        [CentralityHelpers updateLabel:cell.sharedLabel newText:@"" isHidden:TRUE];
+        [CentralityHelpers updateLabel:cell.sharedLabel newText:@"" isHidden:YES];
     }
     
     [cell refreshCell];
@@ -294,7 +289,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     else{
         swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[editAction, unfollowAction]];
     }
-    swipeActions.performsFirstActionWithFullSwipe=false;
+    swipeActions.performsFirstActionWithFullSwipe=NO;
     return swipeActions;
 }
 
