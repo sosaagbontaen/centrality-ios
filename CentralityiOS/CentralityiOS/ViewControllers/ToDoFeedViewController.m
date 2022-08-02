@@ -99,7 +99,6 @@
     PFQuery *queryForPendingAlerts = [self queryToUpdatePendingAlerts];
     NSInteger numberOfAlerts = [queryForPendingAlerts countObjects];
     NSString *alertsAsString = [NSString stringWithFormat:@"%ld", (long)numberOfAlerts];
-    NSLog(@"%@",alertsAsString);
     [self.alertButton setTitle:alertsAsString forState:UIControlStateNormal];
     
 }

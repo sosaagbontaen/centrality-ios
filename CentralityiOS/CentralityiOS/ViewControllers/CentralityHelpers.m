@@ -37,4 +37,22 @@
     label.text = newText;
     label.hidden = isHidden;
 }
+
++ (NSArray<PFUser*>*)removeUser:(PFUser*)user FromArray:(NSArray<PFUser*>*)arrayToCheck{
+    for (int i = 0; i < arrayToCheck.count; i++) {
+        if ([arrayToCheck[i].objectId isEqualToString:user.objectId]){
+            NSMutableArray *copyOfArrayToCheck = [arrayToCheck mutableCopy];
+            [copyOfArrayToCheck removeObjectAtIndex:i];
+            arrayToCheck = copyOfArrayToCheck;
+        }
+    }
+    return arrayToCheck;
+}
+
++ (NSArray<PFUser*>*)addUser:(PFUser*)user ToArray:(NSArray<PFUser*>*)receivingArray{
+        NSMutableArray *copyOfReceivingArray = [receivingArray mutableCopy];
+        [copyOfReceivingArray addObject:user];
+        receivingArray = copyOfReceivingArray;
+    return receivingArray;
+}
 @end

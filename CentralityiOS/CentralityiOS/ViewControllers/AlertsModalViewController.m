@@ -99,27 +99,9 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
-                for (int i = 0; i < task.sharedOwners.count; i++) {
-                    if ([task.sharedOwners[i].objectId isEqualToString:PFUser.currentUser.objectId]){
-                        NSMutableArray *tempArrayOfSharedOwners = [task.sharedOwners mutableCopy];
-                        [tempArrayOfSharedOwners removeObjectAtIndex:i];
-                        task.sharedOwners = tempArrayOfSharedOwners;
-                    }
-                }
-                for (int i = 0; i < task.readOnlyUsers.count; i++) {
-                    if ([task.readOnlyUsers[i].objectId isEqualToString:PFUser.currentUser.objectId]){
-                        NSMutableArray *tempArrayOfReadOnlyUsers = [task.readOnlyUsers mutableCopy];
-                        [tempArrayOfReadOnlyUsers removeObjectAtIndex:i];
-                        task.readOnlyUsers = tempArrayOfReadOnlyUsers;
-                    }
-                }
-                for (int i = 0; i < task.readAndWriteUsers.count; i++) {
-                    if ([task.readAndWriteUsers[i].objectId isEqualToString:PFUser.currentUser.objectId]){
-                        NSMutableArray *tempArrayOfReadAndWriteUsers = [task.readAndWriteUsers mutableCopy];
-                        [tempArrayOfReadAndWriteUsers removeObjectAtIndex:i];
-                        task.readAndWriteUsers = tempArrayOfReadAndWriteUsers;
-                    }
-                }
+                task.sharedOwners = [[CentralityHelpers removeUser:PFUser.currentUser FromArray:task.sharedOwners] mutableCopy];
+                task.readOnlyUsers = [[CentralityHelpers removeUser:PFUser.currentUser FromArray:task.readOnlyUsers] mutableCopy];
+                task.readAndWriteUsers = [[CentralityHelpers removeUser:PFUser.currentUser FromArray:task.readAndWriteUsers] mutableCopy];
                 [task saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                     if (succeeded) {
                         [self fetchReceivedTasks];
@@ -145,13 +127,11 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
-                for (int i = 0; i < task.sharedOwners.count; i++) {
-                    if ([task.sharedOwners[i].objectId isEqualToString:PFUser.currentUser.objectId]){
-                        NSMutableArray *tempArrayOfAcceptedUsers = [task.acceptedUsers mutableCopy];
-                        [tempArrayOfAcceptedUsers addObject:PFUser.currentUser];
-                        task.acceptedUsers = tempArrayOfAcceptedUsers;
-                    }
+                if ([[CentralityHelpers getArrayOfObjectIds:task.sharedOwners] containsObject:PFUser.currentUser.objectId])
+                {
+                task.acceptedUsers = [[CentralityHelpers addUser:PFUser.currentUser ToArray:task.acceptedUsers] mutableCopy];
                 }
+                
                 [task saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                     if (succeeded) {
                         [self fetchReceivedTasks];
