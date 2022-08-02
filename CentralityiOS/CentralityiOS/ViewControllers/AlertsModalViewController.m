@@ -81,11 +81,19 @@
 }
 
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView
-trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
+trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
     TaskObject *task = self.arrayOfPendingSharedTasks[indexPath.row];
     
-    UIContextualAction *declineAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Decline" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+    UIContextualAction *declineAction =
+    [UIContextualAction contextualActionWithStyle:
+     UIContextualActionStyleDestructive title:
+     @"Decline" handler:
+     ^(UIContextualAction * _Nonnull action,
+       __kindof UIView * _Nonnull sourceView,
+       void (^ _Nonnull completionHandler)(BOOL))
+     {
         
         PFQuery *query = [self queryAllPendingTasks];
         
