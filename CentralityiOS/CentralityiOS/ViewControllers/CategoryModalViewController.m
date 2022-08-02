@@ -67,12 +67,17 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView
 trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    CategoryObject *category = self.arrayOfCategories[indexPath.row];
+    
     UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Delete" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
         PFQuery *query = [self makeQuery];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
+                if (self.currentTaskCategory.categoryName == category.categoryName){
+                    [self.delegate didChangeCategory:NULL toFeed:self];
+                }
                 [self.arrayOfCategories[indexPath.row] deleteInBackground];
                 [self.arrayOfCategories removeObjectAtIndex:indexPath.row];
                 [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

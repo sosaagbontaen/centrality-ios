@@ -98,7 +98,7 @@
     self.modalTitle.text = @"Edit";
     [self.modifyButton setTitle:@"Update Task" forState:UIControlStateNormal];
     
-    if (self.taskCategory){
+    if ([self.taskCategory fetchIfNeeded]){
         [self.changeCategoryButton setTitle:self.taskCategory.categoryName forState:UIControlStateNormal];
     }
     else{
@@ -150,6 +150,7 @@
                                     @"Main" bundle:nil];
     CategoryModalViewController *categoryTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"CategoryModalViewController"];
     categoryTaskModalVC.delegate = self;
+    categoryTaskModalVC.currentTaskCategory = self.taskCategory;
     [self presentViewController:categoryTaskModalVC animated:YES completion:^{}];
 }
 
