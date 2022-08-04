@@ -10,7 +10,6 @@
 
 static NSString * const kIncompleteImageName = @"circle";
 static NSString * const kCompleteImageName = @"checkmark.circle.fill";
-
 @implementation TaskCell
 
 - (void)awakeFromNib {
@@ -27,6 +26,10 @@ static NSString * const kCompleteImageName = @"checkmark.circle.fill";
 }
 
 - (void)refreshCell{
+    [self taskCompletionLogic];
+}
+
+- (void)taskCompletionLogic{
     UIImage *incompleteImage = [UIImage systemImageNamed:kIncompleteImageName];
     UIImage *completeImage = [UIImage systemImageNamed:kCompleteImageName];
     UIColor *completeColor = [UIColor grayColor];

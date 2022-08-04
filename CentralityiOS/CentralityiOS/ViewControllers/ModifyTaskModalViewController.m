@@ -10,15 +10,11 @@
 #import "DateTools.h"
 #import "IQKeyboardManager.h"
 #import "DetectableKeywords.h"
+#import "CentralityHelpers.h"
 
 @interface ModifyTaskModalViewController () <UITextFieldDelegate, UITextViewDelegate>
 
 @end
-
-static NSString * const kAddTaskMode = @"Addding";
-static NSString * const kEditTaskMode = @"Editing";
-static const CGFloat kKeyboardDistanceFromTitleInput = 130.0;
-static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
 
 
 @implementation ModifyTaskModalViewController
@@ -39,9 +35,30 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     [self.taskTitleInput addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     self.taskTitleInput.delegate = self;
     self.taskDescInput.delegate = self;
-    IQKeyboardManager.sharedManager.enable = true;
+    IQKeyboardManager.sharedManager.enable = YES;
+    [self.shareButton setTitle:[self updateShareDisplayMessage] forState:UIControlStateNormal];
+    
+    if (!self.taskReadOnlyUsers){
+        self.taskReadOnlyUsers = [[NSMutableArray alloc] init];
+    }
+    if (!self.taskReadAndWriteUsers){
+        self.taskReadAndWriteUsers = [[NSMutableArray alloc] init];
+    }
+    if (!self.taskAcceptedUsers){
+        self.taskAcceptedUsers = [[NSMutableArray alloc] init];
+    }
 }
 
+- (NSString*)updateShareDisplayMessage{
+    NSString* shareDisplayMessage = [[NSString alloc]init];
+    if (self.taskSharedOwners.count == 1){
+        shareDisplayMessage = @"Sharing w/ 1 user";
+    }
+    else{
+        shareDisplayMessage = [NSString stringWithFormat:@"Sharing w/ %lu users",(unsigned long)self.taskSharedOwners.count];
+    }
+    return shareDisplayMessage;
+}
 
 - (void)textFieldDidChange :(UITextField *) textField{
     NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:textField.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
@@ -78,20 +95,22 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
 - (void)initModalForEditTaskMode{
     self.taskTitleInput.text = self.taskFromFeed.taskTitle;
     self.taskDescInput.text = self.taskFromFeed.taskDesc;
-    self.modalTitle.text = @"Edit Task";
+    self.modalTitle.text = @"Edit";
     [self.modifyButton setTitle:@"Update Task" forState:UIControlStateNormal];
-    if (self.taskCategory){
+    
+    if ([self.taskCategory fetchIfNeeded]){
         [self.changeCategoryButton setTitle:self.taskCategory.categoryName forState:UIControlStateNormal];
     }
     else{
         [self.changeCategoryButton setTitle:@"None" forState:UIControlStateNormal];
     }
+    
     if (self.taskDueDate){
         NSString* formattedDate = [DateFormatHelper formatDateAsString:self.taskDueDate];
         [self.changeDateButton setTitle:formattedDate forState:UIControlStateNormal];
     }
     else{
-        [self.changeCategoryButton setTitle:@"None" forState:UIControlStateNormal];
+        [self.changeDateButton setTitle:@"None" forState:UIControlStateNormal];
     }
 }
 
@@ -99,8 +118,31 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     
     self.taskTitleInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Name this task" attributes:@{NSForegroundColorAttributeName: [UIColor systemGrayColor]}];
     
-    [self.modifyButton setTitle:@"Add Task" forState:UIControlStateNormal];
+    [self.modifyButton setTitle:@"Add" forState:UIControlStateNormal];
     self.modalTitle.text = @"Add a Task";
+}
+- (IBAction)shareAction:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
+                                    @"Main" bundle:nil];
+    ShareModalViewController *shareModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ShareModalViewController"];
+    shareModalVC.delegate = self;
+    if (self.taskSharedOwners){
+        shareModalVC.arrayOfUsers = self.taskSharedOwners;
+    }
+    else{
+        shareModalVC.arrayOfUsers = [[NSMutableArray alloc]init];
+    }
+    if (self.taskFromFeed){
+        shareModalVC.taskToUpdate = self.taskFromFeed;
+    }
+    else{
+        shareModalVC.taskToUpdate = [TaskObject new];
+        shareModalVC.taskToUpdate.owner = PFUser.currentUser;
+        shareModalVC.taskToUpdate.readAndWriteUsers = self.taskReadAndWriteUsers;
+        shareModalVC.taskToUpdate.readOnlyUsers = self.taskReadOnlyUsers;
+        shareModalVC.taskToUpdate.acceptedUsers = self.taskAcceptedUsers;
+    }
+    [self presentViewController:shareModalVC animated:YES completion:^{}];
 }
 
 - (IBAction)changeCategoryAction:(id)sender {
@@ -108,6 +150,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
                                     @"Main" bundle:nil];
     CategoryModalViewController *categoryTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"CategoryModalViewController"];
     categoryTaskModalVC.delegate = self;
+    categoryTaskModalVC.currentTaskCategory = self.taskCategory;
     [self presentViewController:categoryTaskModalVC animated:YES completion:^{}];
 }
 
@@ -150,13 +193,75 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
     [self reloadDueDateView:item];
 }
 
-- (IBAction)modifyTaskAction:(id)sender {
-    if ([self.modifyMode isEqualToString:kAddTaskMode]){
-        if ([self.taskTitleInput.text isEqualToString:@""]){
-            NSLog(@"Empty title");
-            return;
+- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission updateType:(NSString*)updateType{
+    
+    NSMutableArray<NSString*>* userObjectIds = [CentralityHelpers getArrayOfObjectIds:self.taskSharedOwners];
+    
+    if(updateType == kUnshareMode){
+        for (int i = 0; i < self.taskSharedOwners.count; i++) {
+            if ([self.taskSharedOwners[i].objectId isEqualToString:user.objectId]){
+                [self.taskSharedOwners removeObjectAtIndex:i];
+            }
         }
+        for (int i = 0; i < self.taskReadOnlyUsers.count; i++) {
+            if ([self.taskReadOnlyUsers[i].objectId isEqualToString:user.objectId]){
+                [self.taskReadOnlyUsers removeObjectAtIndex:i];
+            }
+        }
+        for (int i = 0; i < self.taskReadAndWriteUsers.count; i++) {
+            if ([self.taskReadAndWriteUsers[i].objectId isEqualToString:user.objectId]){
+                [self.taskReadAndWriteUsers removeObjectAtIndex:i];
+            }
+        }
+        for (int i = 0; i < self.taskAcceptedUsers.count; i++) {
+            if ([self.taskAcceptedUsers[i].objectId isEqualToString:user.objectId]){
+                [self.taskAcceptedUsers removeObjectAtIndex:i];
+            }
+        }
+    }
+    else if(updateType == kShareMode){
+        if (self.taskSharedOwners == nil){
+            self.taskSharedOwners = [[NSMutableArray alloc] init];
+        }
+        
+        if (![userObjectIds containsObject:user.objectId]){
+            [self.taskSharedOwners addObject:user];
             
+            if ([userPermission isEqualToString:kAccessReadOnly]){
+                [self.taskReadOnlyUsers addObject:user];
+            }
+            else if([userPermission isEqualToString:kAccessReadAndWrite]){
+                [self.taskReadAndWriteUsers addObject:user];
+            }
+        }
+    }
+    else if (updateType == kMakeReadOnlyMode){
+            for (int i = 0; i < self.taskReadAndWriteUsers.count; i++) {
+                if ([self.taskReadAndWriteUsers[i].objectId isEqualToString:user.objectId]){
+                    [self.taskReadOnlyUsers addObject:user];
+                    [self.taskReadAndWriteUsers removeObjectAtIndex:i];
+                }
+            }
+    }
+    else if (updateType == kMakeWritableMode){
+            for (int i = 0; i < self.taskReadOnlyUsers.count; i++) {
+                if ([self.taskReadOnlyUsers[i].objectId isEqualToString:user.objectId]){
+                    [self.taskReadAndWriteUsers addObject:user];
+                    [self.taskReadOnlyUsers removeObjectAtIndex:i];
+                }
+            }
+    }
+    
+    
+    [self.shareButton setTitle:[self updateShareDisplayMessage] forState:UIControlStateNormal];
+}
+
+- (IBAction)modifyTaskAction:(id)sender {
+    if ([self.taskTitleInput.text isEqualToString:@""]){
+        [CentralityHelpers showAlert:@"Empty Task Name" alertMessage:@"Please name this task" currentVC:self];
+        return;
+    }
+    if ([self.modifyMode isEqualToString:kAddTaskMode]){
         TaskObject *newTask = [TaskObject new];
         newTask.owner = [PFUser currentUser];
         newTask.taskTitle = self.taskTitleInput.text;
@@ -164,6 +269,10 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
         newTask.category = self.taskCategory;
         newTask.dueDate = self.taskDueDate;
         newTask.isCompleted = NO;
+        newTask.sharedOwners = self.taskSharedOwners;
+        newTask.readOnlyUsers = self.taskReadOnlyUsers;
+        newTask.readAndWriteUsers = self.taskReadAndWriteUsers;
+        newTask.acceptedUsers = self.taskAcceptedUsers;
         
         [newTask saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
@@ -176,14 +285,14 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
         }];
     }
     else if([self.modifyMode isEqualToString:kEditTaskMode]){
-        if ([self.taskTitleInput.text isEqualToString:@""]){
-            NSLog(@"Empty title");
-            return;
-        }
         self.taskFromFeed.taskTitle = self.taskTitleInput.text;
         self.taskFromFeed.taskDesc = self.taskDescInput.text;
         self.taskFromFeed.category = self.taskCategory;
         self.taskFromFeed.dueDate = self.taskDueDate;
+        self.taskFromFeed.sharedOwners = self.taskSharedOwners;
+        self.taskFromFeed.readOnlyUsers = self.taskReadOnlyUsers;
+        self.taskFromFeed.readAndWriteUsers = self.taskReadAndWriteUsers;
+        self.taskFromFeed.acceptedUsers = self.taskAcceptedUsers;
         [self.delegate didEditTask:self.taskFromFeed toFeed:self];
         [self dismissViewControllerAnimated:YES completion:^{}];
     }

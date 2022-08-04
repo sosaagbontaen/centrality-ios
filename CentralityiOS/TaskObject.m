@@ -8,9 +8,12 @@
 #import "TaskObject.h"
 
 @implementation TaskObject
-
 @dynamic taskID;
 @dynamic owner;
+@dynamic sharedOwners;
+@dynamic readOnlyUsers;
+@dynamic readAndWriteUsers;
+@dynamic acceptedUsers;
 @dynamic dueDate;
 @dynamic taskTitle;
 @dynamic taskDesc;
