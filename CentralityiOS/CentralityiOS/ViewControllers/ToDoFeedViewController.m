@@ -95,12 +95,14 @@
         [self.refreshControl endRefreshing];
         [self detectEmptyFeed];
     }];
-    
+    [self updateNotifications];
+}
+
+-(void)updateNotifications{
     PFQuery *queryForPendingAlerts = [self queryToUpdatePendingAlerts];
     NSInteger numberOfAlerts = [queryForPendingAlerts countObjects];
     NSString *alertsAsString = [NSString stringWithFormat:@"%ld", (long)numberOfAlerts];
     [self.alertButton setTitle:alertsAsString forState:UIControlStateNormal];
-    
 }
 
 - (PFQuery*)queryToUpdatePendingAlerts{
@@ -301,6 +303,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchTasks) forControlEvents:UIControlEventValueChanged];
     [self.taskTableView insertSubview:self.refreshControl atIndex:0];
+    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateNotifications) userInfo:nil repeats:YES];
     
 }
 
