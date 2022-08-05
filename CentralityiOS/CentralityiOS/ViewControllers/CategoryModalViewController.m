@@ -106,6 +106,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     CategoryObject *newCategory = [CategoryObject new];
     newCategory.categoryName = self.nameOfCategoryToAdd.text;
+    newCategory.numberOfTasksInCategory = 0;
     newCategory.owner = [PFUser currentUser];
     
     [newCategory saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {

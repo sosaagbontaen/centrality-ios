@@ -331,7 +331,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         UIContextualAction *addToMostRecentCategoryAction =
         [UIContextualAction contextualActionWithStyle:
          UIContextualActionStyleDestructive title:
-         @"Add to most recent category" handler:
+         @"Add to newest category" handler:
          ^(UIContextualAction * _Nonnull action,
            __kindof UIView * _Nonnull sourceView,
            void (^ _Nonnull completionHandler)(BOOL))
@@ -362,6 +362,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
             swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[markCompletedAction, extendDueDateAction]];
         }
+        //TODO : Ensure this doesn't work when no categories exist
         else if([suggestion.suggestionType isEqualToString:kSuggestionTypeUncategorized]){
             swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[addToLargestCategoryAction, addToMostRecentCategoryAction]];
         }

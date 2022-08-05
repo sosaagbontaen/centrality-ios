@@ -79,8 +79,14 @@
 
 + (CategoryObject*)getLargestCategory{
     PFQuery *userCategories = [self queryForUsersCategories];
-    CategoryObject* mostRecentCategory = [userCategories getFirstObject];
-    return mostRecentCategory;
+    NSArray<CategoryObject*>* allUserCategories = [userCategories findObjects];
+    CategoryObject *largestCategory = allUserCategories[0];
+    for (NSInteger i = 0; i < allUserCategories.count; i++) {
+        if (allUserCategories[i].numberOfTasksInCategory > largestCategory.numberOfTasksInCategory){
+            largestCategory = allUserCategories[i];
+        }
+    }
+    return largestCategory;
 }
 
 + (NSInteger)getAverageCompletionTimeInDays:(CategoryObject*)category{

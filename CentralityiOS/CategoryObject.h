@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CategoryObject : PFObject<PFSubclassing>
 @property (nonatomic, strong) NSString *categoryName;
+@property (nonatomic) NSInteger numberOfTasksInCategory;
 @property (nonatomic, strong) PFUser *owner;
 @end
 
