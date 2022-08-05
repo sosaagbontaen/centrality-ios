@@ -76,7 +76,7 @@
     
     for (NSString* keyword in keywords)
     {
-        if ([inputField.text containsString:keyword]) {
+        if ([inputField.text containsString:[NSString stringWithFormat:@" %@ ",keyword]]) {
             NSInteger subStringStartLocation = [inputField.text rangeOfString:keyword].location;
             NSInteger subStringLength = keyword.length;
             
@@ -267,6 +267,8 @@
         newTask.taskTitle = self.taskTitleInput.text;
         newTask.taskDesc = self.taskDescInput.text;
         newTask.category = self.taskCategory;
+        newTask.category.numberOfTasksInCategory++;
+        [newTask.category saveInBackground];
         newTask.dueDate = self.taskDueDate;
         newTask.isCompleted = NO;
         newTask.sharedOwners = self.taskSharedOwners;
@@ -287,6 +289,12 @@
     else if([self.modifyMode isEqualToString:kEditTaskMode]){
         self.taskFromFeed.taskTitle = self.taskTitleInput.text;
         self.taskFromFeed.taskDesc = self.taskDescInput.text;
+        if (self.taskCategory != self.taskFromFeed.category){
+            self.taskFromFeed.category.numberOfTasksInCategory--;
+            self.taskCategory.numberOfTasksInCategory++;
+            [self.taskCategory saveInBackground];
+            [self.taskFromFeed.category saveInBackground];
+        }
         self.taskFromFeed.category = self.taskCategory;
         self.taskFromFeed.dueDate = self.taskDueDate;
         self.taskFromFeed.sharedOwners = self.taskSharedOwners;

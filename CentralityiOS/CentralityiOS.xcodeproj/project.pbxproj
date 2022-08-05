@@ -14,6 +14,7 @@
 		1A42BB222888A0C2003ACC4D /* CategoryModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A42BB212888A0C2003ACC4D /* CategoryModalViewController.m */; };
 		1A4E54E728984E8E0014DE82 /* AlertsModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E54E628984E8E0014DE82 /* AlertsModalViewController.m */; };
 		1A4E54EA289850EE0014DE82 /* ReceiverCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E54E9289850EE0014DE82 /* ReceiverCell.m */; };
+		1A4E553A289C79F90014DE82 /* SuggestionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5539289C79F90014DE82 /* SuggestionObject.m */; };
 		1A5AAE662888AB9B0080FB4A /* CategoryObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A5AAE652888AB9B0080FB4A /* CategoryObject.m */; };
 		1A8D46872878E91800489744 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46862878E91800489744 /* AppDelegate.m */; };
 		1A8D468A2878E91800489744 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46892878E91800489744 /* SceneDelegate.m */; };
@@ -70,6 +71,8 @@
 		1A4E54E628984E8E0014DE82 /* AlertsModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlertsModalViewController.m; sourceTree = "<group>"; };
 		1A4E54E8289850EE0014DE82 /* ReceiverCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReceiverCell.h; sourceTree = "<group>"; };
 		1A4E54E9289850EE0014DE82 /* ReceiverCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReceiverCell.m; sourceTree = "<group>"; };
+		1A4E5538289C79F90014DE82 /* SuggestionObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuggestionObject.h; sourceTree = "<group>"; };
+		1A4E5539289C79F90014DE82 /* SuggestionObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SuggestionObject.m; sourceTree = "<group>"; };
 		1A5AAE642888AB9B0080FB4A /* CategoryObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CategoryObject.h; sourceTree = "<group>"; };
 		1A5AAE652888AB9B0080FB4A /* CategoryObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CategoryObject.m; sourceTree = "<group>"; };
 		1A8D46822878E91800489744 /* CentralityiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CentralityiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -222,6 +225,8 @@
 				1A8D46BD287C88BB00489744 /* TaskObject.m */,
 				1A5AAE642888AB9B0080FB4A /* CategoryObject.h */,
 				1A5AAE652888AB9B0080FB4A /* CategoryObject.m */,
+				1A4E5538289C79F90014DE82 /* SuggestionObject.h */,
+				1A4E5539289C79F90014DE82 /* SuggestionObject.m */,
 			);
 			name = Models;
 			path = ..;
@@ -530,6 +535,7 @@
 				1A4E54E728984E8E0014DE82 /* AlertsModalViewController.m in Sources */,
 				1A8D46872878E91800489744 /* AppDelegate.m in Sources */,
 				1A1F54FF289088F50007AF5D /* DetectableKeywords.m in Sources */,
+				1A4E553A289C79F90014DE82 /* SuggestionObject.m in Sources */,
 				1A8D46C7287CC9B200489744 /* ToDoFeedViewController.m in Sources */,
 				1A8D46C4287CC95F00489744 /* TaskCell.m in Sources */,
 				1A5AAE662888AB9B0080FB4A /* CategoryObject.m in Sources */,

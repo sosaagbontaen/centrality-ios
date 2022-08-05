@@ -7,6 +7,8 @@
 
 #import <UIKit/UIKit.h>
 #import "Parse/Parse.h"
+#import "CategoryObject.h"
+#import "DateTools.h"
 
 @interface CentralityHelpers : UIViewController
 //Frequently Used Methods across different View Controllers
@@ -15,6 +17,10 @@
 + (void) updateLabel:(UILabel*)label newText:(NSString*)newText isHidden:(BOOL)isHidden;
 + (NSArray<PFUser*>*)removeUser:(PFUser*)user FromArray:(NSArray<PFUser*>*)arrayToCheck;
 + (NSArray<PFUser*>*)addUser:(PFUser*)user ToArray:(NSArray<PFUser*>*)receivingArray;
++ (NSInteger)getAverageCompletionTimeInDays:(CategoryObject*)category;
++ (PFQuery*)queryForUsersCategories;
++ (CategoryObject*)getMostRecentCategory;
++ (CategoryObject*)getLargestCategory;
 @end
 
 //Global Constants used across different View Controllers
@@ -25,6 +31,10 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
 static NSInteger kLabelConstraintConstantWhenVisible = 5;
 static NSInteger kLabelConstraintConstantWhenInvisible = 0;
 static NSString * const kTaskClassName = @"TaskObject";
+static NSString * const kAssociatedTaskKey = @"associatedTask";
+static NSString * const kSuggestionTypeKey = @"suggestionType";
+static NSString * const kByDateCompletedKey = @"dateCompleted";
+static NSString * const kSuggestionClassName = @"SuggestionObject";
 static NSString * const kByOwnerQueryKey = @"owner";
 static NSString * const kByCategoryClassName = @"CategoryObject";
 static NSString * const kBySharedOwnerQueryKey = @"sharedOwners";
@@ -38,3 +48,6 @@ static NSString* const kShareMode = @"Share Mode";
 static NSString* const kUnshareMode = @"Unshare Mode";
 static NSString* const kMakeReadOnlyMode = @"Make Read Only";
 static NSString* const kMakeWritableMode = @"Make Writable";
+static NSString * const kSuggestionTypeOverdue = @"Overdue Task";
+static NSString * const kSuggestionTypeUncategorized = @"Uncategorized Task";
+static NSString * const kSuggestionTypeUndated = @"Undated Task";

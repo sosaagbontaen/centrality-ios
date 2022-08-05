@@ -12,6 +12,7 @@
 #import "SceneDelegate.h"
 #import "DateFormatHelper.h"
 #import "CentralityHelpers.h"
+#import "NSDate+DateTools.h"
 
 @interface ToDoFeedViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
@@ -36,6 +37,8 @@
                                     @"Main" bundle:nil];
     AlertsModalViewController *alertsModalVC = [storyboard instantiateViewControllerWithIdentifier:@"AlertsModalViewController"];
     alertsModalVC.delegate = self;
+    alertsModalVC.arrayOfSuggestions = [[NSMutableArray alloc] init];
+    alertsModalVC.arrayOfPendingSharedTasks = [[NSMutableArray alloc] init];
     [self presentViewController:alertsModalVC animated:YES completion:^{}];
 }
 
@@ -46,6 +49,10 @@
     modifyTaskModalVC.delegate = self;
     modifyTaskModalVC.modifyMode = kAddTaskMode;
     [self presentViewController:modifyTaskModalVC animated:YES completion:^{}];
+}
+
+- (void)didRespondToSuggestion:(AlertsModalViewController *)controller{
+    [self fetchTasks];
 }
 
 - (void)didAddNewTask:(TaskObject*) newTask toFeed:(ModifyTaskModalViewController *)controller{
@@ -95,19 +102,39 @@
         [self.refreshControl endRefreshing];
         [self detectEmptyFeed];
     }];
-    
-    PFQuery *queryForPendingAlerts = [self queryToUpdatePendingAlerts];
-    NSInteger numberOfAlerts = [queryForPendingAlerts countObjects];
-    NSString *alertsAsString = [NSString stringWithFormat:@"%ld", (long)numberOfAlerts];
-    [self.alertButton setTitle:alertsAsString forState:UIControlStateNormal];
-    
+    [self updateNotifications];
 }
 
-- (PFQuery*)queryToUpdatePendingAlerts{
+-(void)updateNotifications{
+    if (PFUser.currentUser){
+        [[self querySuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
+            [[self queryShareRequests] countObjectsInBackgroundWithBlock:^(int numberOfShareRequests, NSError *error) {
+                NSString *alertsAsString = [NSString stringWithFormat:@"%ld", (long)numberOfSuggestions + numberOfShareRequests];
+                [self.alertButton setTitle:alertsAsString forState:UIControlStateNormal];
+            }];
+        }];
+    }
+}
+
+- (PFQuery*)queryShareRequests{
     PFQuery *receivedTasksQuery = [PFQuery queryWithClassName:kTaskClassName];
     [receivedTasksQuery whereKey:kBySharedOwnerQueryKey equalTo:PFUser.currentUser];
     [receivedTasksQuery whereKey:kByAcceptedUsersQueryKey notEqualTo:PFUser.currentUser];
     return receivedTasksQuery;
+}
+
+- (PFQuery*)querySuggestions{
+    PFQuery *receivedSuggestionsQuery = [PFQuery queryWithClassName:kSuggestionClassName];
+    [receivedSuggestionsQuery whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
+    return receivedSuggestionsQuery;
+}
+
+- (PFQuery*)querySuggestionsOfType:(NSString*)suggestionType Task:(TaskObject*)task{
+    PFQuery *specificSuggestionQuery = [PFQuery queryWithClassName:kSuggestionClassName];
+    [specificSuggestionQuery whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
+    [specificSuggestionQuery whereKey:kAssociatedTaskKey equalTo:task];
+    [specificSuggestionQuery whereKey:kSuggestionTypeKey equalTo:suggestionType];
+    return specificSuggestionQuery;
 }
 
 - (void)detectEmptyFeed{
@@ -122,7 +149,6 @@
 {
     TaskObject *task = self.arrayOfTasks[indexPath.row];
     TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell" forIndexPath:indexPath];
-    
     
     cell.task = task;
     cell.taskNameLabel.text = task.taskTitle;
@@ -172,6 +198,9 @@
     }
     
     [cell refreshCell];
+    
+    [self checkAllSuggestionRules:cell.task];
+    
     return cell;
 }
 
@@ -187,6 +216,8 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
                 //Removes task from backend
+                task.category.numberOfTasksInCategory--;
+                [task.category saveInBackground];
                 [self.arrayOfTasks[indexPath.row] deleteInBackground];
                 //Removes task from current view / local array
                 [self.arrayOfTasks removeObjectAtIndex:indexPath.row];
@@ -301,7 +332,44 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchTasks) forControlEvents:UIControlEventValueChanged];
     [self.taskTableView insertSubview:self.refreshControl atIndex:0];
-    
+    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateNotifications) userInfo:nil repeats:YES];
+}
+
+- (void)checkAllSuggestionRules:(TaskObject*)task{
+    [self checkForOverdueTasks:task];
+    [self checkForUndatedTasks:task];
+    [self checkForUncategorizedTasks:task];
+}
+
+- (void)checkForOverdueTasks:(TaskObject*)task{
+    if ([task.dueDate isEarlierThan:NSDate.date] && task.isCompleted == NO){
+        [self createUniqueSuggestion:task :kSuggestionTypeOverdue];
+    }
+}
+
+- (void)checkForUndatedTasks:(TaskObject*)task{
+    if (!task.dueDate){
+        [self createUniqueSuggestion:task :kSuggestionTypeUndated];
+    }
+}
+
+- (void)createUniqueSuggestion:(TaskObject*)task :(NSString*)suggestionType{
+    [[self querySuggestionsOfType:suggestionType Task:task] countObjectsInBackgroundWithBlock:^(int numOfduplicates, NSError * _Nullable error) {
+                if (numOfduplicates == 0){
+                    SuggestionObject *suggestion = [SuggestionObject new];
+                    suggestion.associatedTask = task;
+                    suggestion.suggestionType = suggestionType;
+                    suggestion.owner = PFUser.currentUser;
+                    [suggestion saveInBackground];
+                    [self updateNotifications];
+                }
+    }];
+}
+
+- (void)checkForUncategorizedTasks:(TaskObject*)task{
+    if (!task.category){
+        [self createUniqueSuggestion:task :kSuggestionTypeUncategorized];
+    }
 }
 
 @end

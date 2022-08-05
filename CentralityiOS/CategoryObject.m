@@ -10,6 +10,7 @@
 @implementation CategoryObject
 
 @dynamic categoryName;
+@dynamic numberOfTasksInCategory;
 @dynamic owner;
 
 + (nonnull NSString *)parseClassName {

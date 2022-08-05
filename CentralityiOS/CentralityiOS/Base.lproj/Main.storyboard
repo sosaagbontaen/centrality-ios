@@ -1249,17 +1249,34 @@
                                     <constraint firstAttribute="height" constant="308" id="x5j-64-aS1"/>
                                 </constraints>
                             </view>
+                            <tabBar opaque="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agE-Zi-g5o">
+                                <rect key="frame" x="0.0" y="535" width="428" height="49"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                <items>
+                                    <tabBarItem title="Share Requests" image="person.2.fill" catalog="system" badgeValue="0" id="BWV-ZT-k27"/>
+                                    <tabBarItem title="Task Suggestions" image="book" catalog="system" badgeValue="0" id="me6-24-01c"/>
+                                </items>
+                                <color key="barTintColor" systemColor="systemGreenColor"/>
+                                <color key="selectedImageTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tabBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vAW-hQ-bDe"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="NWg-ML-4Ii" firstAttribute="top" secondItem="agE-Zi-g5o" secondAttribute="bottom" id="843-tY-gD8"/>
+                            <constraint firstItem="agE-Zi-g5o" firstAttribute="leading" secondItem="vAW-hQ-bDe" secondAttribute="leading" id="I2I-Hv-I3x"/>
                             <constraint firstItem="NWg-ML-4Ii" firstAttribute="leading" secondItem="vAW-hQ-bDe" secondAttribute="leading" id="I9l-i1-oJw"/>
                             <constraint firstItem="NWg-ML-4Ii" firstAttribute="trailing" secondItem="vAW-hQ-bDe" secondAttribute="trailing" id="K1z-3i-4QZ"/>
                             <constraint firstItem="vAW-hQ-bDe" firstAttribute="bottom" secondItem="NWg-ML-4Ii" secondAttribute="bottom" id="NkA-vq-T57"/>
+                            <constraint firstItem="agE-Zi-g5o" firstAttribute="trailing" secondItem="vAW-hQ-bDe" secondAttribute="trailing" id="kZr-Ek-cOa"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="modalTitle" destination="1UA-hp-DGp" id="E3U-lV-vgs"/>
+                        <outlet property="modeTabBar" destination="agE-Zi-g5o" id="W30-Gz-JLI"/>
                         <outlet property="receiverTableView" destination="QMI-ff-m9W" id="I2R-2s-dMJ"/>
+                        <outlet property="shareRequestsTabBarItem" destination="BWV-ZT-k27" id="YBQ-aQ-ydw"/>
+                        <outlet property="taskSuggestionsTabBarItem" destination="me6-24-01c" id="kag-bG-70g"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dzF-zt-fpX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1269,6 +1286,7 @@
     </scenes>
     <resources>
         <image name="bell.fill" catalog="system" width="128" height="124"/>
+        <image name="book" catalog="system" width="128" height="99"/>
         <image name="button:Vo2-sL-S0v:image" width="128" height="121">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF8QD05T
@@ -17945,6 +17963,7 @@ AAAAD0GWA
 </mutableData>
         </image>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="person.2.fill" catalog="system" width="128" height="80"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
