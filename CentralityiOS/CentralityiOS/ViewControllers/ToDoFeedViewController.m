@@ -12,6 +12,7 @@
 #import "SceneDelegate.h"
 #import "DateFormatHelper.h"
 #import "CentralityHelpers.h"
+#import "NSDate+DateTools.h"
 
 @interface ToDoFeedViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
@@ -36,6 +37,8 @@
                                     @"Main" bundle:nil];
     AlertsModalViewController *alertsModalVC = [storyboard instantiateViewControllerWithIdentifier:@"AlertsModalViewController"];
     alertsModalVC.delegate = self;
+    alertsModalVC.arrayOfSuggestions = [[NSMutableArray alloc] init];
+    alertsModalVC.arrayOfPendingSharedTasks = [[NSMutableArray alloc] init];
     [self presentViewController:alertsModalVC animated:YES completion:^{}];
 }
 
@@ -99,17 +102,27 @@
 }
 
 -(void)updateNotifications{
-    PFQuery *queryForPendingAlerts = [self queryToUpdatePendingAlerts];
-    NSInteger numberOfAlerts = [queryForPendingAlerts countObjects];
-    NSString *alertsAsString = [NSString stringWithFormat:@"%ld", (long)numberOfAlerts];
-    [self.alertButton setTitle:alertsAsString forState:UIControlStateNormal];
+    if (PFUser.currentUser){
+        [[self querySuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
+            [[self queryShareRequests] countObjectsInBackgroundWithBlock:^(int numberOfShareRequests, NSError *error) {
+                NSString *alertsAsString = [NSString stringWithFormat:@"%ld", (long)numberOfSuggestions + numberOfShareRequests];
+                [self.alertButton setTitle:alertsAsString forState:UIControlStateNormal];
+            }];
+        }];
+    }
 }
 
-- (PFQuery*)queryToUpdatePendingAlerts{
+- (PFQuery*)queryShareRequests{
     PFQuery *receivedTasksQuery = [PFQuery queryWithClassName:kTaskClassName];
     [receivedTasksQuery whereKey:kBySharedOwnerQueryKey equalTo:PFUser.currentUser];
     [receivedTasksQuery whereKey:kByAcceptedUsersQueryKey notEqualTo:PFUser.currentUser];
     return receivedTasksQuery;
+}
+
+- (PFQuery*)querySuggestions{
+    PFQuery *receivedSuggestionsQuery = [PFQuery queryWithClassName:kSuggestionClassName];
+    [receivedSuggestionsQuery whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
+    return receivedSuggestionsQuery;
 }
 
 - (void)detectEmptyFeed{
@@ -174,6 +187,9 @@
     }
     
     [cell refreshCell];
+    
+    [self checkForOverdueTasks:cell.task];
+    
     return cell;
 }
 
@@ -304,7 +320,12 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.refreshControl addTarget:self action:@selector(fetchTasks) forControlEvents:UIControlEventValueChanged];
     [self.taskTableView insertSubview:self.refreshControl atIndex:0];
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateNotifications) userInfo:nil repeats:YES];
-    
+}
+
+- (void)checkForOverdueTasks:(TaskObject*)task{
+    if ([task.dueDate isEarlierThan:NSDate.date]){
+        NSLog(@"🧠 Overdue : %@", task.taskTitle);
+    }
 }
 
 @end

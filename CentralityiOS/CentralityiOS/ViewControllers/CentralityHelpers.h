@@ -25,6 +25,7 @@ static const CGFloat kKeyboardDistanceFromDescInput = 120.0;
 static NSInteger kLabelConstraintConstantWhenVisible = 5;
 static NSInteger kLabelConstraintConstantWhenInvisible = 0;
 static NSString * const kTaskClassName = @"TaskObject";
+static NSString * const kSuggestionClassName = @"SuggestionObject";
 static NSString * const kByOwnerQueryKey = @"owner";
 static NSString * const kByCategoryClassName = @"CategoryObject";
 static NSString * const kBySharedOwnerQueryKey = @"sharedOwners";

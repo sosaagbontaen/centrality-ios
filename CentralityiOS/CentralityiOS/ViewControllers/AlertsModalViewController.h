@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TaskObject.h"
+#import "SuggestionObject.h"
 
 @class AlertsModalViewController;
 
@@ -17,5 +18,10 @@
 @interface AlertsModalViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITableView *receiverTableView;
 @property NSMutableArray<TaskObject*>*arrayOfPendingSharedTasks;
+@property NSMutableArray<SuggestionObject*>*arrayOfSuggestions;
+@property (weak, nonatomic) IBOutlet UITabBar *modeTabBar;
+@property (weak, nonatomic) IBOutlet UITabBarItem *shareRequestsTabBarItem;
+@property (weak, nonatomic) IBOutlet UITabBarItem *taskSuggestionsTabBarItem;
 @property (nonatomic, weak) id <AlertsModalViewControllerDelegate> delegate;
+@property NSString* kCurrentViewMode;
 @end
