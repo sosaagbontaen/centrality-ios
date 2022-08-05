@@ -335,12 +335,19 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
 
 - (void)checkAllSuggestionRules:(TaskObject*)task{
     [self checkForOverdueTasks:task];
+    [self checkForUndatedTasks:task];
     [self checkForUncategorizedTasks:task];
 }
 
 - (void)checkForOverdueTasks:(TaskObject*)task{
     if ([task.dueDate isEarlierThan:NSDate.date] && task.isCompleted == NO){
         [self createUniqueSuggestion:task :kSuggestionTypeOverdue];
+    }
+}
+
+- (void)checkForUndatedTasks:(TaskObject*)task{
+    if (!task.dueDate){
+        [self createUniqueSuggestion:task :kSuggestionTypeUndated];
     }
 }
 

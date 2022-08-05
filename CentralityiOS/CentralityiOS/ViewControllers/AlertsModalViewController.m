@@ -303,6 +303,14 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
             completionHandler(YES);
         }];
         
+        if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
+            extendDueDateAction.title = @"Extend due date";
+            
+        }
+        else if ([suggestion.suggestionType isEqualToString:kSuggestionTypeUndated]){
+            extendDueDateAction.title = @"Estimate due date";
+        }
+        
         UIContextualAction *addToLargestCategoryAction =
         [UIContextualAction contextualActionWithStyle:
          UIContextualActionStyleDestructive title:
@@ -373,6 +381,9 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         //TODO : Ensure this doesn't work when no categories exist
         else if([suggestion.suggestionType isEqualToString:kSuggestionTypeUncategorized]){
             swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[addToLargestCategoryAction, addToMostRecentCategoryAction]];
+        }
+        else if([suggestion.suggestionType isEqualToString:kSuggestionTypeUndated]){
+            swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[extendDueDateAction]];
         }
     }
     return swipeActions;
