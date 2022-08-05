@@ -9,8 +9,9 @@
 
 @implementation SuggestionObject
 
-@dynamic associatedTask;
 @dynamic owner;
+@dynamic associatedTask;
+@dynamic suggestionType;
 
 + (nonnull NSString *)parseClassName {
     return @"SuggestionObject";

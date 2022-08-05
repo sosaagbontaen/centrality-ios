@@ -324,7 +324,14 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
 
 - (void)checkForOverdueTasks:(TaskObject*)task{
     if ([task.dueDate isEarlierThan:NSDate.date]){
-        NSLog(@"🧠 Overdue : %@", task.taskTitle);
+        NSLog(@"Overdue Task Detected: %@", task.taskTitle);
+        SuggestionObject *overdueSuggestion = [SuggestionObject new];
+        overdueSuggestion.associatedTask = task;
+        overdueSuggestion.suggestionType = @"Overdue";
+        overdueSuggestion.owner = PFUser.currentUser;
+        [overdueSuggestion saveInBackground];
+        [self updateNotifications];
+        
     }
 }
 

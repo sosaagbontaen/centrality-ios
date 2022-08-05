@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SuggestionObject : PFObject<PFSubclassing>
 @property TaskObject *associatedTask;
 @property (nonatomic, strong) PFUser *owner;
+@property (nonatomic, strong) NSString *suggestionType;
 @end
 
 NS_ASSUME_NONNULL_END
