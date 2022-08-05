@@ -334,7 +334,6 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     if ([task.dueDate isEarlierThan:NSDate.date] && task.isCompleted == NO){
         [[self querySuggestionsOfType:kSuggestionTypeOverdue Task:task] countObjectsInBackgroundWithBlock:^(int numOfSuggestions, NSError * _Nullable error) {
                     if (numOfSuggestions == 0){
-                        NSLog(@"Untracked Overdue Task Detected: %@", task.taskTitle);
                         SuggestionObject *overdueSuggestion = [SuggestionObject new];
                         overdueSuggestion.associatedTask = task;
                         overdueSuggestion.suggestionType = kSuggestionTypeOverdue;

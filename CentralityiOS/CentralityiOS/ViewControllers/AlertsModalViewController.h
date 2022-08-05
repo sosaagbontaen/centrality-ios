@@ -16,6 +16,7 @@
 @end
 
 @interface AlertsModalViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UILabel *modalTitle;
 @property (weak, nonatomic) IBOutlet UITableView *receiverTableView;
 @property NSMutableArray<TaskObject*>*arrayOfPendingSharedTasks;
 @property NSMutableArray<SuggestionObject*>*arrayOfSuggestions;

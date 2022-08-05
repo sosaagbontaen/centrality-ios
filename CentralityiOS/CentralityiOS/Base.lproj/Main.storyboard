@@ -1272,6 +1272,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="modalTitle" destination="1UA-hp-DGp" id="E3U-lV-vgs"/>
                         <outlet property="modeTabBar" destination="agE-Zi-g5o" id="W30-Gz-JLI"/>
                         <outlet property="receiverTableView" destination="QMI-ff-m9W" id="I2R-2s-dMJ"/>
                         <outlet property="shareRequestsTabBarItem" destination="BWV-ZT-k27" id="YBQ-aQ-ydw"/>

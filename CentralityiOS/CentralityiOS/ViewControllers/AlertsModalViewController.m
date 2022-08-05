@@ -8,6 +8,7 @@
 #import "AlertsModalViewController.h"
 #import "ReceiverCell.h"
 #import "CentralityHelpers.h"
+#import "DateFormatHelper.h"
 
 @interface AlertsModalViewController ()<UITableViewDelegate, UITableViewDataSource, UITabBarDelegate>
 
@@ -72,6 +73,8 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
         cell.taskNameLabel.text = task.taskTitle;
         cell.taskDescLabel.text = task.taskDesc;
         cell.taskOwnerLabel.text = [NSString stringWithFormat:@"Owned by : %@", task.owner.username];
+        cell.taskOwnerLabel.backgroundColor = [UIColor systemBlueColor];
+        cell.taskSharerLabel.backgroundColor = [UIColor systemPurpleColor];
         [self displaySharedUsers:task label:cell.taskSharerLabel];
     }
     else if ([self.kCurrentViewMode isEqualToString:kViewSuggestionsMode]){
@@ -79,8 +82,10 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
         if ([suggestion.associatedTask fetchIfNeeded] && [suggestion.associatedTask.owner fetchIfNeeded]){
             cell.taskNameLabel.text = suggestion.associatedTask.taskTitle;
             cell.taskDescLabel.text = suggestion.associatedTask.taskDesc;
-            [self displaySharedUsers:suggestion.associatedTask label:cell.taskSharerLabel];
-            cell.taskOwnerLabel.text = [NSString stringWithFormat:@"Owned by : %@", suggestion.associatedTask.owner.username];
+            cell.taskOwnerLabel.text = kSuggestionTypeOverdue;
+            cell.taskOwnerLabel.backgroundColor = [UIColor systemRedColor];
+            cell.taskSharerLabel.text = [DateFormatHelper formatDateAsString:suggestion.associatedTask.dueDate];
+            cell.taskSharerLabel.backgroundColor = [UIColor systemGreenColor];
         }
         else{
             [suggestion deleteInBackground];
@@ -135,6 +140,7 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
             if (users != nil) {
                 self.arrayOfPendingSharedTasks = [users mutableCopy];
                 [self updateTabAlertCounts];
+                self.modalTitle.text = @"Pending Share Requests";
                 [self.receiverTableView reloadData];
             } else {
                 NSLog(@"%@", error.localizedDescription);
@@ -147,6 +153,7 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
             if (suggestions != nil) {
                 self.arrayOfSuggestions = [suggestions mutableCopy];
                 [self updateTabAlertCounts];
+                self.modalTitle.text = @"Suggestions";
                 [self.receiverTableView reloadData];
             } else {
                 NSLog(@"%@", error.localizedDescription);
