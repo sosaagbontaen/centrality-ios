@@ -196,7 +196,7 @@
     
     [cell refreshCell];
     
-    [self checkForOverdueTasks:cell.task];
+    [self checkAllSuggestionRules:cell.task];
     
     return cell;
 }
@@ -330,18 +330,33 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateNotifications) userInfo:nil repeats:YES];
 }
 
+- (void)checkAllSuggestionRules:(TaskObject*)task{
+    [self checkForOverdueTasks:task];
+    [self checkForUncategorizedTasks:task];
+}
+
 - (void)checkForOverdueTasks:(TaskObject*)task{
     if ([task.dueDate isEarlierThan:NSDate.date] && task.isCompleted == NO){
-        [[self querySuggestionsOfType:kSuggestionTypeOverdue Task:task] countObjectsInBackgroundWithBlock:^(int numOfSuggestions, NSError * _Nullable error) {
-                    if (numOfSuggestions == 0){
-                        SuggestionObject *overdueSuggestion = [SuggestionObject new];
-                        overdueSuggestion.associatedTask = task;
-                        overdueSuggestion.suggestionType = kSuggestionTypeOverdue;
-                        overdueSuggestion.owner = PFUser.currentUser;
-                        [overdueSuggestion saveInBackground];
-                        [self updateNotifications];
-                    }
-        }];
+        [self createUniqueSuggestion:task :kSuggestionTypeOverdue];
+    }
+}
+
+- (void)createUniqueSuggestion:(TaskObject*)task :(NSString*)suggestionType{
+    [[self querySuggestionsOfType:suggestionType Task:task] countObjectsInBackgroundWithBlock:^(int numOfduplicates, NSError * _Nullable error) {
+                if (numOfduplicates == 0){
+                    SuggestionObject *suggestion = [SuggestionObject new];
+                    suggestion.associatedTask = task;
+                    suggestion.suggestionType = suggestionType;
+                    suggestion.owner = PFUser.currentUser;
+                    [suggestion saveInBackground];
+                    [self updateNotifications];
+                }
+    }];
+}
+
+- (void)checkForUncategorizedTasks:(TaskObject*)task{
+    if (!task.category){
+        [self createUniqueSuggestion:task :kSuggestionTypeUncategorized];
     }
 }
 

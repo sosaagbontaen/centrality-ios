@@ -42,3 +42,5 @@ static NSString* const kUnshareMode = @"Unshare Mode";
 static NSString* const kMakeReadOnlyMode = @"Make Read Only";
 static NSString* const kMakeWritableMode = @"Make Writable";
 static NSString * const kSuggestionTypeOverdue = @"Overdue Task";
+static NSString * const kSuggestionTypeUncategorized = @"Uncategorized Task";
+static NSString * const kSuggestionTypeUndated = @"Undated Task";

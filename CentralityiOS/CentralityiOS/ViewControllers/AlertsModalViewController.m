@@ -82,10 +82,16 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
         if ([suggestion.associatedTask fetchIfNeeded] && [suggestion.associatedTask.owner fetchIfNeeded]){
             cell.taskNameLabel.text = suggestion.associatedTask.taskTitle;
             cell.taskDescLabel.text = suggestion.associatedTask.taskDesc;
-            cell.taskOwnerLabel.text = kSuggestionTypeOverdue;
+            cell.taskOwnerLabel.text = suggestion.suggestionType;
             cell.taskOwnerLabel.backgroundColor = [UIColor systemRedColor];
-            cell.taskSharerLabel.text = [DateFormatHelper formatDateAsString:suggestion.associatedTask.dueDate];
-            cell.taskSharerLabel.backgroundColor = [UIColor systemGreenColor];
+            if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
+                cell.taskSharerLabel.hidden = NO;
+                cell.taskSharerLabel.text = [NSString stringWithFormat:@"Due %@", [DateFormatHelper formatDateAsString:suggestion.associatedTask.dueDate]];
+                cell.taskSharerLabel.backgroundColor = [UIColor systemGreenColor];
+            }
+            else{
+                cell.taskSharerLabel.hidden = YES;
+            }
         }
         else{
             [suggestion deleteInBackground];
