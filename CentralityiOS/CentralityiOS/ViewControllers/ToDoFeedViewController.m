@@ -216,6 +216,8 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
                 //Removes task from backend
+                task.category.numberOfTasksInCategory--;
+                [task.category saveInBackground];
                 [self.arrayOfTasks[indexPath.row] deleteInBackground];
                 //Removes task from current view / local array
                 [self.arrayOfTasks removeObjectAtIndex:indexPath.row];
