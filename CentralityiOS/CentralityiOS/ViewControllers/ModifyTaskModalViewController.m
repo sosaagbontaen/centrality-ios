@@ -76,7 +76,7 @@
     
     for (NSString* keyword in keywords)
     {
-        if ([inputField.text containsString:keyword]) {
+        if ([inputField.text containsString:[NSString stringWithFormat:@" %@ ",keyword]]) {
             NSInteger subStringStartLocation = [inputField.text rangeOfString:keyword].location;
             NSInteger subStringLength = keyword.length;
             
