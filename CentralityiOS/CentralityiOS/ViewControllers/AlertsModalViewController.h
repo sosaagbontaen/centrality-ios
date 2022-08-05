@@ -13,6 +13,7 @@
 
 @protocol AlertsModalViewControllerDelegate <NSObject>
 - (void)didAcceptOrDeclineTask:(TaskObject *)acceptedTask toFeed:(AlertsModalViewController *)controller;
+- (void)didRespondToSuggestion: (AlertsModalViewController *)controller;
 @end
 
 @interface AlertsModalViewController : UIViewController

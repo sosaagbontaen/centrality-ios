@@ -51,6 +51,10 @@
     [self presentViewController:modifyTaskModalVC animated:YES completion:^{}];
 }
 
+- (void)didRespondToSuggestion:(AlertsModalViewController *)controller{
+    [self fetchTasks];
+}
+
 - (void)didAddNewTask:(TaskObject*) newTask toFeed:(ModifyTaskModalViewController *)controller{
     [self.arrayOfTasks addObject:newTask];
     [self fetchTasks];

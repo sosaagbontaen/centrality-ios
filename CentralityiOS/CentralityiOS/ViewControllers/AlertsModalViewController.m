@@ -173,6 +173,7 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
 trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UISwipeActionsConfiguration *swipeActions = [[UISwipeActionsConfiguration alloc] init];
+    
     if ([self.kCurrentViewMode isEqualToString:kViewSharingMode]){
         TaskObject *task = self.arrayOfPendingSharedTasks[indexPath.row];
         
@@ -247,7 +248,45 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[declineAction, acceptAction]];
         swipeActions.performsFirstActionWithFullSwipe = NO;
         }
+    
+    if ([self.kCurrentViewMode isEqualToString:kViewSuggestionsMode]){
+        SuggestionObject *suggestion = self.arrayOfSuggestions[indexPath.row];
+        
+        UIContextualAction *markCompletedAction =
+        [UIContextualAction contextualActionWithStyle:
+         UIContextualActionStyleDestructive title:
+         @"Mark Completed" handler:
+         ^(UIContextualAction * _Nonnull action,
+           __kindof UIView * _Nonnull sourceView,
+           void (^ _Nonnull completionHandler)(BOOL))
+         {
+            suggestion.associatedTask.isCompleted = YES;
+            [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
+                if (succeeded) {
+                    NSLog(@"It's completed!");
+                    
+                    [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
+                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    [suggestion deleteInBackground];
+                    [self.delegate didRespondToSuggestion:self];
+                    [self updateTabAlertCounts];
+                }
+                else{
+                    NSLog(@"Task not updated on Parse : %@", error.localizedDescription);
+                }
+            }];
+            completionHandler(YES);
+        }];
+        
+        markCompletedAction.backgroundColor = [UIColor systemGreenColor];
+        if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
+            swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[markCompletedAction]];
+            swipeActions.performsFirstActionWithFullSwipe = NO;
+        }
+    }
     return swipeActions;
+    
 }
 
 @end
