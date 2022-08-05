@@ -150,7 +150,6 @@
     TaskObject *task = self.arrayOfTasks[indexPath.row];
     TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell" forIndexPath:indexPath];
     
-    
     cell.task = task;
     cell.taskNameLabel.text = task.taskTitle;
     cell.taskDescLabel.text = task.taskDesc;

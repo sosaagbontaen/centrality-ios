@@ -7,6 +7,7 @@
 
 #import "CentralityHelpers.h"
 #import "Parse/Parse.h"
+#import "TaskObject.h"
 @interface CentralityHelpers ()
 
 @end
@@ -55,4 +56,40 @@
         receivingArray = copyOfReceivingArray;
     return receivingArray;
 }
+
++ (PFQuery*)queryForUsersCompletedTasks{
+    PFQuery *alluserTasks = [PFQuery queryWithClassName:kTaskClassName];
+    [alluserTasks whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
+    [alluserTasks whereKeyExists:kByDateCompletedKey];
+    return alluserTasks;
+}
+
++ (NSInteger)getAverageCompletionTimeInDays:(CategoryObject*)category{
+    PFQuery* userTasksQuery = [self queryForUsersCompletedTasks];
+    NSArray* completedTasks = [userTasksQuery findObjects];
+    NSInteger averageAccumulator = 0;
+    NSInteger totalCountedTasks = 0;
+    NSInteger calculatedAverage = 0;
+    
+    if ([category fetchIfNeeded]){
+        for (TaskObject* task in completedTasks) {
+            if ([task.category.objectId isEqualToString:category.objectId]){
+                NSInteger completionInterval = [task.dateCompleted daysFrom:task.createdAt];
+                averageAccumulator += completionInterval;
+                totalCountedTasks++;
+            }
+        }
+    }
+    else{
+        for (TaskObject* task in completedTasks) {
+                NSInteger completionInterval = [task.dateCompleted daysFrom:task.createdAt];
+                averageAccumulator += completionInterval;
+                totalCountedTasks++;
+        }
+    }
+    calculatedAverage = averageAccumulator / totalCountedTasks;
+    
+    return calculatedAverage;
+}
+
 @end

@@ -9,6 +9,7 @@
 #import "ReceiverCell.h"
 #import "CentralityHelpers.h"
 #import "DateFormatHelper.h"
+#import "DateTools.h"
 
 @interface AlertsModalViewController ()<UITableViewDelegate, UITableViewDataSource, UITabBarDelegate>
 
@@ -263,8 +264,31 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
             suggestion.associatedTask.isCompleted = YES;
             [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                 if (succeeded) {
-                    NSLog(@"It's completed!");
+                    [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
+                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                     
+                    [suggestion deleteInBackground];
+                    [self.delegate didRespondToSuggestion:self];
+                    [self updateTabAlertCounts];
+                }
+                else{
+                    NSLog(@"Task not updated on Parse : %@", error.localizedDescription);
+                }
+            }];
+            completionHandler(YES);
+        }];
+        
+        UIContextualAction *extendDueDateAction =
+        [UIContextualAction contextualActionWithStyle:
+         UIContextualActionStyleDestructive title:
+         @"Extend due date" handler:
+         ^(UIContextualAction * _Nonnull action,
+           __kindof UIView * _Nonnull sourceView,
+           void (^ _Nonnull completionHandler)(BOOL))
+         {
+            suggestion.associatedTask.dueDate = [NSDate.date dateByAddingDays:[CentralityHelpers getAverageCompletionTimeInDays:suggestion.associatedTask.category]];
+            [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
+                if (succeeded) {
                     [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
                     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                     
@@ -280,8 +304,10 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         }];
         
         markCompletedAction.backgroundColor = [UIColor systemGreenColor];
+        extendDueDateAction.backgroundColor = [UIColor systemOrangeColor];
+        
         if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
-            swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[markCompletedAction]];
+            swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[markCompletedAction, extendDueDateAction]];
             swipeActions.performsFirstActionWithFullSwipe = NO;
         }
     }

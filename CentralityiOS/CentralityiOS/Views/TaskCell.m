@@ -21,6 +21,9 @@ static NSString * const kCompleteImageName = @"checkmark.circle.fill";
 }
 - (IBAction)completeAction:(id)sender {
     self.task.isCompleted = !self.task.isCompleted;
+    if (self.task.isCompleted){
+        self.task.dateCompleted = NSDate.date;
+    }
     [self.task saveInBackground];
     [self refreshCell];
 }

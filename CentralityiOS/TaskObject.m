@@ -14,6 +14,7 @@
 @dynamic readOnlyUsers;
 @dynamic readAndWriteUsers;
 @dynamic acceptedUsers;
+@dynamic dateCompleted;
 @dynamic dueDate;
 @dynamic taskTitle;
 @dynamic taskDesc;
