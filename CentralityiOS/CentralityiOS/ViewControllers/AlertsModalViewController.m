@@ -33,10 +33,10 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
 - (void)updateTabAlertCounts{
         
     [[self queryAllPendingTasks] countObjectsInBackgroundWithBlock:^(int numberOfTasks, NSError *error) {
-        self.shareRequestsTabBarItem.title = [NSString stringWithFormat:@"Share Requests | %d", numberOfTasks];
+        self.shareRequestsTabBarItem.badgeValue = [@(numberOfTasks) stringValue];
     }];
     [[self queryForSuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
-        self.taskSuggestionsTabBarItem.title = [NSString stringWithFormat:@"Task Suggestions | %d", numberOfSuggestions];
+        self.taskSuggestionsTabBarItem.badgeValue = [@(numberOfSuggestions) stringValue];
     }];
 }
 

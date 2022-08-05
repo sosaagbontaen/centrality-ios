@@ -1253,8 +1253,8 @@
                                 <rect key="frame" x="0.0" y="535" width="428" height="49"/>
                                 <color key="backgroundColor" systemColor="systemGreenColor"/>
                                 <items>
-                                    <tabBarItem title="Share Requests" image="person.2.fill" catalog="system" id="BWV-ZT-k27"/>
-                                    <tabBarItem title="Task Suggestions" image="book" catalog="system" id="me6-24-01c"/>
+                                    <tabBarItem title="Share Requests" image="person.2.fill" catalog="system" badgeValue="0" id="BWV-ZT-k27"/>
+                                    <tabBarItem title="Task Suggestions" image="book" catalog="system" badgeValue="0" id="me6-24-01c"/>
                                 </items>
                                 <color key="barTintColor" systemColor="systemGreenColor"/>
                                 <color key="selectedImageTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
