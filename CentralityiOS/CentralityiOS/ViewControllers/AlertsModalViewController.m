@@ -311,7 +311,11 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
            __kindof UIView * _Nonnull sourceView,
            void (^ _Nonnull completionHandler)(BOOL))
          {
+            if ([suggestion.associatedTask.category fetchIfNeeded]){
+                suggestion.associatedTask.category.numberOfTasksInCategory--;
+            }
             suggestion.associatedTask.category = [CentralityHelpers getLargestCategory];
+            suggestion.associatedTask.category.numberOfTasksInCategory++;
             [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                 if (succeeded) {
                     [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
@@ -336,7 +340,11 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
            __kindof UIView * _Nonnull sourceView,
            void (^ _Nonnull completionHandler)(BOOL))
          {
+            if ([suggestion.associatedTask.category fetchIfNeeded]){
+                suggestion.associatedTask.category.numberOfTasksInCategory--;
+            }
             suggestion.associatedTask.category = [CentralityHelpers getMostRecentCategory];
+            suggestion.associatedTask.category.numberOfTasksInCategory++;
             [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                 if (succeeded) {
                     [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
