@@ -18,7 +18,8 @@
 + (NSArray<PFUser*>*)removeUser:(PFUser*)user FromArray:(NSArray<PFUser*>*)arrayToCheck;
 + (NSArray<PFUser*>*)addUser:(PFUser*)user ToArray:(NSArray<PFUser*>*)receivingArray;
 + (NSInteger)getAverageCompletionTimeInDays:(CategoryObject*)category;
-+ (PFQuery*)queryForUsersCompletedTasks;
++ (CategoryObject*)getMostRecentCategory;
++ (CategoryObject*)getLargestCategory;
 @end
 
 //Global Constants used across different View Controllers

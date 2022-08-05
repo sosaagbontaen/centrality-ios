@@ -58,10 +58,29 @@
 }
 
 + (PFQuery*)queryForUsersCompletedTasks{
-    PFQuery *alluserTasks = [PFQuery queryWithClassName:kTaskClassName];
-    [alluserTasks whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
-    [alluserTasks whereKeyExists:kByDateCompletedKey];
-    return alluserTasks;
+    PFQuery *allUserTasks = [PFQuery queryWithClassName:kTaskClassName];
+    [allUserTasks whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
+    [allUserTasks whereKeyExists:kByDateCompletedKey];
+    return allUserTasks;
+}
+
++ (PFQuery*)queryForUsersCategories{
+    PFQuery *alluserCategories = [PFQuery queryWithClassName:kByCategoryClassName];
+    [alluserCategories whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
+    [alluserCategories orderByDescending:kByCreatedAtQueryKey];
+    return alluserCategories;
+}
+
++ (CategoryObject*)getMostRecentCategory{
+    PFQuery *userCategories = [self queryForUsersCategories];
+    CategoryObject* mostRecentCategory = [userCategories getFirstObject];
+    return mostRecentCategory;
+}
+
++ (CategoryObject*)getLargestCategory{
+    PFQuery *userCategories = [self queryForUsersCategories];
+    CategoryObject* mostRecentCategory = [userCategories getFirstObject];
+    return mostRecentCategory;
 }
 
 + (NSInteger)getAverageCompletionTimeInDays:(CategoryObject*)category{

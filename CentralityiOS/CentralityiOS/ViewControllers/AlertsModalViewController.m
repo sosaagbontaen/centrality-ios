@@ -303,12 +303,67 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
             completionHandler(YES);
         }];
         
+        UIContextualAction *addToLargestCategoryAction =
+        [UIContextualAction contextualActionWithStyle:
+         UIContextualActionStyleDestructive title:
+         @"Add to largest category" handler:
+         ^(UIContextualAction * _Nonnull action,
+           __kindof UIView * _Nonnull sourceView,
+           void (^ _Nonnull completionHandler)(BOOL))
+         {
+            suggestion.associatedTask.category = [CentralityHelpers getLargestCategory];
+            [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
+                if (succeeded) {
+                    [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
+                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    [suggestion deleteInBackground];
+                    [self.delegate didRespondToSuggestion:self];
+                    [self updateTabAlertCounts];
+                }
+                else{
+                    NSLog(@"Task not updated on Parse : %@", error.localizedDescription);
+                }
+            }];
+            completionHandler(YES);
+        }];
+        
+        UIContextualAction *addToMostRecentCategoryAction =
+        [UIContextualAction contextualActionWithStyle:
+         UIContextualActionStyleDestructive title:
+         @"Add to most recent category" handler:
+         ^(UIContextualAction * _Nonnull action,
+           __kindof UIView * _Nonnull sourceView,
+           void (^ _Nonnull completionHandler)(BOOL))
+         {
+            suggestion.associatedTask.category = [CentralityHelpers getMostRecentCategory];
+            [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
+                if (succeeded) {
+                    [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
+                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    [suggestion deleteInBackground];
+                    [self.delegate didRespondToSuggestion:self];
+                    [self updateTabAlertCounts];
+                }
+                else{
+                    NSLog(@"Task not updated on Parse : %@", error.localizedDescription);
+                }
+            }];
+            completionHandler(YES);
+        }];
+        
         markCompletedAction.backgroundColor = [UIColor systemGreenColor];
         extendDueDateAction.backgroundColor = [UIColor systemOrangeColor];
+        addToLargestCategoryAction.backgroundColor = [UIColor systemOrangeColor];
+        addToMostRecentCategoryAction.backgroundColor = [UIColor systemPurpleColor];
+        swipeActions.performsFirstActionWithFullSwipe = NO;
         
         if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
             swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[markCompletedAction, extendDueDateAction]];
-            swipeActions.performsFirstActionWithFullSwipe = NO;
+        }
+        else if([suggestion.suggestionType isEqualToString:kSuggestionTypeUncategorized]){
+            swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[addToLargestCategoryAction, addToMostRecentCategoryAction]];
         }
     }
     return swipeActions;
