@@ -125,6 +125,14 @@
     return receivedSuggestionsQuery;
 }
 
+- (PFQuery*)querySuggestionsOfType:(NSString*)suggestionType Task:(TaskObject*)task{
+    PFQuery *specificSuggestionQuery = [PFQuery queryWithClassName:kSuggestionClassName];
+    [specificSuggestionQuery whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
+    [specificSuggestionQuery whereKey:kAssociatedTaskKey equalTo:task];
+    [specificSuggestionQuery whereKey:kSuggestionTypeKey equalTo:suggestionType];
+    return specificSuggestionQuery;
+}
+
 - (void)detectEmptyFeed{
     self.feedMessageLabel.hidden = !([self arrayOfTasks].count == 0);
 }
@@ -324,14 +332,17 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
 
 - (void)checkForOverdueTasks:(TaskObject*)task{
     if ([task.dueDate isEarlierThan:NSDate.date]){
-        NSLog(@"Overdue Task Detected: %@", task.taskTitle);
-        SuggestionObject *overdueSuggestion = [SuggestionObject new];
-        overdueSuggestion.associatedTask = task;
-        overdueSuggestion.suggestionType = @"Overdue";
-        overdueSuggestion.owner = PFUser.currentUser;
-        [overdueSuggestion saveInBackground];
-        [self updateNotifications];
-        
+        [[self querySuggestionsOfType:kSuggestionTypeOverdue Task:task] countObjectsInBackgroundWithBlock:^(int numOfSuggestions, NSError * _Nullable error) {
+                    if (numOfSuggestions == 0){
+                        NSLog(@"Untracked Overdue Task Detected: %@", task.taskTitle);
+                        SuggestionObject *overdueSuggestion = [SuggestionObject new];
+                        overdueSuggestion.associatedTask = task;
+                        overdueSuggestion.suggestionType = kSuggestionTypeOverdue;
+                        overdueSuggestion.owner = PFUser.currentUser;
+                        [overdueSuggestion saveInBackground];
+                        [self updateNotifications];
+                    }
+        }];
     }
 }
 
