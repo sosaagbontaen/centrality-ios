@@ -378,9 +378,8 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
             swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[markCompletedAction, extendDueDateAction]];
         }
-        //TODO : Ensure this doesn't work when no categories exist
-        else if([suggestion.suggestionType isEqualToString:kSuggestionTypeUncategorized]){
-            swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[addToLargestCategoryAction, addToMostRecentCategoryAction]];
+        else if([suggestion.suggestionType isEqualToString:kSuggestionTypeUncategorized] && [[CentralityHelpers queryForUsersCategories] countObjects] > 0){
+                swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[addToLargestCategoryAction, addToMostRecentCategoryAction]];
         }
         else if([suggestion.suggestionType isEqualToString:kSuggestionTypeUndated]){
             swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[extendDueDateAction]];

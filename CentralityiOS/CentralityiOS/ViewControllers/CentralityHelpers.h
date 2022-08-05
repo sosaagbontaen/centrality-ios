@@ -18,6 +18,7 @@
 + (NSArray<PFUser*>*)removeUser:(PFUser*)user FromArray:(NSArray<PFUser*>*)arrayToCheck;
 + (NSArray<PFUser*>*)addUser:(PFUser*)user ToArray:(NSArray<PFUser*>*)receivingArray;
 + (NSInteger)getAverageCompletionTimeInDays:(CategoryObject*)category;
++ (PFQuery*)queryForUsersCategories;
 + (CategoryObject*)getMostRecentCategory;
 + (CategoryObject*)getLargestCategory;
 @end
