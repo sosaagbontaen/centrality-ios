@@ -76,14 +76,17 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
     }
     else if ([self.kCurrentViewMode isEqualToString:kViewSuggestionsMode]){
         SuggestionObject *suggestion = self.arrayOfSuggestions[indexPath.row];
-        if ([suggestion.associatedTask fetchIfNeeded]){
+        if ([suggestion.associatedTask fetchIfNeeded] && [suggestion.associatedTask.owner fetchIfNeeded]){
             cell.taskNameLabel.text = suggestion.associatedTask.taskTitle;
             cell.taskDescLabel.text = suggestion.associatedTask.taskDesc;
             [self displaySharedUsers:suggestion.associatedTask label:cell.taskSharerLabel];
-        }
-        if ([suggestion.associatedTask.owner fetchIfNeeded]){
             cell.taskOwnerLabel.text = [NSString stringWithFormat:@"Owned by : %@", suggestion.associatedTask.owner.username];
         }
+        else{
+            [suggestion deleteInBackground];
+            [self fetchNotifications];
+        }
+        
     }
     
     
