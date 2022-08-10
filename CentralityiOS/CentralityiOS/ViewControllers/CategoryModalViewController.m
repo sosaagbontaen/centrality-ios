@@ -76,7 +76,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
                 if (self.currentTaskCategory.categoryName == category.categoryName){
-                    [self.delegate didChangeCategory:NULL toFeed:self];
+                    [self.delegate didChangeCategory:nil toFeed:self];
                 }
                 [self.arrayOfCategories[indexPath.row] deleteInBackground];
                 [self.arrayOfCategories removeObjectAtIndex:indexPath.row];

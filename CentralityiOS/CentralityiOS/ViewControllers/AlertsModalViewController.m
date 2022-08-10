@@ -116,11 +116,11 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
             }
         }
         displayMessage = [NSString stringWithFormat:@"Accessible by : %@",allUsers];
-        label.hidden = FALSE;
+        label.hidden = NO;
     }
     else{
         displayMessage = @"";
-        label.hidden = TRUE;
+        label.hidden = YES;
     }
         
     label.text = displayMessage;
