@@ -129,11 +129,11 @@
     return receivedSuggestionsQuery;
 }
 
-- (PFQuery*)querySuggestionsOfType:(NSString*)suggestionType Task:(TaskObject*)task{
+- (PFQuery*)querySuggestionsOfType:(SuggestionType)suggestionType Task:(TaskObject*)task{
     PFQuery *specificSuggestionQuery = [PFQuery queryWithClassName:kSuggestionClassName];
     [specificSuggestionQuery whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
     [specificSuggestionQuery whereKey:kAssociatedTaskKey equalTo:task];
-    [specificSuggestionQuery whereKey:kSuggestionTypeKey equalTo:suggestionType];
+    [specificSuggestionQuery whereKey:kSuggestionTypeKey equalTo:@(suggestionType)];
     return specificSuggestionQuery;
 }
 
@@ -339,17 +339,17 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
 
 - (void)checkForOverdueTasks:(TaskObject*)task{
     if ([task.dueDate isEarlierThan:NSDate.date] && ![NSDate isSameDay:task.dueDate asDate:NSDate.date] && task.isCompleted == NO){
-        [self createUniqueSuggestion:task :kSuggestionTypeOverdue];
+        [self createUniqueSuggestion:task :Overdue];
     }
 }
 
 - (void)checkForUndatedTasks:(TaskObject*)task{
     if (!task.dueDate){
-        [self createUniqueSuggestion:task :kSuggestionTypeUndated];
+        [self createUniqueSuggestion:task :Undated];
     }
 }
 
-- (void)createUniqueSuggestion:(TaskObject*)task :(NSString*)suggestionType{
+- (void)createUniqueSuggestion:(TaskObject*)task :(SuggestionType)suggestionType{
     [[self querySuggestionsOfType:suggestionType Task:task] countObjectsInBackgroundWithBlock:^(int numOfduplicates, NSError * _Nullable error) {
                 if (numOfduplicates == 0){
                     SuggestionObject *suggestion = [SuggestionObject new];
@@ -364,7 +364,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
 
 - (void)checkForUncategorizedTasks:(TaskObject*)task{
     if (!task.category){
-        [self createUniqueSuggestion:task :kSuggestionTypeUncategorized];
+        [self createUniqueSuggestion:task :Uncategorized];
     }
 }
 

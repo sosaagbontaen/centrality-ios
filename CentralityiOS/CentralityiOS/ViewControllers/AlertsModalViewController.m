@@ -66,6 +66,12 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    NSMutableDictionary<NSNumber*, NSString*>* suggestionLabelDictionary = [[NSMutableDictionary alloc] init];
+    suggestionLabelDictionary[@(Overdue)] = @"Overdue Task";
+    suggestionLabelDictionary[@(Uncategorized)] = @"Uncategorized Task";
+    suggestionLabelDictionary[@(Undated)] = @"Undated Task";
+    
     ReceiverCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReceiverCell" forIndexPath:indexPath];
     
     if ([self.kCurrentViewMode isEqualToString:kViewSharingMode]){
@@ -83,9 +89,9 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
         if ([suggestion.associatedTask fetchIfNeeded] && [suggestion.associatedTask.owner fetchIfNeeded]){
             cell.taskNameLabel.text = suggestion.associatedTask.taskTitle;
             cell.taskDescLabel.text = suggestion.associatedTask.taskDesc;
-            cell.taskOwnerLabel.text = suggestion.suggestionType;
+            cell.taskOwnerLabel.text = suggestionLabelDictionary[@(suggestion.suggestionType)];
             cell.taskOwnerLabel.backgroundColor = [UIColor systemRedColor];
-            if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
+            if (suggestion.suggestionType == Overdue){
                 cell.taskSharerLabel.hidden = NO;
                 cell.taskSharerLabel.text = [NSString stringWithFormat:@"Due %@", [DateFormatHelper formatDateAsString:suggestion.associatedTask.dueDate]];
                 cell.taskSharerLabel.backgroundColor = [UIColor systemGreenColor];
@@ -98,10 +104,7 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
             [suggestion deleteInBackground];
             [self fetchNotifications];
         }
-        
     }
-    
-    
     return cell;
 }
 
@@ -320,11 +323,11 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
             completionHandler(YES);
         }];
         
-        if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
+        if (suggestion.suggestionType == Overdue){
             extendDueDateAction.title = @"Extend due date";
             
         }
-        else if ([suggestion.suggestionType isEqualToString:kSuggestionTypeUndated]){
+        else if (suggestion.suggestionType == Undated){
             extendDueDateAction.title = @"Estimate due date";
         }
         
@@ -392,13 +395,13 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         addToMostRecentCategoryAction.backgroundColor = [UIColor systemPurpleColor];
         swipeActions.performsFirstActionWithFullSwipe = NO;
         
-        if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
+        if (suggestion.suggestionType == Overdue){
             swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[markCompletedAction, extendDueDateAction]];
         }
-        else if([suggestion.suggestionType isEqualToString:kSuggestionTypeUncategorized] && [[CentralityHelpers queryForUsersCategories] countObjects] > 0){
+        else if(suggestion.suggestionType == Uncategorized && [[CentralityHelpers queryForUsersCategories] countObjects] > 0){
                 swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[addToLargestCategoryAction, addToMostRecentCategoryAction]];
         }
-        else if([suggestion.suggestionType isEqualToString:kSuggestionTypeUndated]){
+        else if(suggestion.suggestionType == Undated){
             swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[extendDueDateAction]];
         }
     }
