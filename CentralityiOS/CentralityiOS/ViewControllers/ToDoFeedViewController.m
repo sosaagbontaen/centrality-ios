@@ -338,7 +338,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
 }
 
 - (void)checkForOverdueTasks:(TaskObject*)task{
-    if ([task.dueDate isEarlierThan:NSDate.date] && task.isCompleted == NO){
+    if ([task.dueDate isEarlierThan:NSDate.date] && ![NSDate isSameDay:task.dueDate asDate:NSDate.date] && task.isCompleted == NO){
         [self createUniqueSuggestion:task :kSuggestionTypeOverdue];
     }
 }
