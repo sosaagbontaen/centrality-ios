@@ -117,4 +117,13 @@
     return calculatedAverage;
 }
 
++ (NSMutableDictionary<NSString*, PFUser*> *)userDictionaryFromArray :(NSMutableArray*)userArray{
+    NSMutableDictionary<NSString*, PFUser*>* userDict = [[NSMutableDictionary alloc] init];
+    NSArray<PFUser*>* keysFromArray = userArray;
+    for (PFUser* user in keysFromArray) {
+        userDict[user.objectId] = user;
+    }
+    return userDict;
+}
+
 @end

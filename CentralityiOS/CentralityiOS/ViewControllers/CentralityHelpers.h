@@ -21,6 +21,7 @@
 + (PFQuery*)queryForUsersCategories;
 + (CategoryObject*)getMostRecentCategory;
 + (CategoryObject*)getLargestCategory;
++ (NSMutableDictionary<NSString*, PFUser*> *)userDictionaryFromArray :(NSMutableArray*)userArray;
 @end
 
 //Global Constants used across different View Controllers

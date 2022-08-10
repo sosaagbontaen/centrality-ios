@@ -176,7 +176,13 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
     UISwipeActionsConfiguration *swipeActions = [[UISwipeActionsConfiguration alloc] init];
     
     if ([self.kCurrentViewMode isEqualToString:kViewSharingMode]){
+        
         TaskObject *task = self.arrayOfPendingSharedTasks[indexPath.row];
+        
+        NSMutableDictionary* dictOfSharedOwners = [CentralityHelpers userDictionaryFromArray:task.sharedOwners];
+        NSMutableDictionary* dictOfReadOnlyUsers = [CentralityHelpers userDictionaryFromArray:task.readOnlyUsers];
+        NSMutableDictionary* dictOfReadAndWriteUsers = [CentralityHelpers userDictionaryFromArray:task.readAndWriteUsers];
+        NSMutableDictionary* dictOfAcceptedUsers = [CentralityHelpers userDictionaryFromArray:task.acceptedUsers];
         
         UIContextualAction *declineAction =
         [UIContextualAction contextualActionWithStyle:
@@ -191,9 +197,20 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
             
             [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
                 if (tasks != nil) {
-                    task.sharedOwners = [[CentralityHelpers removeUser:PFUser.currentUser FromArray:task.sharedOwners] mutableCopy];
-                    task.readOnlyUsers = [[CentralityHelpers removeUser:PFUser.currentUser FromArray:task.readOnlyUsers] mutableCopy];
-                    task.readAndWriteUsers = [[CentralityHelpers removeUser:PFUser.currentUser FromArray:task.readAndWriteUsers] mutableCopy];
+                    
+                    if ([dictOfSharedOwners objectForKey:PFUser.currentUser.objectId]){
+                        [dictOfSharedOwners removeObjectForKey:PFUser.currentUser.objectId];
+                        task.sharedOwners = [[dictOfSharedOwners allValues] mutableCopy];
+                    }
+                    if ([dictOfReadOnlyUsers objectForKey:PFUser.currentUser.objectId]){
+                        [dictOfReadOnlyUsers removeObjectForKey:PFUser.currentUser.objectId];
+                        task.readOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
+                    }
+                    if ([dictOfReadAndWriteUsers objectForKey:PFUser.currentUser.objectId]){
+                        [dictOfReadAndWriteUsers removeObjectForKey:PFUser.currentUser.objectId];
+                        task.readAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
+                    }
+                    
                     [task saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                         if (succeeded) {
                             [self fetchNotifications];
@@ -219,9 +236,9 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
             
             [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
                 if (tasks != nil) {
-                    if ([[CentralityHelpers getArrayOfObjectIds:task.sharedOwners] containsObject:PFUser.currentUser.objectId])
-                    {
-                    task.acceptedUsers = [[CentralityHelpers addUser:PFUser.currentUser ToArray:task.acceptedUsers] mutableCopy];
+                    if ([dictOfSharedOwners objectForKey:PFUser.currentUser.objectId]){
+                        dictOfAcceptedUsers[PFUser.currentUser.objectId] = PFUser.currentUser;
+                        task.acceptedUsers = [[dictOfAcceptedUsers allValues] mutableCopy];
                     }
                     
                     [task saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){

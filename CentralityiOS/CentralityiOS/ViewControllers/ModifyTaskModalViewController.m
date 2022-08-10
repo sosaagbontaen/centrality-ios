@@ -38,6 +38,7 @@
     IQKeyboardManager.sharedManager.enable = YES;
     [self.shareButton setTitle:[self updateShareDisplayMessage] forState:UIControlStateNormal];
     
+    
     if (!self.taskReadOnlyUsers){
         self.taskReadOnlyUsers = [[NSMutableArray alloc] init];
     }
@@ -123,7 +124,7 @@
     ShareModalViewController *shareModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ShareModalViewController"];
     shareModalVC.delegate = self;
     if (self.taskSharedOwners){
-        shareModalVC.arrayOfUsers = self.taskSharedOwners;
+        shareModalVC.arrayOfUsers = [self.taskSharedOwners mutableCopy];
     }
     else{
         shareModalVC.arrayOfUsers = [[NSMutableArray alloc]init];
@@ -191,28 +192,29 @@
 
 - (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission updateType:(NSString*)updateType{
     
+    NSMutableDictionary* dictOfSharedOwners = [CentralityHelpers userDictionaryFromArray:self.taskSharedOwners];
+    NSMutableDictionary* dictOfReadOnlyUsers = [CentralityHelpers userDictionaryFromArray:self.taskReadOnlyUsers];
+    NSMutableDictionary* dictOfReadAndWriteUsers = [CentralityHelpers userDictionaryFromArray:self.taskReadAndWriteUsers];
+    NSMutableDictionary* dictOfAcceptedUsers = [CentralityHelpers userDictionaryFromArray:self.taskAcceptedUsers];
+    
     NSMutableArray<NSString*>* userObjectIds = [CentralityHelpers getArrayOfObjectIds:self.taskSharedOwners];
     
     if(updateType == kUnshareMode){
-        for (int i = 0; i < self.taskSharedOwners.count; i++) {
-            if ([self.taskSharedOwners[i].objectId isEqualToString:user.objectId]){
-                [self.taskSharedOwners removeObjectAtIndex:i];
-            }
+        if ([dictOfSharedOwners objectForKey:user.objectId]){
+            [dictOfSharedOwners removeObjectForKey:user.objectId];
+            self.taskSharedOwners = [[dictOfSharedOwners allValues] mutableCopy];
         }
-        for (int i = 0; i < self.taskReadOnlyUsers.count; i++) {
-            if ([self.taskReadOnlyUsers[i].objectId isEqualToString:user.objectId]){
-                [self.taskReadOnlyUsers removeObjectAtIndex:i];
-            }
+        if ([dictOfReadOnlyUsers objectForKey:user.objectId]){
+            [dictOfReadOnlyUsers removeObjectForKey:user.objectId];
+            self.taskReadOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
         }
-        for (int i = 0; i < self.taskReadAndWriteUsers.count; i++) {
-            if ([self.taskReadAndWriteUsers[i].objectId isEqualToString:user.objectId]){
-                [self.taskReadAndWriteUsers removeObjectAtIndex:i];
-            }
+        if ([dictOfReadAndWriteUsers objectForKey:user.objectId]){
+            [dictOfReadAndWriteUsers removeObjectForKey:user.objectId];
+            self.taskReadAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
         }
-        for (int i = 0; i < self.taskAcceptedUsers.count; i++) {
-            if ([self.taskAcceptedUsers[i].objectId isEqualToString:user.objectId]){
-                [self.taskAcceptedUsers removeObjectAtIndex:i];
-            }
+        if ([dictOfAcceptedUsers objectForKey:user.objectId]){
+            [dictOfAcceptedUsers removeObjectForKey:user.objectId];
+            self.taskAcceptedUsers = [[dictOfAcceptedUsers allValues] mutableCopy];
         }
     }
     else if(updateType == kShareMode){
@@ -221,33 +223,36 @@
         }
         
         if (![userObjectIds containsObject:user.objectId]){
-            [self.taskSharedOwners addObject:user];
+            dictOfSharedOwners[user.objectId] = user;
+            self.taskSharedOwners = [[dictOfSharedOwners allValues] mutableCopy];
             
             if ([userPermission isEqualToString:kAccessReadOnly]){
-                [self.taskReadOnlyUsers addObject:user];
+                dictOfReadOnlyUsers[user.objectId] = user;
+                self.taskReadOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
             }
             else if([userPermission isEqualToString:kAccessReadAndWrite]){
-                [self.taskReadAndWriteUsers addObject:user];
+                dictOfReadAndWriteUsers[user.objectId] = user;
+                self.taskReadAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
+                
             }
         }
     }
     else if (updateType == kMakeReadOnlyMode){
-            for (int i = 0; i < self.taskReadAndWriteUsers.count; i++) {
-                if ([self.taskReadAndWriteUsers[i].objectId isEqualToString:user.objectId]){
-                    [self.taskReadOnlyUsers addObject:user];
-                    [self.taskReadAndWriteUsers removeObjectAtIndex:i];
-                }
-            }
+        if ([dictOfReadAndWriteUsers objectForKey:user.objectId]){
+            dictOfReadOnlyUsers[user.objectId] = user;
+            self.taskReadOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
+            [dictOfReadAndWriteUsers removeObjectForKey:user.objectId];
+            self.taskReadAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
+        }
     }
     else if (updateType == kMakeWritableMode){
-            for (int i = 0; i < self.taskReadOnlyUsers.count; i++) {
-                if ([self.taskReadOnlyUsers[i].objectId isEqualToString:user.objectId]){
-                    [self.taskReadAndWriteUsers addObject:user];
-                    [self.taskReadOnlyUsers removeObjectAtIndex:i];
-                }
-            }
+        if ([dictOfReadOnlyUsers objectForKey:user.objectId]){
+            dictOfReadAndWriteUsers[user.objectId] = user;
+            self.taskReadAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
+            [dictOfReadOnlyUsers removeObjectForKey:user.objectId];
+            self.taskReadOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
+        }
     }
-    
     
     [self.shareButton setTitle:[self updateShareDisplayMessage] forState:UIControlStateNormal];
 }
