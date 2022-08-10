@@ -190,7 +190,7 @@
     [self reloadDueDateView:item];
 }
 
-- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission updateType:(NSString*)updateType{
+- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission updateType:(PrivacyUpdateMode)updateMode{
     
     NSMutableDictionary* dictOfSharedOwners = [CentralityHelpers userDictionaryFromArray:self.taskSharedOwners];
     NSMutableDictionary* dictOfReadOnlyUsers = [CentralityHelpers userDictionaryFromArray:self.taskReadOnlyUsers];
@@ -199,7 +199,7 @@
     
     NSMutableArray<NSString*>* userObjectIds = [CentralityHelpers getArrayOfObjectIds:self.taskSharedOwners];
     
-    if(updateType == kUnshareMode){
+    if(updateMode == MakeUnshared){
         if ([dictOfSharedOwners objectForKey:user.objectId]){
             [dictOfSharedOwners removeObjectForKey:user.objectId];
             self.taskSharedOwners = [[dictOfSharedOwners allValues] mutableCopy];
@@ -217,7 +217,7 @@
             self.taskAcceptedUsers = [[dictOfAcceptedUsers allValues] mutableCopy];
         }
     }
-    else if(updateType == kShareMode){
+    else if(updateMode == MakeShared){
         if (self.taskSharedOwners == nil){
             self.taskSharedOwners = [[NSMutableArray alloc] init];
         }
@@ -237,7 +237,7 @@
             }
         }
     }
-    else if (updateType == kMakeReadOnlyMode){
+    else if (updateMode == MakeReadOnly){
         if ([dictOfReadAndWriteUsers objectForKey:user.objectId]){
             dictOfReadOnlyUsers[user.objectId] = user;
             self.taskReadOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
@@ -245,7 +245,7 @@
             self.taskReadAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
         }
     }
-    else if (updateType == kMakeWritableMode){
+    else if (updateMode == MakeWritable){
         if ([dictOfReadOnlyUsers objectForKey:user.objectId]){
             dictOfReadAndWriteUsers[user.objectId] = user;
             self.taskReadAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];

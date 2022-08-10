@@ -60,14 +60,15 @@ static NSString * const kEditTaskMode = @"Editing";
 static NSString* const kAccessReadAndWrite = @"Read and Write";
 static NSString* const kAccessReadOnly = @"Read Only";
 
-// Sharing Mode
-static NSString* const kShareMode = @"Share Mode";
-static NSString* const kUnshareMode = @"Unshare Mode";
-
 // Privacy Update Mode
-static NSString* const kMakeReadOnlyMode = @"Make Read Only";
-static NSString* const kMakeWritableMode = @"Make Writable";
+typedef NS_ENUM(NSInteger, PrivacyUpdateMode) {
+    MakeReadOnly,
+    MakeWritable,
+    MakeShared,
+    MakeUnshared
+};
 
+// Suggestipn Types
 typedef NS_ENUM(NSInteger, SuggestionType) {
     Overdue,
     Uncategorized,
