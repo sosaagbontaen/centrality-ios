@@ -13,6 +13,7 @@
 #import "DateFormatHelper.h"
 #import "CentralityHelpers.h"
 #import "NSDate+DateTools.h"
+#import "SuggestionAlgorithm.h"
 
 @interface ToDoFeedViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
@@ -107,7 +108,7 @@
 
 -(void)updateNotifications{
     if (PFUser.currentUser){
-        [[self querySuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
+        [[SuggestionAlgorithm querySuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
             [[self queryShareRequests] countObjectsInBackgroundWithBlock:^(int numberOfShareRequests, NSError *error) {
                 NSString *alertsAsString = [NSString stringWithFormat:@"%ld", (long)numberOfSuggestions + numberOfShareRequests];
                 [self.alertButton setTitle:alertsAsString forState:UIControlStateNormal];
@@ -121,20 +122,6 @@
     [receivedTasksQuery whereKey:kBySharedOwnerQueryKey equalTo:PFUser.currentUser];
     [receivedTasksQuery whereKey:kByAcceptedUsersQueryKey notEqualTo:PFUser.currentUser];
     return receivedTasksQuery;
-}
-
-- (PFQuery*)querySuggestions{
-    PFQuery *receivedSuggestionsQuery = [PFQuery queryWithClassName:kSuggestionClassName];
-    [receivedSuggestionsQuery whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
-    return receivedSuggestionsQuery;
-}
-
-- (PFQuery*)querySuggestionsOfType:(SuggestionType)suggestionType Task:(TaskObject*)task{
-    PFQuery *specificSuggestionQuery = [PFQuery queryWithClassName:kSuggestionClassName];
-    [specificSuggestionQuery whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
-    [specificSuggestionQuery whereKey:kAssociatedTaskKey equalTo:task];
-    [specificSuggestionQuery whereKey:kSuggestionTypeKey equalTo:@(suggestionType)];
-    return specificSuggestionQuery;
 }
 
 - (void)detectEmptyFeed{
@@ -202,7 +189,7 @@
     
     [cell refreshCell];
     
-    [self checkAllSuggestionRules:cell.task];
+    [SuggestionAlgorithm checkAllSuggestionRules:cell.task];
     
     return cell;
 }
@@ -331,41 +318,6 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateNotifications) userInfo:nil repeats:YES];
 }
 
-- (void)checkAllSuggestionRules:(TaskObject*)task{
-    [self checkForOverdueTasks:task];
-    [self checkForUndatedTasks:task];
-    [self checkForUncategorizedTasks:task];
-}
 
-- (void)checkForOverdueTasks:(TaskObject*)task{
-    if ([task.dueDate isEarlierThan:NSDate.date] && ![NSDate isSameDay:task.dueDate asDate:NSDate.date] && task.isCompleted == NO){
-        [self createUniqueSuggestion:task :Overdue];
-    }
-}
-
-- (void)checkForUndatedTasks:(TaskObject*)task{
-    if (!task.dueDate){
-        [self createUniqueSuggestion:task :Undated];
-    }
-}
-
-- (void)createUniqueSuggestion:(TaskObject*)task :(SuggestionType)suggestionType{
-    [[self querySuggestionsOfType:suggestionType Task:task] countObjectsInBackgroundWithBlock:^(int numOfduplicates, NSError * _Nullable error) {
-                if (numOfduplicates == 0){
-                    SuggestionObject *suggestion = [SuggestionObject new];
-                    suggestion.associatedTask = task;
-                    suggestion.suggestionType = suggestionType;
-                    suggestion.owner = PFUser.currentUser;
-                    [suggestion saveInBackground];
-                    [self updateNotifications];
-                }
-    }];
-}
-
-- (void)checkForUncategorizedTasks:(TaskObject*)task{
-    if (!task.category){
-        [self createUniqueSuggestion:task :Uncategorized];
-    }
-}
 
 @end

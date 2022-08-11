@@ -10,6 +10,7 @@
 #import "CentralityHelpers.h"
 #import "DateFormatHelper.h"
 #import "DateTools.h"
+#import "SuggestionAlgorithm.h"
 
 @interface AlertsModalViewController ()<UITableViewDelegate, UITableViewDataSource, UITabBarDelegate>
 
@@ -36,7 +37,7 @@ static AlertViewMode alertViewMode = ShareViewMode;
     [[self queryAllPendingTasks] countObjectsInBackgroundWithBlock:^(int numberOfTasks, NSError *error) {
         self.shareRequestsTabBarItem.badgeValue = [@(numberOfTasks) stringValue];
     }];
-    [[self queryForSuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
+    [[SuggestionAlgorithm querySuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
         self.taskSuggestionsTabBarItem.badgeValue = [@(numberOfSuggestions) stringValue];
     }];
 }
@@ -138,12 +139,6 @@ static AlertViewMode alertViewMode = ShareViewMode;
     return receivedTasksQuery;
 }
 
-- (PFQuery*)queryForSuggestions{
-    PFQuery *suggestionsQuery = [PFQuery queryWithClassName:kSuggestionClassName];
-    [suggestionsQuery whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
-    return suggestionsQuery;
-}
-
 - (void)fetchNotifications{
     if (alertViewMode == ShareViewMode){
         PFQuery *queryForPendingTasks = [self queryAllPendingTasks];
@@ -160,7 +155,7 @@ static AlertViewMode alertViewMode = ShareViewMode;
         }];
     }
     else if (alertViewMode == SuggestionViewMode){
-        PFQuery *queryForSuggestions = [self queryForSuggestions];
+        PFQuery *queryForSuggestions = [SuggestionAlgorithm querySuggestions];
         [queryForSuggestions findObjectsInBackgroundWithBlock:^(NSArray *suggestions, NSError *error) {
             if (suggestions != nil) {
                 self.arrayOfSuggestions = [suggestions mutableCopy];
@@ -308,7 +303,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
            __kindof UIView * _Nonnull sourceView,
            void (^ _Nonnull completionHandler)(BOOL))
          {
-            suggestion.associatedTask.dueDate = [NSDate.date dateByAddingDays:[CentralityHelpers getAverageCompletionTimeInDays:suggestion.associatedTask.category]];
+            [SuggestionAlgorithm extendDueDate:suggestion];
             [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                 if (succeeded) {
                     [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
@@ -341,11 +336,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
            __kindof UIView * _Nonnull sourceView,
            void (^ _Nonnull completionHandler)(BOOL))
          {
-            if ([suggestion.associatedTask.category fetchIfNeeded]){
-                suggestion.associatedTask.category.numberOfTasksInCategory--;
-            }
-            suggestion.associatedTask.category = [CentralityHelpers getLargestCategory];
-            suggestion.associatedTask.category.numberOfTasksInCategory++;
+            [SuggestionAlgorithm addTaskToLargestCategory:suggestion];
             [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                 if (succeeded) {
                     [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
@@ -370,11 +361,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
            __kindof UIView * _Nonnull sourceView,
            void (^ _Nonnull completionHandler)(BOOL))
          {
-            if ([suggestion.associatedTask.category fetchIfNeeded]){
-                suggestion.associatedTask.category.numberOfTasksInCategory--;
-            }
-            suggestion.associatedTask.category = [CentralityHelpers getMostRecentCategory];
-            suggestion.associatedTask.category.numberOfTasksInCategory++;
+            [SuggestionAlgorithm addTaskToNewestCategory:suggestion];
             [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                 if (succeeded) {
                     [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
