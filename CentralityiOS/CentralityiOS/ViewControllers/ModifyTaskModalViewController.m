@@ -21,10 +21,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if ([self.modifyMode isEqualToString:kEditTaskMode]){
+    if (self.modifyMode == EditTaskMode){
         [self initModalForEditTaskMode];
     }
-    else if([self.modifyMode isEqualToString:kAddTaskMode]){
+    else if(self.modifyMode == AddTaskMode){
         [self initModalForAddTaskMode];
     }
     
@@ -190,7 +190,7 @@
     [self reloadDueDateView:item];
 }
 
-- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission updateType:(PrivacyUpdateMode)updateMode{
+- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller accessStatus:(PrivacyAccessStatus)accessStatus updateType:(PrivacyUpdateMode)updateMode{
     
     NSMutableDictionary* dictOfSharedOwners = [CentralityHelpers userDictionaryFromArray:self.taskSharedOwners];
     NSMutableDictionary* dictOfReadOnlyUsers = [CentralityHelpers userDictionaryFromArray:self.taskReadOnlyUsers];
@@ -226,11 +226,11 @@
             dictOfSharedOwners[user.objectId] = user;
             self.taskSharedOwners = [[dictOfSharedOwners allValues] mutableCopy];
             
-            if ([userPermission isEqualToString:kAccessReadOnly]){
+            if (accessStatus == ReadOnlyAccess){
                 dictOfReadOnlyUsers[user.objectId] = user;
                 self.taskReadOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
             }
-            else if([userPermission isEqualToString:kAccessReadAndWrite]){
+            else if(accessStatus == ReadAndWriteAccess){
                 dictOfReadAndWriteUsers[user.objectId] = user;
                 self.taskReadAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
                 
@@ -262,7 +262,7 @@
         [CentralityHelpers showAlert:@"Empty Task Name" alertMessage:@"Please name this task" currentVC:self];
         return;
     }
-    if ([self.modifyMode isEqualToString:kAddTaskMode]){
+    if (self.modifyMode == AddTaskMode){
         TaskObject *newTask = [TaskObject new];
         newTask.owner = [PFUser currentUser];
         newTask.taskTitle = self.taskTitleInput.text;
@@ -287,7 +287,7 @@
             }
         }];
     }
-    else if([self.modifyMode isEqualToString:kEditTaskMode]){
+    else if(self.modifyMode == EditTaskMode){
         self.taskFromFeed.taskTitle = self.taskTitleInput.text;
         self.taskFromFeed.taskDesc = self.taskDescInput.text;
         if (self.taskCategory != self.taskFromFeed.category){

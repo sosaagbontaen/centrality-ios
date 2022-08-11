@@ -13,7 +13,7 @@
 @class ShareModalViewController;
 
 @protocol ShareModalViewControllerDelegate <NSObject>
-- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission updateType:(PrivacyUpdateMode)updateMode;
+- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller accessStatus:(PrivacyAccessStatus)accessStatus updateType:(PrivacyUpdateMode)updateMode;
 @end
 
 @interface ShareModalViewController : UIViewController

@@ -30,7 +30,7 @@
 @property (weak, nonatomic) TaskObject *taskFromFeed;
 @property CategoryObject *taskCategory;
 @property NSDate *taskDueDate;
-@property NSString *modifyMode;
+@property TaskModifyMode modifyMode;
 @property NSMutableArray<PFUser*>*taskSharedOwners;
 @property NSMutableArray<PFUser*>*taskReadOnlyUsers;
 @property NSMutableArray<PFUser*>*taskReadAndWriteUsers;

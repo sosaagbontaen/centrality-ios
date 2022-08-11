@@ -47,7 +47,7 @@
                                     @"Main" bundle:nil];
     ModifyTaskModalViewController *modifyTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ModifyTaskModalViewController"];
     modifyTaskModalVC.delegate = self;
-    modifyTaskModalVC.modifyMode = kAddTaskMode;
+    modifyTaskModalVC.modifyMode = AddTaskMode;
     [self presentViewController:modifyTaskModalVC animated:YES completion:^{}];
 }
 
@@ -244,7 +244,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
                                         @"Main" bundle:nil];
         ModifyTaskModalViewController *modifyTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ModifyTaskModalViewController"];
         modifyTaskModalVC.delegate = self;
-        modifyTaskModalVC.modifyMode = kEditTaskMode;
+        modifyTaskModalVC.modifyMode = EditTaskMode;
         modifyTaskModalVC.taskFromFeed = task;
         modifyTaskModalVC.taskCategory = task.category;
         modifyTaskModalVC.taskDueDate = task.dueDate;

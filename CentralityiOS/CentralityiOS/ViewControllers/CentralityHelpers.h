@@ -53,12 +53,16 @@ static NSString * const kByAcceptedUsersQueryKey = @"acceptedUsers";
 static NSString * const kByCreatedAtQueryKey = @"createdAt";
 
 // Task Modification Modes
-static NSString * const kAddTaskMode = @"Adding";
-static NSString * const kEditTaskMode = @"Editing";
+typedef NS_ENUM(NSInteger, TaskModifyMode) {
+    AddTaskMode,
+    EditTaskMode
+};
 
 // Privacy Access Setting
-static NSString* const kAccessReadAndWrite = @"Read and Write";
-static NSString* const kAccessReadOnly = @"Read Only";
+typedef NS_ENUM(NSInteger, PrivacyAccessStatus) {
+    ReadAndWriteAccess,
+    ReadOnlyAccess
+};
 
 // Privacy Update Mode
 typedef NS_ENUM(NSInteger, PrivacyUpdateMode) {
@@ -68,7 +72,7 @@ typedef NS_ENUM(NSInteger, PrivacyUpdateMode) {
     MakeUnshared
 };
 
-// Suggestipn Types
+// Suggestion Types
 typedef NS_ENUM(NSInteger, SuggestionType) {
     Overdue,
     Uncategorized,
