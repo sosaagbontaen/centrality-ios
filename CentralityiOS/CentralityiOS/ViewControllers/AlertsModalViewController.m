@@ -17,14 +17,13 @@
 
 static NSString* const kShareTabTitle = @"Share Requests";
 static NSString* const kTaskSuggestions = @"Task Suggestions";
-static NSString* const kViewSharingMode = @"Sharing Mode";
-static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
+static AlertViewMode alertViewMode = ShareViewMode;
+
 
 @implementation AlertsModalViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.kCurrentViewMode = kViewSharingMode;
     self.receiverTableView.dataSource = self;
     self.receiverTableView.delegate = self;
     self.modeTabBar.delegate = self;
@@ -47,19 +46,22 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
-    if ([item isEqual:self.shareRequestsTabBarItem] && !([self.kCurrentViewMode isEqualToString: kViewSharingMode])){
-        self.kCurrentViewMode = kViewSharingMode;
+    if ([item isEqual:self.shareRequestsTabBarItem] && !(alertViewMode == ShareViewMode)){
+        alertViewMode = ShareViewMode;
     }
-    else if ([item isEqual:self.taskSuggestionsTabBarItem] && !([self.kCurrentViewMode isEqualToString: kViewSuggestionsMode])){
-        self.kCurrentViewMode = kViewSuggestionsMode;
+    else if ([item isEqual:self.taskSuggestionsTabBarItem] && !(alertViewMode == SuggestionViewMode)){
+        alertViewMode = SuggestionViewMode;
     }
     [self fetchNotifications];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger rowCount = self.arrayOfPendingSharedTasks.count;
-    if ([self.kCurrentViewMode isEqualToString:kViewSuggestionsMode]){
+    NSInteger rowCount = 0;
+    if (alertViewMode == SuggestionViewMode){
         rowCount = self.arrayOfSuggestions.count;
+    }
+    else if (alertViewMode == ShareViewMode){
+        rowCount = self.arrayOfPendingSharedTasks.count;
     }
     return rowCount;
 }
@@ -74,7 +76,7 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
     
     ReceiverCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReceiverCell" forIndexPath:indexPath];
     
-    if ([self.kCurrentViewMode isEqualToString:kViewSharingMode]){
+    if (alertViewMode == ShareViewMode){
         TaskObject *task = self.arrayOfPendingSharedTasks[indexPath.row];
         [task.owner fetchIfNeeded];
         cell.taskNameLabel.text = task.taskTitle;
@@ -84,7 +86,7 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
         cell.taskSharerLabel.backgroundColor = [UIColor systemPurpleColor];
         [self displaySharedUsers:task label:cell.taskSharerLabel];
     }
-    else if ([self.kCurrentViewMode isEqualToString:kViewSuggestionsMode]){
+    else if (alertViewMode == SuggestionViewMode){
         SuggestionObject *suggestion = self.arrayOfSuggestions[indexPath.row];
         if ([suggestion.associatedTask fetchIfNeeded] && [suggestion.associatedTask.owner fetchIfNeeded]){
             cell.taskNameLabel.text = suggestion.associatedTask.taskTitle;
@@ -143,7 +145,7 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
 }
 
 - (void)fetchNotifications{
-    if ([self.kCurrentViewMode isEqualToString:kViewSharingMode]){
+    if (alertViewMode == ShareViewMode){
         PFQuery *queryForPendingTasks = [self queryAllPendingTasks];
         
         [queryForPendingTasks findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
@@ -157,7 +159,7 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
             }
         }];
     }
-    else if ([self.kCurrentViewMode isEqualToString:kViewSuggestionsMode]){
+    else if (alertViewMode == SuggestionViewMode){
         PFQuery *queryForSuggestions = [self queryForSuggestions];
         [queryForSuggestions findObjectsInBackgroundWithBlock:^(NSArray *suggestions, NSError *error) {
             if (suggestions != nil) {
@@ -178,7 +180,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UISwipeActionsConfiguration *swipeActions = [[UISwipeActionsConfiguration alloc] init];
     
-    if ([self.kCurrentViewMode isEqualToString:kViewSharingMode]){
+    if (alertViewMode == ShareViewMode){
         
         TaskObject *task = self.arrayOfPendingSharedTasks[indexPath.row];
         
@@ -270,7 +272,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         swipeActions.performsFirstActionWithFullSwipe = NO;
         }
     
-    if ([self.kCurrentViewMode isEqualToString:kViewSuggestionsMode]){
+    if (alertViewMode == SuggestionViewMode){
         SuggestionObject *suggestion = self.arrayOfSuggestions[indexPath.row];
         
         UIContextualAction *markCompletedAction =

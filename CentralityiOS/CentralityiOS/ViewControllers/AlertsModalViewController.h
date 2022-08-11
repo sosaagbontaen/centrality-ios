@@ -25,5 +25,9 @@
 @property (weak, nonatomic) IBOutlet UITabBarItem *shareRequestsTabBarItem;
 @property (weak, nonatomic) IBOutlet UITabBarItem *taskSuggestionsTabBarItem;
 @property (nonatomic, weak) id <AlertsModalViewControllerDelegate> delegate;
-@property NSString* kCurrentViewMode;
 @end
+
+typedef NS_ENUM(NSInteger, AlertViewMode) {
+    ShareViewMode,
+    SuggestionViewMode
+};
