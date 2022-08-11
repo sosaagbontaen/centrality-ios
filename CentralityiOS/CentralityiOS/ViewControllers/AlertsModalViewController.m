@@ -33,7 +33,7 @@ static AlertViewMode alertViewMode = ShareViewMode;
 }
 
 - (void)updateTabAlertCounts{
-        
+    
     [[self queryAllPendingTasks] countObjectsInBackgroundWithBlock:^(int numberOfTasks, NSError *error) {
         self.shareRequestsTabBarItem.badgeValue = [@(numberOfTasks) stringValue];
     }];
@@ -128,7 +128,7 @@ static AlertViewMode alertViewMode = ShareViewMode;
         displayMessage = @"";
         label.hidden = YES;
     }
-        
+    
     label.text = displayMessage;
 }
 
@@ -262,10 +262,10 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         
         acceptAction.backgroundColor = [UIColor systemGreenColor];
         declineAction.backgroundColor = [UIColor systemRedColor];
-
+        
         swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[declineAction, acceptAction]];
         swipeActions.performsFirstActionWithFullSwipe = NO;
-        }
+    }
     
     if (alertViewMode == SuggestionViewMode){
         SuggestionObject *suggestion = self.arrayOfSuggestions[indexPath.row];
@@ -388,7 +388,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
             swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[markCompletedAction, extendDueDateAction]];
         }
         else if(suggestion.suggestionType == Uncategorized && [[CentralityHelpers queryForUsersCategories] countObjects] > 0){
-                swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[addToLargestCategoryAction, addToMostRecentCategoryAction]];
+            swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[addToLargestCategoryAction, addToMostRecentCategoryAction]];
         }
         else if(suggestion.suggestionType == Undated){
             swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[extendDueDateAction]];

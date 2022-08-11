@@ -35,7 +35,7 @@
 }
 - (IBAction)viewAlertsAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
-                                    @"Main" bundle:nil];
+                                @"Main" bundle:nil];
     AlertsModalViewController *alertsModalVC = [storyboard instantiateViewControllerWithIdentifier:@"AlertsModalViewController"];
     alertsModalVC.delegate = self;
     alertsModalVC.arrayOfSuggestions = [[NSMutableArray alloc] init];
@@ -45,7 +45,7 @@
 
 - (IBAction)newTaskAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
-                                    @"Main" bundle:nil];
+                                @"Main" bundle:nil];
     ModifyTaskModalViewController *modifyTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ModifyTaskModalViewController"];
     modifyTaskModalVC.delegate = self;
     modifyTaskModalVC.modifyMode = AddTaskMode;
@@ -170,7 +170,7 @@
                 [allUsers appendString:@", "];
             }
         }
-         
+        
         NSString* displayMessage = [[NSString alloc]init];
         if ([task.owner.objectId isEqualToString:PFUser.currentUser.objectId]){
             displayMessage = [NSString stringWithFormat:@"Shared with : %@",allUsers];
@@ -228,7 +228,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     UIContextualAction *editAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Edit" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
-                                        @"Main" bundle:nil];
+                                    @"Main" bundle:nil];
         ModifyTaskModalViewController *modifyTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ModifyTaskModalViewController"];
         modifyTaskModalVC.delegate = self;
         modifyTaskModalVC.modifyMode = EditTaskMode;
@@ -297,7 +297,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[unfollowAction]];
     }
     else if ([PFUser.currentUser.objectId isEqualToString:task.owner.objectId]){
-    swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, editAction]];
+        swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, editAction]];
     }
     else{
         swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[editAction, unfollowAction]];

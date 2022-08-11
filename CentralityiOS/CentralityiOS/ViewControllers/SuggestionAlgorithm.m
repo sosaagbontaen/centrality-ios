@@ -33,13 +33,13 @@
 
 + (void)createUniqueSuggestion:(TaskObject*)task :(SuggestionType)suggestionType{
     [[self querySuggestionsOfType:suggestionType Task:task] countObjectsInBackgroundWithBlock:^(int numOfduplicates, NSError * _Nullable error) {
-                if (numOfduplicates == 0){
-                    SuggestionObject *suggestion = [SuggestionObject new];
-                    suggestion.associatedTask = task;
-                    suggestion.suggestionType = suggestionType;
-                    suggestion.owner = PFUser.currentUser;
-                    [suggestion saveInBackground];
-                }
+        if (numOfduplicates == 0){
+            SuggestionObject *suggestion = [SuggestionObject new];
+            suggestion.associatedTask = task;
+            suggestion.suggestionType = suggestionType;
+            suggestion.owner = PFUser.currentUser;
+            [suggestion saveInBackground];
+        }
     }];
 }
 

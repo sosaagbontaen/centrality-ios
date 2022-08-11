@@ -15,14 +15,14 @@ static NSString * const kFileName = @"Keys";
 static NSString * const kFileExtension = @"plist";
 
 @implementation AppDelegate
-    
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ParseClientConfiguration *config = [ParseClientConfiguration  configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
-
+        
         NSString *path = [[NSBundle mainBundle] pathForResource: kFileName ofType: kFileExtension];
         NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: path];
-
+        
         NSString *applicationId = [dict objectForKey: kApplicationIdObj];
         NSString *clientKey = [dict objectForKey: kClientKeyObj];
         
@@ -30,7 +30,7 @@ static NSString * const kFileExtension = @"plist";
         configuration.clientKey = [NSString stringWithFormat: @"%@", clientKey];
         configuration.server = kServerURL;
     }];
-
+    
     [Parse initializeWithConfiguration:config];
     return YES;
 }

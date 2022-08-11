@@ -61,7 +61,7 @@
     NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:textField.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
     textField.attributedText = toInput;
-
+    
     [self highlightKeyword:[DetectableKeywords getTodayKeywords] inInputField:textField newDate:NSDate.date];
     [self highlightKeyword:[DetectableKeywords getTomorrowKeywords] inInputField:textField newDate:[NSDate.date dateByAddingDays:1]];
     [self highlightKeyword:[DetectableKeywords getYesterdayKeywords] inInputField:textField newDate:[NSDate.date dateBySubtractingDays:1]];
@@ -79,7 +79,7 @@
             
             NSRange highlightRange = NSMakeRange(subStringStartLocation, subStringLength);
             [toInput addAttribute:NSBackgroundColorAttributeName value:[UIColor systemGreenColor] range:highlightRange];
-
+            
             self.taskDueDate = newDate;
             [self reloadDueDateView:self.taskDueDate];
             
@@ -120,7 +120,7 @@
 }
 - (IBAction)shareAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
-                                    @"Main" bundle:nil];
+                                @"Main" bundle:nil];
     ShareModalViewController *shareModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ShareModalViewController"];
     shareModalVC.delegate = self;
     if (self.taskSharedOwners){
@@ -144,7 +144,7 @@
 
 - (IBAction)changeCategoryAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
-                                    @"Main" bundle:nil];
+                                @"Main" bundle:nil];
     CategoryModalViewController *categoryTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"CategoryModalViewController"];
     categoryTaskModalVC.delegate = self;
     categoryTaskModalVC.currentTaskCategory = self.taskCategory;
@@ -153,7 +153,7 @@
 
 - (IBAction)changeDueDateAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
-                                    @"Main" bundle:nil];
+                                @"Main" bundle:nil];
     DueDateModalViewController *dueDateModalVC = [storyboard instantiateViewControllerWithIdentifier:@"DueDateModalViewController"];
     dueDateModalVC.delegate = self;
     dueDateModalVC.previouslySelectedDate = self.taskDueDate;
