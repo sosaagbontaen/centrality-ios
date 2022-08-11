@@ -285,8 +285,8 @@
                     <tabBarItem key="tabBarItem" title="To-Do List" image="checkmark.circle.fill" catalog="system" id="5mO-aP-hML"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="fyC-yW-c8r"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="tUv-VH-TNo">
-                        <rect key="frame" x="0.0" y="44" width="428" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="tUv-VH-TNo">
+                        <rect key="frame" x="0.0" y="44" width="428" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -408,14 +408,43 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nGp-i0-udn">
+                                <rect key="frame" x="20" y="416" width="388" height="199.99999999999997"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eHx-UB-CR1" customClass="ChartMarkerView">
+                                        <rect key="frame" x="8" y="8" width="372" height="184"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Quick Stats" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w9C-qy-G1F">
-                                <rect key="frame" x="20" y="124.66666666666669" width="101" height="24"/>
+                                <rect key="frame" x="20" y="124.66666666666669" width="137" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visual Analytics" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9L-ZA-W1a">
+                                <rect key="frame" x="20" y="389" width="137" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Range : Today" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B61-F7-RuN">
                                 <rect key="frame" x="305" y="128.66666666666666" width="103" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Range : Today" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZQd-dm-138">
+                                <rect key="frame" x="305" y="391" width="103" height="20"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -427,12 +456,18 @@
                             <constraint firstItem="w9C-qy-G1F" firstAttribute="leading" secondItem="rJH-y3-AnD" secondAttribute="leading" id="4qY-5W-ktg"/>
                             <constraint firstItem="FXG-5M-hsB" firstAttribute="trailing" secondItem="jd2-CN-br7" secondAttribute="trailing" constant="20" id="9wm-I5-ihY"/>
                             <constraint firstItem="jd2-CN-br7" firstAttribute="top" secondItem="w9C-qy-G1F" secondAttribute="bottom" constant="5" id="GgH-dX-o8f"/>
+                            <constraint firstItem="f9L-ZA-W1a" firstAttribute="trailing" secondItem="w9C-qy-G1F" secondAttribute="trailing" id="Hzg-X8-eio"/>
                             <constraint firstItem="jd2-CN-br7" firstAttribute="leading" secondItem="w9C-qy-G1F" secondAttribute="leading" id="Iaf-Ky-iBS"/>
+                            <constraint firstItem="ZQd-dm-138" firstAttribute="leading" secondItem="B61-F7-RuN" secondAttribute="leading" id="Kyg-z3-RHD"/>
                             <constraint firstItem="FXG-5M-hsB" firstAttribute="trailing" secondItem="rJH-y3-AnD" secondAttribute="trailing" id="M72-Hd-aZl"/>
+                            <constraint firstItem="ZQd-dm-138" firstAttribute="trailing" secondItem="B61-F7-RuN" secondAttribute="trailing" id="XLf-vh-MOz"/>
                             <constraint firstItem="rJH-y3-AnD" firstAttribute="leading" secondItem="FXG-5M-hsB" secondAttribute="leading" constant="20" id="YHj-0k-1nS"/>
                             <constraint firstItem="rJH-y3-AnD" firstAttribute="top" secondItem="FXG-5M-hsB" secondAttribute="top" constant="5" id="YVC-NX-hEJ"/>
+                            <constraint firstItem="ZQd-dm-138" firstAttribute="top" secondItem="jd2-CN-br7" secondAttribute="bottom" constant="37.333333333333371" id="Z4W-Vk-pLH"/>
                             <constraint firstItem="w9C-qy-G1F" firstAttribute="top" secondItem="rJH-y3-AnD" secondAttribute="bottom" constant="30" id="a1f-3b-YbE"/>
                             <constraint firstItem="B61-F7-RuN" firstAttribute="bottom" secondItem="w9C-qy-G1F" secondAttribute="bottom" id="c0e-Pk-gRt"/>
+                            <constraint firstItem="f9L-ZA-W1a" firstAttribute="top" secondItem="jd2-CN-br7" secondAttribute="bottom" constant="35.333333333333371" id="d62-ez-reg"/>
+                            <constraint firstItem="f9L-ZA-W1a" firstAttribute="leading" secondItem="w9C-qy-G1F" secondAttribute="leading" id="jEx-hR-UX9"/>
                             <constraint firstItem="B61-F7-RuN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="w9C-qy-G1F" secondAttribute="trailing" constant="5" id="kmB-UP-aRc"/>
                             <constraint firstItem="B61-F7-RuN" firstAttribute="trailing" secondItem="jd2-CN-br7" secondAttribute="trailing" id="zOB-1K-RQ1"/>
                         </constraints>
