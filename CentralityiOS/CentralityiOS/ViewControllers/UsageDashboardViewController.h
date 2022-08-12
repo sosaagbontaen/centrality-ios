@@ -14,6 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 @protected
     NSArray *parties;
 }
+@property (weak, nonatomic) IBOutlet UILabel *dueTasksCounter;
+@property (weak, nonatomic) IBOutlet UILabel *completedTasksCounter;
+@property (weak, nonatomic) IBOutlet UILabel *completionRateCounter;
+@property (weak, nonatomic) IBOutlet UILabel *collaboratorsCounter;
+
 @property (nonatomic, strong) NSArray *options;
 @end
 

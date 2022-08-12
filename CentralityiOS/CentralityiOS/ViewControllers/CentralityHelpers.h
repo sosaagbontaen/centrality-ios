@@ -12,16 +12,27 @@
 
 @interface CentralityHelpers : UIViewController
 //Frequently Used Methods across different View Controllers
+// Utility helper methods
 + (void)showAlert:(NSString*)alertTitle alertMessage:(NSString*)alertMessage currentVC:(UIViewController*)currentVC;
-+ (NSMutableArray*)getArrayOfObjectIds:(NSMutableArray*)userArray;
 + (void) updateLabel:(UILabel*)label newText:(NSString*)newText isHidden:(BOOL)isHidden;
+
+// User helper methods
 + (NSArray<PFUser*>*)removeUser:(PFUser*)user FromArray:(NSArray<PFUser*>*)arrayToCheck;
 + (NSArray<PFUser*>*)addUser:(PFUser*)user ToArray:(NSArray<PFUser*>*)receivingArray;
++ (NSMutableArray*)getArrayOfObjectIds:(NSMutableArray*)userArray;
++ (NSMutableDictionary<NSString*, PFUser*> *)userDictionaryFromArray :(NSMutableArray*)userArray;
+
+// Calculation helper methods
 + (NSInteger)getAverageCompletionTimeInDays:(CategoryObject*)category;
-+ (PFQuery*)queryForUsersCategories;
+
+// Category helper methods
 + (CategoryObject*)getMostRecentCategory;
 + (CategoryObject*)getLargestCategory;
-+ (NSMutableDictionary<NSString*, PFUser*> *)userDictionaryFromArray :(NSMutableArray*)userArray;
+
+//Query helper methods
++ (PFQuery*)queryForUsersCompletedTasks;
++ (PFQuery*)queryForUsersCategories;
++ (PFQuery*)queryForTasksRoughDueByDate;
 @end
 
 //Global Constants used across different View Controllers
@@ -47,6 +58,8 @@ static NSString * const kSuggestionClassName = @"SuggestionObject";
 static NSString * const kAssociatedTaskKey = @"associatedTask";
 static NSString * const kSuggestionTypeKey = @"suggestionType";
 static NSString * const kByDateCompletedKey = @"dateCompleted";
+static NSString * const kByDueDateKey = @"dueDate";
+static NSString * const kIsCompletedKey = @"isCompleted";
 static NSString * const kByOwnerQueryKey = @"owner";
 static NSString * const kBySharedOwnerQueryKey = @"sharedOwners";
 static NSString * const kByAcceptedUsersQueryKey = @"acceptedUsers";
