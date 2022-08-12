@@ -379,10 +379,10 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nGp-i0-udn">
-                                <rect key="frame" x="20" y="416" width="388" height="200"/>
+                                <rect key="frame" x="20" y="416" width="388" height="300"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eHx-UB-CR1" customClass="PieChartView" customModule="Charts">
-                                        <rect key="frame" x="0.0" y="0.0" width="388" height="200"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="388" height="300"/>
                                         <color key="backgroundColor" systemColor="systemPinkColor"/>
                                     </view>
                                 </subviews>
@@ -390,7 +390,7 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="eHx-UB-CR1" secondAttribute="bottom" id="Gfh-zo-ekd"/>
                                     <constraint firstItem="eHx-UB-CR1" firstAttribute="leading" secondItem="nGp-i0-udn" secondAttribute="leading" id="Ict-C6-kvv"/>
-                                    <constraint firstAttribute="height" constant="200" id="J6p-Mz-2iX"/>
+                                    <constraint firstAttribute="height" constant="300" id="J6p-Mz-2iX"/>
                                     <constraint firstAttribute="trailing" secondItem="eHx-UB-CR1" secondAttribute="trailing" id="KaW-Y1-Wo7"/>
                                     <constraint firstItem="eHx-UB-CR1" firstAttribute="centerX" secondItem="nGp-i0-udn" secondAttribute="centerX" id="YQI-HO-hSP"/>
                                     <constraint firstItem="eHx-UB-CR1" firstAttribute="top" secondItem="nGp-i0-udn" secondAttribute="top" id="jX7-eH-AZ6"/>
@@ -428,14 +428,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OWe-YF-9IL">
-                                <rect key="frame" x="345" y="381" width="63" height="31"/>
+                                <rect key="frame" x="324" y="381" width="84" height="31"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Today">
+                                <buttonConfiguration key="configuration" style="filled" title="Category">
                                     <color key="baseBackgroundColor" systemColor="systemGreenColor"/>
                                 </buttonConfiguration>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Range:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2mP-cc-sZD">
-                                <rect key="frame" x="289" y="387" width="51" height="19.333333333333314"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View by:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2mP-cc-sZD">
+                                <rect key="frame" x="257" y="386.66666666666669" width="62" height="20"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

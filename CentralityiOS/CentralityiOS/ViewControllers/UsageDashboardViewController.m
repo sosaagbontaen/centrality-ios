@@ -27,7 +27,7 @@ NSTimer* refreshTimer;
 - (void)updateCounters{
     NSMutableSet<NSString*>* setOfCollaborators = [[NSMutableSet alloc] init];
     [[CentralityHelpers queryForUsersCompletedTasks] countObjectsInBackgroundWithBlock:^(int numOfCompletedTasks, NSError * _Nullable error) {
-        [self transitionLabel:self.completedTasksCounter newText:[@(numOfCompletedTasks) stringValue]];
+        [CentralityHelpers transitionLabel:self.completedTasksCounter newText:[@(numOfCompletedTasks) stringValue]];
         
         [[CentralityHelpers queryForTasksRoughDueByDate] findObjectsInBackgroundWithBlock:^(NSArray * _Nullable tasksDueRoughlyToday, NSError * _Nullable error) {
             int numOftasksDueExactlyToday = 0;
@@ -38,23 +38,15 @@ NSTimer* refreshTimer;
                     [setOfCollaborators removeObject:PFUser.currentUser.objectId];
                 }
             }
-            [self transitionLabel:self.dueTasksCounter newText:[@(numOftasksDueExactlyToday) stringValue]];
-            [self transitionLabel:self.collaboratorsCounter newText:[@(setOfCollaborators.count) stringValue]];
+            [CentralityHelpers transitionLabel:self.dueTasksCounter newText:[@(numOftasksDueExactlyToday) stringValue]];
+            [CentralityHelpers transitionLabel:self.collaboratorsCounter newText:[@(setOfCollaborators.count) stringValue]];
             NSString* completionRateString = [NSString stringWithFormat:@"%@%%",[@(((float)numOfCompletedTasks/(float)numOftasksDueExactlyToday) * 100) stringValue]];
-            [self transitionLabel:self.completionRateCounter newText:completionRateString];
+            [CentralityHelpers transitionLabel:self.completionRateCounter newText:completionRateString];
+            [self loadChartWithCategories];
         }];
         
     }];
     
-}
-
-- (void)transitionLabel :(UILabel*)label newText:(NSString*)newText{
-    [UILabel transitionWithView:label
-                       duration:0.25f
-                        options:UIViewAnimationOptionTransitionCrossDissolve
-                     animations:^{
-        label.text = newText;
-    } completion:nil];
 }
 
 - (void)viewDidLoad {
@@ -80,12 +72,16 @@ NSTimer* refreshTimer;
     self.pieChart.entryLabelColor = UIColor.blackColor;
     self.pieChart.entryLabelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:12.f];
     
+    
+    
+    [self.pieChart animateWithXAxisDuration:1.4 easingOption:ChartEasingOptionEaseOutBack];
+}
+
+- (void)loadChartWithCategories{
     [[CentralityHelpers queryForUsersCategories] findObjectsInBackgroundWithBlock:^(NSArray * _Nullable categoriesFromQuery, NSError * _Nullable error) {
         self.userCategories = [categoriesFromQuery mutableCopy];
         [self updateChartData];
     }];
-    
-    [self.pieChart animateWithXAxisDuration:1.4 easingOption:ChartEasingOptionEaseOutBack];
 }
 
 - (void)setupPieChartView:(PieChartView *)chartView
@@ -133,17 +129,16 @@ NSTimer* refreshTimer;
         return;
     }
     
-    [self setDataCount:self.userCategories.count range:1];
+    [self setDataCount:self.userCategories.count];
 }
 
-- (void)setDataCount:(NSUInteger)count range:(double)range
+- (void)setDataCount:(NSUInteger)count
 {
-    double mult = range;
-    
     NSMutableArray *values = [[NSMutableArray alloc] init];
     for (int i = 0; i < count; i++)
     {
-        [values addObject:[[PieChartDataEntry alloc] initWithValue:(arc4random_uniform(mult) + mult / 5) label:self.userCategories[i % self.userCategories.count].categoryName icon: [UIImage imageNamed:@"icon"]]];
+        CategoryObject* currentCategory = self.userCategories[i % self.userCategories.count];
+        [values addObject:[[PieChartDataEntry alloc] initWithValue:currentCategory.numberOfTasksInCategory label:currentCategory.categoryName icon: [UIImage imageNamed:@"icon"]]];
     }
     
     PieChartDataSet *dataSet = [[PieChartDataSet alloc] initWithEntries:values label:@"Tasks by Category"];

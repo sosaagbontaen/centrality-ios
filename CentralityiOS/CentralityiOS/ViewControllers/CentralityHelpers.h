@@ -15,6 +15,7 @@
 // Utility helper methods
 + (void)showAlert:(NSString*)alertTitle alertMessage:(NSString*)alertMessage currentVC:(UIViewController*)currentVC;
 + (void) updateLabel:(UILabel*)label newText:(NSString*)newText isHidden:(BOOL)isHidden;
++ (void)transitionLabel :(UILabel*)label newText:(NSString*)newText;
 
 // User helper methods
 + (NSArray<PFUser*>*)removeUser:(PFUser*)user FromArray:(NSArray<PFUser*>*)arrayToCheck;

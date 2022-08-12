@@ -39,6 +39,15 @@
     label.hidden = isHidden;
 }
 
++ (void)transitionLabel :(UILabel*)label newText:(NSString*)newText{
+    [UILabel transitionWithView:label
+                       duration:0.25f
+                        options:UIViewAnimationOptionTransitionCrossDissolve
+                     animations:^{
+        label.text = newText;
+    } completion:nil];
+}
+
 + (NSArray<PFUser*>*)removeUser:(PFUser*)user FromArray:(NSArray<PFUser*>*)arrayToCheck{
     for (int i = 0; i < arrayToCheck.count; i++) {
         if ([arrayToCheck[i].objectId isEqualToString:user.objectId]){
