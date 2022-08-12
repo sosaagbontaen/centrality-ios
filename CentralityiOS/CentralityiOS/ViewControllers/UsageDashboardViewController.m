@@ -15,18 +15,16 @@
 
 @interface UsageDashboardViewController ()<ChartViewDelegate>
 @property (weak, nonatomic) IBOutlet PieChartView *pieChart;
-@property (nonatomic, strong) IBOutlet UISlider *sliderX;
-@property (nonatomic, strong) IBOutlet UISlider *sliderY;
-@property (nonatomic, strong) IBOutlet UITextField *sliderTextX;
-@property (nonatomic, strong) IBOutlet UITextField *sliderTextY;
+@property NSMutableArray<CategoryObject*>* userCategories;
 @property (nonatomic, assign) BOOL shouldHideData;
+
 @end
 
 NSTimer* refreshTimer;
 
 @implementation UsageDashboardViewController
 
-- (void)refreshCounters{
+- (void)updateCounters{
     NSMutableSet<NSString*>* setOfCollaborators = [[NSMutableSet alloc] init];
     [[CentralityHelpers queryForUsersCompletedTasks] countObjectsInBackgroundWithBlock:^(int numOfCompletedTasks, NSError * _Nullable error) {
         [self transitionLabel:self.completedTasksCounter newText:[@(numOfCompletedTasks) stringValue]];
@@ -61,25 +59,11 @@ NSTimer* refreshTimer;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    refreshTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(refreshCounters) userInfo:nil repeats:YES];
+    
+    refreshTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateCounters) userInfo:nil repeats:YES];
+    
     
     self.title = @"Pie Chart";
-    
-    self.options = @[
-        @{@"key": @"toggleValues", @"label": @"Toggle Y-Values"},
-        @{@"key": @"toggleXValues", @"label": @"Toggle X-Values"},
-        @{@"key": @"togglePercent", @"label": @"Toggle Percent"},
-        @{@"key": @"toggleHole", @"label": @"Toggle Hole"},
-        @{@"key": @"toggleIcons", @"label": @"Toggle Icons"},
-        @{@"key": @"toggleLabelsMinimumAngle", @"label": @"Toggle Labels Minimum Angle"},
-        @{@"key": @"animateX", @"label": @"Animate X"},
-        @{@"key": @"animateY", @"label": @"Animate Y"},
-        @{@"key": @"animateXY", @"label": @"Animate XY"},
-        @{@"key": @"spin", @"label": @"Spin"},
-        @{@"key": @"drawCenter", @"label": @"Draw CenterText"},
-        @{@"key": @"saveToGallery", @"label": @"Save to Camera Roll"},
-        @{@"key": @"toggleData", @"label": @"Toggle Data"},
-    ];
     
     [self setupPieChartView:self.pieChart];
     self.pieChart.delegate = self;
@@ -96,9 +80,10 @@ NSTimer* refreshTimer;
     self.pieChart.entryLabelColor = UIColor.blackColor;
     self.pieChart.entryLabelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:12.f];
     
-    self.sliderX.value = 4.0;
-    self.sliderY.value = 100.0;
-    [self slidersValueChanged:nil];
+    [[CentralityHelpers queryForUsersCategories] findObjectsInBackgroundWithBlock:^(NSArray * _Nullable categoriesFromQuery, NSError * _Nullable error) {
+        self.userCategories = [categoriesFromQuery mutableCopy];
+        [self updateChartData];
+    }];
     
     [self.pieChart animateWithXAxisDuration:1.4 easingOption:ChartEasingOptionEaseOutBack];
 }
@@ -118,9 +103,9 @@ NSTimer* refreshTimer;
     paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
     paragraphStyle.alignment = NSTextAlignmentCenter;
     
-    NSMutableAttributedString *centerText = [[NSMutableAttributedString alloc] initWithString:@"Tasks Completed"];
+    NSMutableAttributedString *centerText = [[NSMutableAttributedString alloc] initWithString:@"Tasks\nby Category"];
     [centerText setAttributes:@{
-        NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Light" size:13.f],
+        NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Light" size:11.f],
         NSParagraphStyleAttributeName: paragraphStyle
     } range:NSMakeRange(0, centerText.length)];
     chartView.centerAttributedText = centerText;
@@ -148,29 +133,20 @@ NSTimer* refreshTimer;
         return;
     }
     
-    [self setDataCount:self.sliderX.value range:self.sliderY.value];
+    [self setDataCount:self.userCategories.count range:1];
 }
 
-- (IBAction)slidersValueChanged:(id)sender
-{
-    self.sliderTextX.text = [@((int)_sliderX.value) stringValue];
-    self.sliderTextY.text = [@((int)_sliderY.value) stringValue];
-    
-    [self updateChartData];
-}
-
-- (void)setDataCount:(int)count range:(double)range
+- (void)setDataCount:(NSUInteger)count range:(double)range
 {
     double mult = range;
     
     NSMutableArray *values = [[NSMutableArray alloc] init];
-    
     for (int i = 0; i < count; i++)
     {
-        [values addObject:[[PieChartDataEntry alloc] initWithValue:(arc4random_uniform(mult) + mult / 5) label:parties[i % parties.count] icon: [UIImage imageNamed:@"icon"]]];
+        [values addObject:[[PieChartDataEntry alloc] initWithValue:(arc4random_uniform(mult) + mult / 5) label:self.userCategories[i % self.userCategories.count].categoryName icon: [UIImage imageNamed:@"icon"]]];
     }
     
-    PieChartDataSet *dataSet = [[PieChartDataSet alloc] initWithEntries:values label:@"Completed Tasks"];
+    PieChartDataSet *dataSet = [[PieChartDataSet alloc] initWithEntries:values label:@"Tasks by Category"];
     
     dataSet.drawIconsEnabled = NO;
     

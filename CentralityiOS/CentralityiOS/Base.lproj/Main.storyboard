@@ -414,32 +414,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="xty-0f-Fny">
-                                <rect key="frame" x="29" y="637" width="118" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="slidersValueChanged:" destination="HsB-q5-1Nv" eventType="valueChanged" id="KQ6-ZT-Hut"/>
-                                </connections>
-                            </slider>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="NMZ-DN-KKb">
-                                <rect key="frame" x="292" y="637" width="118" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="slidersValueChanged:" destination="HsB-q5-1Nv" eventType="valueChanged" id="V0B-00-m50"/>
-                                </connections>
-                            </slider>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Me8-53-QYE">
-                                <rect key="frame" x="40" y="674" width="97" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fOc-Kc-ZQC">
-                                <rect key="frame" x="303" y="674" width="97" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="27b-Xj-LHn">
                                 <rect key="frame" x="345" y="117.66666666666669" width="63" height="31"/>
                                 <state key="normal" title="Button"/>
@@ -505,10 +479,6 @@
                         <outlet property="completionRateCounter" destination="v01-X9-PYF" id="yTx-CZ-A37"/>
                         <outlet property="dueTasksCounter" destination="nGB-Ma-kFT" id="DYB-9d-wvO"/>
                         <outlet property="pieChart" destination="eHx-UB-CR1" id="AS7-hB-Mdc"/>
-                        <outlet property="sliderTextX" destination="Me8-53-QYE" id="eYh-6Y-gYG"/>
-                        <outlet property="sliderTextY" destination="fOc-Kc-ZQC" id="0IM-Zd-zhG"/>
-                        <outlet property="sliderX" destination="xty-0f-Fny" id="e3g-i3-6lc"/>
-                        <outlet property="sliderY" destination="NMZ-DN-KKb" id="sG3-8p-l7C"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mbw-Ni-m6u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
