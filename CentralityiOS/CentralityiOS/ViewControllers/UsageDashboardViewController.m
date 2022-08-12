@@ -148,7 +148,7 @@ NSTimer* refreshTimer;
     dataSet.sliceSpace = 2.0;
     dataSet.iconsOffset = CGPointMake(0, 40);
     
-    // add a lot of colors
+    // Category Colors can be customized here
     
     NSMutableArray *colors = [[NSMutableArray alloc] init];
     [colors addObjectsFromArray:ChartColorTemplates.vordiplom];
@@ -168,21 +168,10 @@ NSTimer* refreshTimer;
     pFormatter.multiplier = @1.f;
     pFormatter.percentSymbol = @" %";
     [data setValueFormatter:[[ChartDefaultValueFormatter alloc] initWithFormatter:pFormatter]];
-    [data setValueFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:11.f]];
+    [data setValueFont:[UIFont fontWithName:@"Arial" size:11.f]];
     [data setValueTextColor:UIColor.blackColor];
     
     self.pieChart.data = data;
     [self.pieChart highlightValues:nil];
 }
-
-- (void)chartValueSelected:(ChartViewBase * __nonnull)chartView entry:(ChartDataEntry * __nonnull)entry highlight:(ChartHighlight * __nonnull)highlight
-{
-    NSLog(@"chartValueSelected");
-}
-
-- (void)chartValueNothingSelected:(ChartViewBase * __nonnull)chartView
-{
-    NSLog(@"chartValueNothingSelected");
-}
-
 @end
