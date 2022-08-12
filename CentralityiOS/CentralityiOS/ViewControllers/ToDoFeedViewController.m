@@ -20,10 +20,13 @@
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @end
 
+NSTimer* notificationTimer;
+
 @implementation ToDoFeedViewController
 
 - (IBAction)logoutAction:(id)sender {
     [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
+        [notificationTimer invalidate];
         SceneDelegate *mySceneDelegate = (SceneDelegate * ) UIApplication.sharedApplication.connectedScenes.allObjects.firstObject.delegate;
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         if ([mySceneDelegate.window.rootViewController isKindOfClass:[UITabBarController self]]){
@@ -108,7 +111,7 @@
 }
 
 -(void)updateNotifications{
-    if (PFUser.currentUser){
+    if ([PFUser currentUser]){
         [[SuggestionAlgorithm querySuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
             [[self queryShareRequests] countObjectsInBackgroundWithBlock:^(int numberOfShareRequests, NSError *error) {
                 NSString *alertsAsString = [NSString stringWithFormat:@"%ld", (long)numberOfSuggestions + numberOfShareRequests];
@@ -319,7 +322,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchTasks) forControlEvents:UIControlEventValueChanged];
     [self.taskTableView insertSubview:self.refreshControl atIndex:0];
-    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateNotifications) userInfo:nil repeats:YES];
+    notificationTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateNotifications) userInfo:nil repeats:YES];
 }
 
 
