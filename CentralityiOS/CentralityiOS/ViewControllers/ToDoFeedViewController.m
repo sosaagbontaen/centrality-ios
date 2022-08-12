@@ -16,6 +16,7 @@
 #import "SuggestionAlgorithm.h"
 
 @interface ToDoFeedViewController () <UITableViewDelegate, UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UITabBarItem *tabButton;
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @end
 
@@ -76,7 +77,7 @@
     [self fetchTasks];
 }
 
-- (PFQuery*)makeQuery{
+- (PFQuery*)taskQuery{
     PFQuery *tasksOwnedByMe = [PFQuery queryWithClassName:kTaskClassName];
     [tasksOwnedByMe whereKey:kByOwnerQueryKey equalTo:[PFUser currentUser]];
     
@@ -91,7 +92,7 @@
 }
 
 - (void)fetchTasks{
-    PFQuery *queryForFeedTasks = [self makeQuery];
+    PFQuery *queryForFeedTasks = [self taskQuery];
     
     [queryForFeedTasks findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
         if (tasks != nil) {
@@ -113,6 +114,9 @@
                 NSString *alertsAsString = [NSString stringWithFormat:@"%ld", (long)numberOfSuggestions + numberOfShareRequests];
                 [self.alertButton setTitle:alertsAsString forState:UIControlStateNormal];
             }];
+        }];
+        [[self taskQuery] countObjectsInBackgroundWithBlock:^(int taskCount, NSError * _Nullable error) {
+            self.tabButton.badgeValue = [@(taskCount) stringValue];
         }];
     }
 }
@@ -206,7 +210,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Delete" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
-        PFQuery *query = [self makeQuery];
+        PFQuery *query = [self taskQuery];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
@@ -246,7 +250,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     UIContextualAction *unfollowAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Unfollow" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
         
-        PFQuery *query = [self makeQuery];
+        PFQuery *query = [self taskQuery];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
