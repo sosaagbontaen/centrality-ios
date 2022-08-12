@@ -10,6 +10,7 @@
 #import "CentralityHelpers.h"
 #import "DateFormatHelper.h"
 #import "DateTools.h"
+#import "SuggestionAlgorithm.h"
 
 @interface AlertsModalViewController ()<UITableViewDelegate, UITableViewDataSource, UITabBarDelegate>
 
@@ -17,14 +18,13 @@
 
 static NSString* const kShareTabTitle = @"Share Requests";
 static NSString* const kTaskSuggestions = @"Task Suggestions";
-static NSString* const kViewSharingMode = @"Sharing Mode";
-static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
+static AlertViewMode alertViewMode = ShareViewMode;
+
 
 @implementation AlertsModalViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.kCurrentViewMode = kViewSharingMode;
     self.receiverTableView.dataSource = self;
     self.receiverTableView.delegate = self;
     self.modeTabBar.delegate = self;
@@ -33,11 +33,11 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
 }
 
 - (void)updateTabAlertCounts{
-        
+    
     [[self queryAllPendingTasks] countObjectsInBackgroundWithBlock:^(int numberOfTasks, NSError *error) {
         self.shareRequestsTabBarItem.badgeValue = [@(numberOfTasks) stringValue];
     }];
-    [[self queryForSuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
+    [[SuggestionAlgorithm querySuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
         self.taskSuggestionsTabBarItem.badgeValue = [@(numberOfSuggestions) stringValue];
     }];
 }
@@ -47,28 +47,37 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
-    if ([item isEqual:self.shareRequestsTabBarItem] && !([self.kCurrentViewMode isEqualToString: kViewSharingMode])){
-        self.kCurrentViewMode = kViewSharingMode;
+    if ([item isEqual:self.shareRequestsTabBarItem] && !(alertViewMode == ShareViewMode)){
+        alertViewMode = ShareViewMode;
     }
-    else if ([item isEqual:self.taskSuggestionsTabBarItem] && !([self.kCurrentViewMode isEqualToString: kViewSuggestionsMode])){
-        self.kCurrentViewMode = kViewSuggestionsMode;
+    else if ([item isEqual:self.taskSuggestionsTabBarItem] && !(alertViewMode == SuggestionViewMode)){
+        alertViewMode = SuggestionViewMode;
     }
     [self fetchNotifications];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger rowCount = self.arrayOfPendingSharedTasks.count;
-    if ([self.kCurrentViewMode isEqualToString:kViewSuggestionsMode]){
+    NSInteger rowCount = 0;
+    if (alertViewMode == SuggestionViewMode){
         rowCount = self.arrayOfSuggestions.count;
+    }
+    else if (alertViewMode == ShareViewMode){
+        rowCount = self.arrayOfPendingSharedTasks.count;
     }
     return rowCount;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    NSMutableDictionary<NSNumber*, NSString*>* suggestionLabelDictionary = [[NSMutableDictionary alloc] init];
+    suggestionLabelDictionary[@(Overdue)] = @"Overdue Task";
+    suggestionLabelDictionary[@(Uncategorized)] = @"Uncategorized Task";
+    suggestionLabelDictionary[@(Undated)] = @"Undated Task";
+    
     ReceiverCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReceiverCell" forIndexPath:indexPath];
     
-    if ([self.kCurrentViewMode isEqualToString:kViewSharingMode]){
+    if (alertViewMode == ShareViewMode){
         TaskObject *task = self.arrayOfPendingSharedTasks[indexPath.row];
         [task.owner fetchIfNeeded];
         cell.taskNameLabel.text = task.taskTitle;
@@ -78,14 +87,14 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
         cell.taskSharerLabel.backgroundColor = [UIColor systemPurpleColor];
         [self displaySharedUsers:task label:cell.taskSharerLabel];
     }
-    else if ([self.kCurrentViewMode isEqualToString:kViewSuggestionsMode]){
+    else if (alertViewMode == SuggestionViewMode){
         SuggestionObject *suggestion = self.arrayOfSuggestions[indexPath.row];
         if ([suggestion.associatedTask fetchIfNeeded] && [suggestion.associatedTask.owner fetchIfNeeded]){
             cell.taskNameLabel.text = suggestion.associatedTask.taskTitle;
             cell.taskDescLabel.text = suggestion.associatedTask.taskDesc;
-            cell.taskOwnerLabel.text = suggestion.suggestionType;
+            cell.taskOwnerLabel.text = suggestionLabelDictionary[@(suggestion.suggestionType)];
             cell.taskOwnerLabel.backgroundColor = [UIColor systemRedColor];
-            if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
+            if (suggestion.suggestionType == Overdue){
                 cell.taskSharerLabel.hidden = NO;
                 cell.taskSharerLabel.text = [NSString stringWithFormat:@"Due %@", [DateFormatHelper formatDateAsString:suggestion.associatedTask.dueDate]];
                 cell.taskSharerLabel.backgroundColor = [UIColor systemGreenColor];
@@ -98,10 +107,7 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
             [suggestion deleteInBackground];
             [self fetchNotifications];
         }
-        
     }
-    
-    
     return cell;
 }
 
@@ -116,13 +122,13 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
             }
         }
         displayMessage = [NSString stringWithFormat:@"Accessible by : %@",allUsers];
-        label.hidden = FALSE;
+        label.hidden = NO;
     }
     else{
         displayMessage = @"";
-        label.hidden = TRUE;
+        label.hidden = YES;
     }
-        
+    
     label.text = displayMessage;
 }
 
@@ -133,14 +139,8 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
     return receivedTasksQuery;
 }
 
-- (PFQuery*)queryForSuggestions{
-    PFQuery *suggestionsQuery = [PFQuery queryWithClassName:kSuggestionClassName];
-    [suggestionsQuery whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
-    return suggestionsQuery;
-}
-
 - (void)fetchNotifications{
-    if ([self.kCurrentViewMode isEqualToString:kViewSharingMode]){
+    if (alertViewMode == ShareViewMode){
         PFQuery *queryForPendingTasks = [self queryAllPendingTasks];
         
         [queryForPendingTasks findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
@@ -154,8 +154,8 @@ static NSString* const kViewSuggestionsMode = @"Suggestions Mode";
             }
         }];
     }
-    else if ([self.kCurrentViewMode isEqualToString:kViewSuggestionsMode]){
-        PFQuery *queryForSuggestions = [self queryForSuggestions];
+    else if (alertViewMode == SuggestionViewMode){
+        PFQuery *queryForSuggestions = [SuggestionAlgorithm querySuggestions];
         [queryForSuggestions findObjectsInBackgroundWithBlock:^(NSArray *suggestions, NSError *error) {
             if (suggestions != nil) {
                 self.arrayOfSuggestions = [suggestions mutableCopy];
@@ -175,8 +175,14 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UISwipeActionsConfiguration *swipeActions = [[UISwipeActionsConfiguration alloc] init];
     
-    if ([self.kCurrentViewMode isEqualToString:kViewSharingMode]){
+    if (alertViewMode == ShareViewMode){
+        
         TaskObject *task = self.arrayOfPendingSharedTasks[indexPath.row];
+        
+        NSMutableDictionary* dictOfSharedOwners = [CentralityHelpers userDictionaryFromArray:task.sharedOwners];
+        NSMutableDictionary* dictOfReadOnlyUsers = [CentralityHelpers userDictionaryFromArray:task.readOnlyUsers];
+        NSMutableDictionary* dictOfReadAndWriteUsers = [CentralityHelpers userDictionaryFromArray:task.readAndWriteUsers];
+        NSMutableDictionary* dictOfAcceptedUsers = [CentralityHelpers userDictionaryFromArray:task.acceptedUsers];
         
         UIContextualAction *declineAction =
         [UIContextualAction contextualActionWithStyle:
@@ -191,9 +197,20 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
             
             [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
                 if (tasks != nil) {
-                    task.sharedOwners = [[CentralityHelpers removeUser:PFUser.currentUser FromArray:task.sharedOwners] mutableCopy];
-                    task.readOnlyUsers = [[CentralityHelpers removeUser:PFUser.currentUser FromArray:task.readOnlyUsers] mutableCopy];
-                    task.readAndWriteUsers = [[CentralityHelpers removeUser:PFUser.currentUser FromArray:task.readAndWriteUsers] mutableCopy];
+                    
+                    if ([dictOfSharedOwners objectForKey:PFUser.currentUser.objectId]){
+                        [dictOfSharedOwners removeObjectForKey:PFUser.currentUser.objectId];
+                        task.sharedOwners = [[dictOfSharedOwners allValues] mutableCopy];
+                    }
+                    if ([dictOfReadOnlyUsers objectForKey:PFUser.currentUser.objectId]){
+                        [dictOfReadOnlyUsers removeObjectForKey:PFUser.currentUser.objectId];
+                        task.readOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
+                    }
+                    if ([dictOfReadAndWriteUsers objectForKey:PFUser.currentUser.objectId]){
+                        [dictOfReadAndWriteUsers removeObjectForKey:PFUser.currentUser.objectId];
+                        task.readAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
+                    }
+                    
                     [task saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                         if (succeeded) {
                             [self fetchNotifications];
@@ -219,9 +236,9 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
             
             [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
                 if (tasks != nil) {
-                    if ([[CentralityHelpers getArrayOfObjectIds:task.sharedOwners] containsObject:PFUser.currentUser.objectId])
-                    {
-                    task.acceptedUsers = [[CentralityHelpers addUser:PFUser.currentUser ToArray:task.acceptedUsers] mutableCopy];
+                    if ([dictOfSharedOwners objectForKey:PFUser.currentUser.objectId]){
+                        dictOfAcceptedUsers[PFUser.currentUser.objectId] = PFUser.currentUser;
+                        task.acceptedUsers = [[dictOfAcceptedUsers allValues] mutableCopy];
                     }
                     
                     [task saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
@@ -245,12 +262,12 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         
         acceptAction.backgroundColor = [UIColor systemGreenColor];
         declineAction.backgroundColor = [UIColor systemRedColor];
-
+        
         swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[declineAction, acceptAction]];
         swipeActions.performsFirstActionWithFullSwipe = NO;
-        }
+    }
     
-    if ([self.kCurrentViewMode isEqualToString:kViewSuggestionsMode]){
+    if (alertViewMode == SuggestionViewMode){
         SuggestionObject *suggestion = self.arrayOfSuggestions[indexPath.row];
         
         UIContextualAction *markCompletedAction =
@@ -286,7 +303,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
            __kindof UIView * _Nonnull sourceView,
            void (^ _Nonnull completionHandler)(BOOL))
          {
-            suggestion.associatedTask.dueDate = [NSDate.date dateByAddingDays:[CentralityHelpers getAverageCompletionTimeInDays:suggestion.associatedTask.category]];
+            [SuggestionAlgorithm extendDueDate:suggestion];
             [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                 if (succeeded) {
                     [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
@@ -303,11 +320,11 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
             completionHandler(YES);
         }];
         
-        if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
+        if (suggestion.suggestionType == Overdue){
             extendDueDateAction.title = @"Extend due date";
             
         }
-        else if ([suggestion.suggestionType isEqualToString:kSuggestionTypeUndated]){
+        else if (suggestion.suggestionType == Undated){
             extendDueDateAction.title = @"Estimate due date";
         }
         
@@ -319,11 +336,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
            __kindof UIView * _Nonnull sourceView,
            void (^ _Nonnull completionHandler)(BOOL))
          {
-            if ([suggestion.associatedTask.category fetchIfNeeded]){
-                suggestion.associatedTask.category.numberOfTasksInCategory--;
-            }
-            suggestion.associatedTask.category = [CentralityHelpers getLargestCategory];
-            suggestion.associatedTask.category.numberOfTasksInCategory++;
+            [SuggestionAlgorithm addTaskToLargestCategory:suggestion];
             [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                 if (succeeded) {
                     [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
@@ -348,11 +361,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
            __kindof UIView * _Nonnull sourceView,
            void (^ _Nonnull completionHandler)(BOOL))
          {
-            if ([suggestion.associatedTask.category fetchIfNeeded]){
-                suggestion.associatedTask.category.numberOfTasksInCategory--;
-            }
-            suggestion.associatedTask.category = [CentralityHelpers getMostRecentCategory];
-            suggestion.associatedTask.category.numberOfTasksInCategory++;
+            [SuggestionAlgorithm addTaskToNewestCategory:suggestion];
             [suggestion saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                 if (succeeded) {
                     [self.arrayOfSuggestions removeObjectAtIndex:indexPath.row];
@@ -375,13 +384,13 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
         addToMostRecentCategoryAction.backgroundColor = [UIColor systemPurpleColor];
         swipeActions.performsFirstActionWithFullSwipe = NO;
         
-        if ([suggestion.suggestionType isEqualToString:kSuggestionTypeOverdue]){
+        if (suggestion.suggestionType == Overdue){
             swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[markCompletedAction, extendDueDateAction]];
         }
-        else if([suggestion.suggestionType isEqualToString:kSuggestionTypeUncategorized] && [[CentralityHelpers queryForUsersCategories] countObjects] > 0){
-                swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[addToLargestCategoryAction, addToMostRecentCategoryAction]];
+        else if(suggestion.suggestionType == Uncategorized && [[CentralityHelpers queryForUsersCategories] countObjects] > 0){
+            swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[addToLargestCategoryAction, addToMostRecentCategoryAction]];
         }
-        else if([suggestion.suggestionType isEqualToString:kSuggestionTypeUndated]){
+        else if(suggestion.suggestionType == Undated){
             swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[extendDueDateAction]];
         }
     }

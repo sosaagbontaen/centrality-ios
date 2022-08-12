@@ -7,13 +7,14 @@
 
 #import <Parse/Parse.h>
 #import "TaskObject.h"
+#import "CentralityHelpers.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SuggestionObject : PFObject<PFSubclassing>
 @property TaskObject *associatedTask;
 @property (nonatomic, strong) PFUser *owner;
-@property (nonatomic, strong) NSString *suggestionType;
+@property (nonatomic) SuggestionType suggestionType;
 @end
 
 NS_ASSUME_NONNULL_END

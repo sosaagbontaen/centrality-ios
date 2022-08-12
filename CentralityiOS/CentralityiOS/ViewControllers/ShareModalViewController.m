@@ -90,13 +90,17 @@
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView
 trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    PFUser* selectedUser = self.arrayOfUsers[indexPath.row];
+    NSMutableDictionary* dictOfReadOnlyUsers = [CentralityHelpers userDictionaryFromArray:self.taskToUpdate.readOnlyUsers];
+    NSMutableDictionary* dictOfReadAndWriteUsers = [CentralityHelpers userDictionaryFromArray:self.taskToUpdate.readAndWriteUsers];
+    
     UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Unshare" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
         PFQuery *query = [self queryAllSharedUsers];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
             if (users != nil) {
-                [self.delegate didUpdateSharing:self.arrayOfUsers[indexPath.row] toFeed:self userPermission:kAccessReadAndWrite updateType:kUnshareMode];
+                [self.delegate didUpdateSharing:self.arrayOfUsers[indexPath.row] toFeed:self accessStatus:ReadAndWriteAccess updateType:MakeUnshared];
                 [self.arrayOfUsers removeObjectAtIndex:indexPath.row];
                 [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                 [self fetchUsers];
@@ -115,7 +119,13 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
             if (users != nil) {
-                [self.delegate didUpdateSharing:self.arrayOfUsers[indexPath.row] toFeed:self userPermission:@"" updateType:kMakeReadOnlyMode];
+                [self.delegate didUpdateSharing:self.arrayOfUsers[indexPath.row] toFeed:self accessStatus:ReadOnlyAccess updateType:MakeReadOnly];
+                if ([dictOfReadAndWriteUsers objectForKey:selectedUser.objectId]){
+                    dictOfReadOnlyUsers[selectedUser.objectId] = selectedUser;
+                    self.taskToUpdate.readOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
+                    [dictOfReadAndWriteUsers removeObjectForKey:selectedUser.objectId];
+                    self.taskToUpdate.readAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
+                }
                 [self fetchUsers];
             } else {
                 NSLog(@"%@", error.localizedDescription);
@@ -131,7 +141,13 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
             if (users != nil) {
-                [self.delegate didUpdateSharing:self.arrayOfUsers[indexPath.row] toFeed:self userPermission:@"" updateType:kMakeWritableMode];
+                [self.delegate didUpdateSharing:selectedUser toFeed:self accessStatus:ReadAndWriteAccess updateType:MakeWritable];
+                if ([dictOfReadOnlyUsers objectForKey:selectedUser.objectId]){
+                    dictOfReadAndWriteUsers[selectedUser.objectId] = selectedUser;
+                    self.taskToUpdate.readAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
+                    [dictOfReadOnlyUsers removeObjectForKey:selectedUser.objectId];
+                    self.taskToUpdate.readOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
+                }
                 [self fetchUsers];
             } else {
                 NSLog(@"%@", error.localizedDescription);
@@ -144,10 +160,10 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     allowEditingAction.backgroundColor = [UIColor systemTealColor];
     readOnlyAction.backgroundColor = [UIColor systemOrangeColor];
     deleteAction.backgroundColor = [UIColor systemRedColor];
-
+    
     UISwipeActionsConfiguration *swipeActions;
     if (![self.arrayOfUsers[indexPath.row].objectId isEqualToString: self.taskToUpdate.owner.objectId] && [PFUser.currentUser.objectId isEqualToString:self.taskToUpdate.owner.objectId]){
-    swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, readOnlyAction, allowEditingAction]];
+        swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, readOnlyAction, allowEditingAction]];
     }
     swipeActions.performsFirstActionWithFullSwipe = NO;
     return swipeActions;
@@ -163,7 +179,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     PFUser* userToAdd = [query getFirstObject];
     if (userToAdd){
         if (![userToAdd.objectId isEqualToString:PFUser.currentUser.objectId]){
-            [self.delegate didUpdateSharing:userToAdd toFeed:self userPermission:kAccessReadAndWrite updateType:kShareMode];
+            [self.delegate didUpdateSharing:userToAdd toFeed:self accessStatus:ReadAndWriteAccess updateType:MakeShared];
             [self.arrayOfUsers addObject:userToAdd];
             [self fetchUsers];
         }

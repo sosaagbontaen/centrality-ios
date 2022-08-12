@@ -21,10 +21,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if ([self.modifyMode isEqualToString:kEditTaskMode]){
+    if (self.modifyMode == EditTaskMode){
         [self initModalForEditTaskMode];
     }
-    else if([self.modifyMode isEqualToString:kAddTaskMode]){
+    else if(self.modifyMode == AddTaskMode){
         [self initModalForAddTaskMode];
     }
     
@@ -37,6 +37,7 @@
     self.taskDescInput.delegate = self;
     IQKeyboardManager.sharedManager.enable = YES;
     [self.shareButton setTitle:[self updateShareDisplayMessage] forState:UIControlStateNormal];
+    
     
     if (!self.taskReadOnlyUsers){
         self.taskReadOnlyUsers = [[NSMutableArray alloc] init];
@@ -51,12 +52,8 @@
 
 - (NSString*)updateShareDisplayMessage{
     NSString* shareDisplayMessage = [[NSString alloc]init];
-    if (self.taskSharedOwners.count == 1){
-        shareDisplayMessage = @"Sharing w/ 1 user";
-    }
-    else{
-        shareDisplayMessage = [NSString stringWithFormat:@"Sharing w/ %lu users",(unsigned long)self.taskSharedOwners.count];
-    }
+    shareDisplayMessage = [NSString stringWithFormat:@"Sharing w/ %lu user",(unsigned long)self.taskSharedOwners.count];
+    shareDisplayMessage = (self.taskSharedOwners.count != 1) ? [shareDisplayMessage stringByAppendingString:@"s"] : shareDisplayMessage;
     return shareDisplayMessage;
 }
 
@@ -64,7 +61,7 @@
     NSMutableAttributedString *toInput = [[NSMutableAttributedString alloc] initWithString:textField.text attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
     textField.attributedText = toInput;
-
+    
     [self highlightKeyword:[DetectableKeywords getTodayKeywords] inInputField:textField newDate:NSDate.date];
     [self highlightKeyword:[DetectableKeywords getTomorrowKeywords] inInputField:textField newDate:[NSDate.date dateByAddingDays:1]];
     [self highlightKeyword:[DetectableKeywords getYesterdayKeywords] inInputField:textField newDate:[NSDate.date dateBySubtractingDays:1]];
@@ -82,7 +79,7 @@
             
             NSRange highlightRange = NSMakeRange(subStringStartLocation, subStringLength);
             [toInput addAttribute:NSBackgroundColorAttributeName value:[UIColor systemGreenColor] range:highlightRange];
-
+            
             self.taskDueDate = newDate;
             [self reloadDueDateView:self.taskDueDate];
             
@@ -123,11 +120,11 @@
 }
 - (IBAction)shareAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
-                                    @"Main" bundle:nil];
+                                @"Main" bundle:nil];
     ShareModalViewController *shareModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ShareModalViewController"];
     shareModalVC.delegate = self;
     if (self.taskSharedOwners){
-        shareModalVC.arrayOfUsers = self.taskSharedOwners;
+        shareModalVC.arrayOfUsers = [self.taskSharedOwners mutableCopy];
     }
     else{
         shareModalVC.arrayOfUsers = [[NSMutableArray alloc]init];
@@ -147,7 +144,7 @@
 
 - (IBAction)changeCategoryAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
-                                    @"Main" bundle:nil];
+                                @"Main" bundle:nil];
     CategoryModalViewController *categoryTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"CategoryModalViewController"];
     categoryTaskModalVC.delegate = self;
     categoryTaskModalVC.currentTaskCategory = self.taskCategory;
@@ -156,7 +153,7 @@
 
 - (IBAction)changeDueDateAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
-                                    @"Main" bundle:nil];
+                                @"Main" bundle:nil];
     DueDateModalViewController *dueDateModalVC = [storyboard instantiateViewControllerWithIdentifier:@"DueDateModalViewController"];
     dueDateModalVC.delegate = self;
     dueDateModalVC.previouslySelectedDate = self.taskDueDate;
@@ -193,65 +190,69 @@
     [self reloadDueDateView:item];
 }
 
-- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission updateType:(NSString*)updateType{
+- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller accessStatus:(PrivacyAccessStatus)accessStatus updateType:(PrivacyUpdateMode)updateMode{
+    
+    NSMutableDictionary* dictOfSharedOwners = [CentralityHelpers userDictionaryFromArray:self.taskSharedOwners];
+    NSMutableDictionary* dictOfReadOnlyUsers = [CentralityHelpers userDictionaryFromArray:self.taskReadOnlyUsers];
+    NSMutableDictionary* dictOfReadAndWriteUsers = [CentralityHelpers userDictionaryFromArray:self.taskReadAndWriteUsers];
+    NSMutableDictionary* dictOfAcceptedUsers = [CentralityHelpers userDictionaryFromArray:self.taskAcceptedUsers];
     
     NSMutableArray<NSString*>* userObjectIds = [CentralityHelpers getArrayOfObjectIds:self.taskSharedOwners];
     
-    if(updateType == kUnshareMode){
-        for (int i = 0; i < self.taskSharedOwners.count; i++) {
-            if ([self.taskSharedOwners[i].objectId isEqualToString:user.objectId]){
-                [self.taskSharedOwners removeObjectAtIndex:i];
-            }
+    if(updateMode == MakeUnshared){
+        if ([dictOfSharedOwners objectForKey:user.objectId]){
+            [dictOfSharedOwners removeObjectForKey:user.objectId];
+            self.taskSharedOwners = [[dictOfSharedOwners allValues] mutableCopy];
         }
-        for (int i = 0; i < self.taskReadOnlyUsers.count; i++) {
-            if ([self.taskReadOnlyUsers[i].objectId isEqualToString:user.objectId]){
-                [self.taskReadOnlyUsers removeObjectAtIndex:i];
-            }
+        if ([dictOfReadOnlyUsers objectForKey:user.objectId]){
+            [dictOfReadOnlyUsers removeObjectForKey:user.objectId];
+            self.taskReadOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
         }
-        for (int i = 0; i < self.taskReadAndWriteUsers.count; i++) {
-            if ([self.taskReadAndWriteUsers[i].objectId isEqualToString:user.objectId]){
-                [self.taskReadAndWriteUsers removeObjectAtIndex:i];
-            }
+        if ([dictOfReadAndWriteUsers objectForKey:user.objectId]){
+            [dictOfReadAndWriteUsers removeObjectForKey:user.objectId];
+            self.taskReadAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
         }
-        for (int i = 0; i < self.taskAcceptedUsers.count; i++) {
-            if ([self.taskAcceptedUsers[i].objectId isEqualToString:user.objectId]){
-                [self.taskAcceptedUsers removeObjectAtIndex:i];
-            }
+        if ([dictOfAcceptedUsers objectForKey:user.objectId]){
+            [dictOfAcceptedUsers removeObjectForKey:user.objectId];
+            self.taskAcceptedUsers = [[dictOfAcceptedUsers allValues] mutableCopy];
         }
     }
-    else if(updateType == kShareMode){
+    else if(updateMode == MakeShared){
         if (self.taskSharedOwners == nil){
             self.taskSharedOwners = [[NSMutableArray alloc] init];
         }
         
         if (![userObjectIds containsObject:user.objectId]){
-            [self.taskSharedOwners addObject:user];
+            dictOfSharedOwners[user.objectId] = user;
+            self.taskSharedOwners = [[dictOfSharedOwners allValues] mutableCopy];
             
-            if ([userPermission isEqualToString:kAccessReadOnly]){
-                [self.taskReadOnlyUsers addObject:user];
+            if (accessStatus == ReadOnlyAccess){
+                dictOfReadOnlyUsers[user.objectId] = user;
+                self.taskReadOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
             }
-            else if([userPermission isEqualToString:kAccessReadAndWrite]){
-                [self.taskReadAndWriteUsers addObject:user];
+            else if(accessStatus == ReadAndWriteAccess){
+                dictOfReadAndWriteUsers[user.objectId] = user;
+                self.taskReadAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
+                
             }
         }
     }
-    else if (updateType == kMakeReadOnlyMode){
-            for (int i = 0; i < self.taskReadAndWriteUsers.count; i++) {
-                if ([self.taskReadAndWriteUsers[i].objectId isEqualToString:user.objectId]){
-                    [self.taskReadOnlyUsers addObject:user];
-                    [self.taskReadAndWriteUsers removeObjectAtIndex:i];
-                }
-            }
+    else if (updateMode == MakeReadOnly){
+        if ([dictOfReadAndWriteUsers objectForKey:user.objectId]){
+            dictOfReadOnlyUsers[user.objectId] = user;
+            self.taskReadOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
+            [dictOfReadAndWriteUsers removeObjectForKey:user.objectId];
+            self.taskReadAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
+        }
     }
-    else if (updateType == kMakeWritableMode){
-            for (int i = 0; i < self.taskReadOnlyUsers.count; i++) {
-                if ([self.taskReadOnlyUsers[i].objectId isEqualToString:user.objectId]){
-                    [self.taskReadAndWriteUsers addObject:user];
-                    [self.taskReadOnlyUsers removeObjectAtIndex:i];
-                }
-            }
+    else if (updateMode == MakeWritable){
+        if ([dictOfReadOnlyUsers objectForKey:user.objectId]){
+            dictOfReadAndWriteUsers[user.objectId] = user;
+            self.taskReadAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
+            [dictOfReadOnlyUsers removeObjectForKey:user.objectId];
+            self.taskReadOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
+        }
     }
-    
     
     [self.shareButton setTitle:[self updateShareDisplayMessage] forState:UIControlStateNormal];
 }
@@ -261,7 +262,7 @@
         [CentralityHelpers showAlert:@"Empty Task Name" alertMessage:@"Please name this task" currentVC:self];
         return;
     }
-    if ([self.modifyMode isEqualToString:kAddTaskMode]){
+    if (self.modifyMode == AddTaskMode){
         TaskObject *newTask = [TaskObject new];
         newTask.owner = [PFUser currentUser];
         newTask.taskTitle = self.taskTitleInput.text;
@@ -286,7 +287,7 @@
             }
         }];
     }
-    else if([self.modifyMode isEqualToString:kEditTaskMode]){
+    else if(self.modifyMode == EditTaskMode){
         self.taskFromFeed.taskTitle = self.taskTitleInput.text;
         self.taskFromFeed.taskDesc = self.taskDescInput.text;
         if (self.taskCategory != self.taskFromFeed.category){

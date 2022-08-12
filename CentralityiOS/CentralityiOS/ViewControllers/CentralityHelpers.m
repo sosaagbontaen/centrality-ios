@@ -16,12 +16,12 @@
 
 + (void)showAlert:(NSString*)alertTitle alertMessage:(NSString*)alertMessage currentVC:(UIViewController*)currentVC{
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:alertTitle
-                               message:alertMessage
-                               preferredStyle:UIAlertControllerStyleAlert];
-
+                                                                   message:alertMessage
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action) {}];
-
+                                                          handler:^(UIAlertAction * action) {}];
+    
     [alert addAction:defaultAction];
     [currentVC presentViewController:alert animated:YES completion:nil];
 }
@@ -51,9 +51,9 @@
 }
 
 + (NSArray<PFUser*>*)addUser:(PFUser*)user ToArray:(NSArray<PFUser*>*)receivingArray{
-        NSMutableArray *copyOfReceivingArray = [receivingArray mutableCopy];
-        [copyOfReceivingArray addObject:user];
-        receivingArray = copyOfReceivingArray;
+    NSMutableArray *copyOfReceivingArray = [receivingArray mutableCopy];
+    [copyOfReceivingArray addObject:user];
+    receivingArray = copyOfReceivingArray;
     return receivingArray;
 }
 
@@ -107,14 +107,23 @@
     }
     else{
         for (TaskObject* task in completedTasks) {
-                NSInteger completionInterval = [task.dateCompleted daysFrom:task.createdAt];
-                averageAccumulator += completionInterval;
-                totalCountedTasks++;
+            NSInteger completionInterval = [task.dateCompleted daysFrom:task.createdAt];
+            averageAccumulator += completionInterval;
+            totalCountedTasks++;
         }
     }
     calculatedAverage = averageAccumulator / totalCountedTasks;
     
     return calculatedAverage;
+}
+
++ (NSMutableDictionary<NSString*, PFUser*> *)userDictionaryFromArray :(NSMutableArray*)userArray{
+    NSMutableDictionary<NSString*, PFUser*>* userDict = [[NSMutableDictionary alloc] init];
+    NSArray<PFUser*>* keysFromArray = userArray;
+    for (PFUser* user in keysFromArray) {
+        userDict[user.objectId] = user;
+    }
+    return userDict;
 }
 
 @end

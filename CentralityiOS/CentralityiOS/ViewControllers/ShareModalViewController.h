@@ -8,11 +8,12 @@
 #import <UIKit/UIKit.h>
 #import "Parse/Parse.h"
 #import "TaskObject.h"
+#import "CentralityHelpers.h"
 
 @class ShareModalViewController;
 
 @protocol ShareModalViewControllerDelegate <NSObject>
-- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller userPermission:(NSString*)userPermission updateType:(NSString*)updateType;
+- (void)didUpdateSharing:(PFUser *)user toFeed:(ShareModalViewController *)controller accessStatus:(PrivacyAccessStatus)accessStatus updateType:(PrivacyUpdateMode)updateMode;
 @end
 
 @interface ShareModalViewController : UIViewController

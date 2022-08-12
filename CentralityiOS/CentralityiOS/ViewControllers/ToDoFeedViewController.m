@@ -13,6 +13,7 @@
 #import "DateFormatHelper.h"
 #import "CentralityHelpers.h"
 #import "NSDate+DateTools.h"
+#import "SuggestionAlgorithm.h"
 
 @interface ToDoFeedViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
@@ -34,7 +35,7 @@
 }
 - (IBAction)viewAlertsAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
-                                    @"Main" bundle:nil];
+                                @"Main" bundle:nil];
     AlertsModalViewController *alertsModalVC = [storyboard instantiateViewControllerWithIdentifier:@"AlertsModalViewController"];
     alertsModalVC.delegate = self;
     alertsModalVC.arrayOfSuggestions = [[NSMutableArray alloc] init];
@@ -44,10 +45,10 @@
 
 - (IBAction)newTaskAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
-                                    @"Main" bundle:nil];
+                                @"Main" bundle:nil];
     ModifyTaskModalViewController *modifyTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ModifyTaskModalViewController"];
     modifyTaskModalVC.delegate = self;
-    modifyTaskModalVC.modifyMode = kAddTaskMode;
+    modifyTaskModalVC.modifyMode = AddTaskMode;
     [self presentViewController:modifyTaskModalVC animated:YES completion:^{}];
 }
 
@@ -107,7 +108,7 @@
 
 -(void)updateNotifications{
     if (PFUser.currentUser){
-        [[self querySuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
+        [[SuggestionAlgorithm querySuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
             [[self queryShareRequests] countObjectsInBackgroundWithBlock:^(int numberOfShareRequests, NSError *error) {
                 NSString *alertsAsString = [NSString stringWithFormat:@"%ld", (long)numberOfSuggestions + numberOfShareRequests];
                 [self.alertButton setTitle:alertsAsString forState:UIControlStateNormal];
@@ -121,20 +122,6 @@
     [receivedTasksQuery whereKey:kBySharedOwnerQueryKey equalTo:PFUser.currentUser];
     [receivedTasksQuery whereKey:kByAcceptedUsersQueryKey notEqualTo:PFUser.currentUser];
     return receivedTasksQuery;
-}
-
-- (PFQuery*)querySuggestions{
-    PFQuery *receivedSuggestionsQuery = [PFQuery queryWithClassName:kSuggestionClassName];
-    [receivedSuggestionsQuery whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
-    return receivedSuggestionsQuery;
-}
-
-- (PFQuery*)querySuggestionsOfType:(NSString*)suggestionType Task:(TaskObject*)task{
-    PFQuery *specificSuggestionQuery = [PFQuery queryWithClassName:kSuggestionClassName];
-    [specificSuggestionQuery whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
-    [specificSuggestionQuery whereKey:kAssociatedTaskKey equalTo:task];
-    [specificSuggestionQuery whereKey:kSuggestionTypeKey equalTo:suggestionType];
-    return specificSuggestionQuery;
 }
 
 - (void)detectEmptyFeed{
@@ -175,12 +162,15 @@
     
     if (task.sharedOwners.count > 0){
         NSMutableString* allUsers = [[NSMutableString alloc] initWithString:@""];
+        
         for (NSInteger index = 0; index < task.sharedOwners.count; index++){
             [allUsers appendString:[task.sharedOwners[index] fetchIfNeeded].username];
+            
             if (index < task.sharedOwners.count-1){
                 [allUsers appendString:@", "];
             }
         }
+        
         NSString* displayMessage = [[NSString alloc]init];
         if ([task.owner.objectId isEqualToString:PFUser.currentUser.objectId]){
             displayMessage = [NSString stringWithFormat:@"Shared with : %@",allUsers];
@@ -199,7 +189,7 @@
     
     [cell refreshCell];
     
-    [self checkAllSuggestionRules:cell.task];
+    [SuggestionAlgorithm checkAllSuggestionRules:cell.task];
     
     return cell;
 }
@@ -209,17 +199,20 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     TaskObject *task = self.arrayOfTasks[indexPath.row];
     
+    NSMutableDictionary* dictOfSharedOwners = [CentralityHelpers userDictionaryFromArray:task.sharedOwners];
+    NSMutableDictionary* dictOfReadOnlyUsers = [CentralityHelpers userDictionaryFromArray:task.readOnlyUsers];
+    NSMutableDictionary* dictOfReadAndWriteUsers = [CentralityHelpers userDictionaryFromArray:task.readAndWriteUsers];
+    NSMutableDictionary* dictOfAcceptedUsers = [CentralityHelpers userDictionaryFromArray:task.acceptedUsers];
+    
     UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Delete" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
         PFQuery *query = [self makeQuery];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
-                //Removes task from backend
                 task.category.numberOfTasksInCategory--;
                 [task.category saveInBackground];
                 [self.arrayOfTasks[indexPath.row] deleteInBackground];
-                //Removes task from current view / local array
                 [self.arrayOfTasks removeObjectAtIndex:indexPath.row];
                 [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                 [self detectEmptyFeed];
@@ -235,10 +228,10 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     UIContextualAction *editAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Edit" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
-                                        @"Main" bundle:nil];
+                                    @"Main" bundle:nil];
         ModifyTaskModalViewController *modifyTaskModalVC = [storyboard instantiateViewControllerWithIdentifier:@"ModifyTaskModalViewController"];
         modifyTaskModalVC.delegate = self;
-        modifyTaskModalVC.modifyMode = kEditTaskMode;
+        modifyTaskModalVC.modifyMode = EditTaskMode;
         modifyTaskModalVC.taskFromFeed = task;
         modifyTaskModalVC.taskCategory = task.category;
         modifyTaskModalVC.taskDueDate = task.dueDate;
@@ -257,34 +250,23 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
-                for (int i = 0; i < task.sharedOwners.count; i++) {
-                    if ([task.sharedOwners[i].objectId isEqualToString:PFUser.currentUser.objectId]){
-                        NSMutableArray *tempArrayOfSharedOwners = [task.sharedOwners mutableCopy];
-                        [tempArrayOfSharedOwners removeObjectAtIndex:i];
-                        task.sharedOwners = tempArrayOfSharedOwners;
-                    }
+                if ([dictOfSharedOwners objectForKey:PFUser.currentUser.objectId]){
+                    [dictOfSharedOwners removeObjectForKey:PFUser.currentUser.objectId];
+                    task.sharedOwners = [[dictOfSharedOwners allValues] mutableCopy];
                 }
-                for (int i = 0; i < task.acceptedUsers.count; i++) {
-                    if ([task.acceptedUsers[i].objectId isEqualToString:PFUser.currentUser.objectId]){
-                        NSMutableArray *tempArrayOfAcceptedUsers = [task.acceptedUsers mutableCopy];
-                        [tempArrayOfAcceptedUsers removeObjectAtIndex:i];
-                        task.acceptedUsers = tempArrayOfAcceptedUsers;
-                    }
+                if ([dictOfAcceptedUsers objectForKey:PFUser.currentUser.objectId]){
+                    [dictOfAcceptedUsers removeObjectForKey:PFUser.currentUser.objectId];
+                    task.acceptedUsers = [[dictOfAcceptedUsers allValues] mutableCopy];
                 }
-                for (int i = 0; i < task.readOnlyUsers.count; i++) {
-                    if ([task.readOnlyUsers[i].objectId isEqualToString:PFUser.currentUser.objectId]){
-                        NSMutableArray *tempArrayOfReadOnlyUsers = [task.readOnlyUsers mutableCopy];
-                        [tempArrayOfReadOnlyUsers removeObjectAtIndex:i];
-                        task.readOnlyUsers = tempArrayOfReadOnlyUsers;
-                    }
+                if ([dictOfReadOnlyUsers objectForKey:PFUser.currentUser.objectId]){
+                    [dictOfReadOnlyUsers removeObjectForKey:PFUser.currentUser.objectId];
+                    task.readOnlyUsers = [[dictOfReadOnlyUsers allValues] mutableCopy];
                 }
-                for (int i = 0; i < task.readAndWriteUsers.count; i++) {
-                    if ([task.readAndWriteUsers[i].objectId isEqualToString:PFUser.currentUser.objectId]){
-                        NSMutableArray *tempArrayOfReadAndWriteUsers = [task.readAndWriteUsers mutableCopy];
-                        [tempArrayOfReadAndWriteUsers removeObjectAtIndex:i];
-                        task.readAndWriteUsers = tempArrayOfReadAndWriteUsers;
-                    }
+                if ([dictOfReadAndWriteUsers objectForKey:PFUser.currentUser.objectId]){
+                    [dictOfReadAndWriteUsers removeObjectForKey:PFUser.currentUser.objectId];
+                    task.readAndWriteUsers = [[dictOfReadAndWriteUsers allValues] mutableCopy];
                 }
+                
                 [task saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
                     if (succeeded) {
                         [self fetchTasks];
@@ -310,11 +292,12 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UISwipeActionsConfiguration *swipeActions;
     NSMutableArray<NSString*>* readOnlyObjIds = [CentralityHelpers getArrayOfObjectIds:task.readOnlyUsers];
+    
     if ([readOnlyObjIds containsObject:PFUser.currentUser.objectId]){
         swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[unfollowAction]];
     }
     else if ([PFUser.currentUser.objectId isEqualToString:task.owner.objectId]){
-    swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, editAction]];
+        swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, editAction]];
     }
     else{
         swipeActions = [UISwipeActionsConfiguration configurationWithActions:@[editAction, unfollowAction]];
@@ -335,41 +318,6 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateNotifications) userInfo:nil repeats:YES];
 }
 
-- (void)checkAllSuggestionRules:(TaskObject*)task{
-    [self checkForOverdueTasks:task];
-    [self checkForUndatedTasks:task];
-    [self checkForUncategorizedTasks:task];
-}
 
-- (void)checkForOverdueTasks:(TaskObject*)task{
-    if ([task.dueDate isEarlierThan:NSDate.date] && task.isCompleted == NO){
-        [self createUniqueSuggestion:task :kSuggestionTypeOverdue];
-    }
-}
-
-- (void)checkForUndatedTasks:(TaskObject*)task{
-    if (!task.dueDate){
-        [self createUniqueSuggestion:task :kSuggestionTypeUndated];
-    }
-}
-
-- (void)createUniqueSuggestion:(TaskObject*)task :(NSString*)suggestionType{
-    [[self querySuggestionsOfType:suggestionType Task:task] countObjectsInBackgroundWithBlock:^(int numOfduplicates, NSError * _Nullable error) {
-                if (numOfduplicates == 0){
-                    SuggestionObject *suggestion = [SuggestionObject new];
-                    suggestion.associatedTask = task;
-                    suggestion.suggestionType = suggestionType;
-                    suggestion.owner = PFUser.currentUser;
-                    [suggestion saveInBackground];
-                    [self updateNotifications];
-                }
-    }];
-}
-
-- (void)checkForUncategorizedTasks:(TaskObject*)task{
-    if (!task.category){
-        [self createUniqueSuggestion:task :kSuggestionTypeUncategorized];
-    }
-}
 
 @end

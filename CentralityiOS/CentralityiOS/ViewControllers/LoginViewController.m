@@ -23,7 +23,7 @@
     NSString *password = self.passwordField.text;
     
     [self fieldChecker:username passwordInput:password];
-        
+    
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         if (error != nil) {
             NSLog(@"User log in failed: %@", error.localizedDescription);
@@ -56,12 +56,12 @@
 
 - (void)alert:(NSString *)titleLabel messageLabel:(NSString *)messageLabel label: (NSString *)label{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:titleLabel
-                                                                               message:messageLabel
-                                                                        preferredStyle:(UIAlertControllerStyleAlert)];
+                                                                   message:messageLabel
+                                                            preferredStyle:(UIAlertControllerStyleAlert)];
     UIAlertAction *onlyAction = [UIAlertAction actionWithTitle:label
-                                                        style:UIAlertActionStyleCancel
-                                                      handler:^(UIAlertAction * _Nonnull action) {
-                                                      }];
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+    }];
     [alert addAction:onlyAction];
     
     [self presentViewController:alert animated:YES completion:^{
