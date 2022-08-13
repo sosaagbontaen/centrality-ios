@@ -36,7 +36,7 @@ static NSString * const kCompleteImageName = @"checkmark.circle.fill";
     UIImage *incompleteImage = [UIImage systemImageNamed:kIncompleteImageName];
     UIImage *completeImage = [UIImage systemImageNamed:kCompleteImageName];
     UIColor *completeColor = [UIColor grayColor];
-    UIColor *inCompleteColor = [UIColor blackColor];
+    UIColor *inCompleteColor = [UIColor labelColor];
     
     [self.completeButton setSelected:NO];
     [self.completeButton setHighlighted:NO];

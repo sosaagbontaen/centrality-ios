@@ -54,9 +54,6 @@ NSTimer* refreshTimer;
     
     refreshTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateCounters) userInfo:nil repeats:YES];
     
-    
-    self.title = @"Pie Chart";
-    
     [self setupPieChartView:self.pieChart];
     self.pieChart.delegate = self;
     ChartLegend *l = self.pieChart.legend;
