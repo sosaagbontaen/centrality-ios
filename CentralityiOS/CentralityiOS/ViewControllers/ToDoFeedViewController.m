@@ -20,13 +20,11 @@
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @end
 
-NSTimer* notificationTimer;
-
 @implementation ToDoFeedViewController
 
 - (IBAction)logoutAction:(id)sender {
     [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
-        [notificationTimer invalidate];
+        [self.notificationTimer invalidate];
         SceneDelegate *mySceneDelegate = (SceneDelegate * ) UIApplication.sharedApplication.connectedScenes.allObjects.firstObject.delegate;
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         if ([mySceneDelegate.window.rootViewController isKindOfClass:[UITabBarController self]]){
@@ -324,7 +322,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchTasks) forControlEvents:UIControlEventValueChanged];
     [self.taskTableView insertSubview:self.refreshControl atIndex:0];
-    notificationTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateNotifications) userInfo:nil repeats:YES];
+    self.notificationTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateNotifications) userInfo:nil repeats:YES];
 }
 
 
