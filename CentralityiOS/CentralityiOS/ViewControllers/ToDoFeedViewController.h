@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (weak, nonatomic) IBOutlet UIButton *addTaskButton;
 @property (weak, nonatomic) IBOutlet UILabel *feedMessageLabel;
+@property NSTimer* notificationTimer;
 -(void) fetchTasks;
 @end
 

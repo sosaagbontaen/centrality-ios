@@ -39,6 +39,14 @@
     label.hidden = isHidden;
 }
 
++ (void)transitionLabel :(UILabel*)label newText:(NSString*)newText{
+    [UILabel transitionWithView:label
+                       duration:0.25f
+                        options:UIViewAnimationOptionTransitionCrossDissolve
+                     animations:^{label.text = newText;}
+                     completion:nil];
+}
+
 + (NSArray<PFUser*>*)removeUser:(PFUser*)user FromArray:(NSArray<PFUser*>*)arrayToCheck{
     for (int i = 0; i < arrayToCheck.count; i++) {
         if ([arrayToCheck[i].objectId isEqualToString:user.objectId]){
@@ -58,10 +66,23 @@
 }
 
 + (PFQuery*)queryForUsersCompletedTasks{
-    PFQuery *allUserTasks = [PFQuery queryWithClassName:kTaskClassName];
-    [allUserTasks whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
-    [allUserTasks whereKeyExists:kByDateCompletedKey];
-    return allUserTasks;
+    PFQuery *completedTasks = [PFQuery queryWithClassName:kTaskClassName];
+    [completedTasks whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
+    [completedTasks whereKeyExists:kByDateCompletedKey];
+    [completedTasks whereKey:kIsCompletedKey equalTo:@(YES)];
+    return completedTasks;
+}
+
+// Queries tasks due within 24 hour margin of error.
+// Not necessarily tasks due in the same day
+// When query called elsewhere, make sure to modify results to make them more accurate
++ (PFQuery*)queryForTasksRoughDueByDate{
+    PFQuery *dueTasks = [PFQuery queryWithClassName:kTaskClassName];
+    [dueTasks whereKey:kByOwnerQueryKey equalTo:PFUser.currentUser];
+    [dueTasks whereKeyExists:kByDueDateKey];
+    [dueTasks whereKey:kByDueDateKey lessThan:[[NSDate date]dateByAddingDays:1]];
+    [dueTasks whereKey:kByDueDateKey greaterThan:[[NSDate date]dateBySubtractingDays:1]];
+    return dueTasks;
 }
 
 + (PFQuery*)queryForUsersCategories{

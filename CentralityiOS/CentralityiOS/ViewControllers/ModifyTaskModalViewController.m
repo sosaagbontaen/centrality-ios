@@ -51,9 +51,7 @@
 }
 
 - (NSString*)updateShareDisplayMessage{
-    NSString* shareDisplayMessage = [[NSString alloc]init];
-    shareDisplayMessage = [NSString stringWithFormat:@"Sharing w/ %lu user",(unsigned long)self.taskSharedOwners.count];
-    shareDisplayMessage = (self.taskSharedOwners.count != 1) ? [shareDisplayMessage stringByAppendingString:@"s"] : shareDisplayMessage;
+    NSString *shareDisplayMessage = self.taskSharedOwners.count == 1 ? @"Sharing w/ 1 user" : [NSString stringWithFormat:@"Sharing w/ %lu users", (unsigned long)self.taskSharedOwners.count];
     return shareDisplayMessage;
 }
 

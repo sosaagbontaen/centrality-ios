@@ -16,6 +16,7 @@
 		1A4E54EA289850EE0014DE82 /* ReceiverCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E54E9289850EE0014DE82 /* ReceiverCell.m */; };
 		1A4E553A289C79F90014DE82 /* SuggestionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5539289C79F90014DE82 /* SuggestionObject.m */; };
 		1A4E553D28A56FE80014DE82 /* SuggestionAlgorithm.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E553C28A56FE80014DE82 /* SuggestionAlgorithm.m */; };
+		1A4E554028A584020014DE82 /* UsageDashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E553F28A584020014DE82 /* UsageDashboardViewController.m */; };
 		1A5AAE662888AB9B0080FB4A /* CategoryObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A5AAE652888AB9B0080FB4A /* CategoryObject.m */; };
 		1A8D46872878E91800489744 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46862878E91800489744 /* AppDelegate.m */; };
 		1A8D468A2878E91800489744 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D46892878E91800489744 /* SceneDelegate.m */; };
@@ -76,6 +77,8 @@
 		1A4E5539289C79F90014DE82 /* SuggestionObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SuggestionObject.m; sourceTree = "<group>"; };
 		1A4E553B28A56FE80014DE82 /* SuggestionAlgorithm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuggestionAlgorithm.h; sourceTree = "<group>"; };
 		1A4E553C28A56FE80014DE82 /* SuggestionAlgorithm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SuggestionAlgorithm.m; sourceTree = "<group>"; };
+		1A4E553E28A584020014DE82 /* UsageDashboardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UsageDashboardViewController.h; sourceTree = "<group>"; };
+		1A4E553F28A584020014DE82 /* UsageDashboardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UsageDashboardViewController.m; sourceTree = "<group>"; };
 		1A5AAE642888AB9B0080FB4A /* CategoryObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CategoryObject.h; sourceTree = "<group>"; };
 		1A5AAE652888AB9B0080FB4A /* CategoryObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CategoryObject.m; sourceTree = "<group>"; };
 		1A8D46822878E91800489744 /* CentralityiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CentralityiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -275,6 +278,8 @@
 				1A4E54E628984E8E0014DE82 /* AlertsModalViewController.m */,
 				1A4E553B28A56FE80014DE82 /* SuggestionAlgorithm.h */,
 				1A4E553C28A56FE80014DE82 /* SuggestionAlgorithm.m */,
+				1A4E553E28A584020014DE82 /* UsageDashboardViewController.h */,
+				1A4E553F28A584020014DE82 /* UsageDashboardViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -545,6 +550,7 @@
 				1A8D46C7287CC9B200489744 /* ToDoFeedViewController.m in Sources */,
 				1A8D46C4287CC95F00489744 /* TaskCell.m in Sources */,
 				1A5AAE662888AB9B0080FB4A /* CategoryObject.m in Sources */,
+				1A4E554028A584020014DE82 /* UsageDashboardViewController.m in Sources */,
 				1A8D46982878E91800489744 /* main.m in Sources */,
 				1A8DC3362891DBAE00123E1F /* UserCell.m in Sources */,
 				1A4E54EA289850EE0014DE82 /* ReceiverCell.m in Sources */,
@@ -654,7 +660,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -706,7 +712,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

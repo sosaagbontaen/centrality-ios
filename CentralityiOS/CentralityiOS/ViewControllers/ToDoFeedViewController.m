@@ -16,6 +16,7 @@
 #import "SuggestionAlgorithm.h"
 
 @interface ToDoFeedViewController () <UITableViewDelegate, UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UITabBarItem *tabButton;
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @end
 
@@ -23,6 +24,7 @@
 
 - (IBAction)logoutAction:(id)sender {
     [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
+        [self.notificationTimer invalidate];
         SceneDelegate *mySceneDelegate = (SceneDelegate * ) UIApplication.sharedApplication.connectedScenes.allObjects.firstObject.delegate;
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         if ([mySceneDelegate.window.rootViewController isKindOfClass:[UITabBarController self]]){
@@ -76,7 +78,7 @@
     [self fetchTasks];
 }
 
-- (PFQuery*)makeQuery{
+- (PFQuery*)taskQuery{
     PFQuery *tasksOwnedByMe = [PFQuery queryWithClassName:kTaskClassName];
     [tasksOwnedByMe whereKey:kByOwnerQueryKey equalTo:[PFUser currentUser]];
     
@@ -91,7 +93,7 @@
 }
 
 - (void)fetchTasks{
-    PFQuery *queryForFeedTasks = [self makeQuery];
+    PFQuery *queryForFeedTasks = [self taskQuery];
     
     [queryForFeedTasks findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
         if (tasks != nil) {
@@ -107,12 +109,15 @@
 }
 
 -(void)updateNotifications{
-    if (PFUser.currentUser){
+    if ([PFUser currentUser]){
         [[SuggestionAlgorithm querySuggestions] countObjectsInBackgroundWithBlock:^(int numberOfSuggestions, NSError *error) {
             [[self queryShareRequests] countObjectsInBackgroundWithBlock:^(int numberOfShareRequests, NSError *error) {
                 NSString *alertsAsString = [NSString stringWithFormat:@"%ld", (long)numberOfSuggestions + numberOfShareRequests];
                 [self.alertButton setTitle:alertsAsString forState:UIControlStateNormal];
             }];
+        }];
+        [[self taskQuery] countObjectsInBackgroundWithBlock:^(int taskCount, NSError * _Nullable error) {
+            self.tabButton.badgeValue = [@(taskCount) stringValue];
         }];
     }
 }
@@ -137,6 +142,8 @@
     TaskObject *task = self.arrayOfTasks[indexPath.row];
     TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell" forIndexPath:indexPath];
     
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.task = task;
     cell.taskNameLabel.text = task.taskTitle;
     cell.taskDescLabel.text = task.taskDesc;
@@ -206,7 +213,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Delete" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
-        PFQuery *query = [self makeQuery];
+        PFQuery *query = [self taskQuery];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
@@ -246,7 +253,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     UIContextualAction *unfollowAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Unfollow" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
         
-        PFQuery *query = [self makeQuery];
+        PFQuery *query = [self taskQuery];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *tasks, NSError *error) {
             if (tasks != nil) {
@@ -315,7 +322,7 @@ trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath{
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchTasks) forControlEvents:UIControlEventValueChanged];
     [self.taskTableView insertSubview:self.refreshControl atIndex:0];
-    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateNotifications) userInfo:nil repeats:YES];
+    self.notificationTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateNotifications) userInfo:nil repeats:YES];
 }
 
 
