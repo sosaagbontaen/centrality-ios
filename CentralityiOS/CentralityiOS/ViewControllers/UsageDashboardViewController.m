@@ -17,10 +17,7 @@
 @property (weak, nonatomic) IBOutlet PieChartView *pieChart;
 @property NSMutableArray<CategoryObject*>* userCategories;
 @property (nonatomic, assign) BOOL shouldHideData;
-
 @end
-
-NSTimer* refreshTimer;
 
 @implementation UsageDashboardViewController
 
@@ -52,7 +49,7 @@ NSTimer* refreshTimer;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    refreshTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateCounters) userInfo:nil repeats:YES];
+    self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateCounters) userInfo:nil repeats:YES];
     
     [self setupPieChartView:self.pieChart];
     self.pieChart.delegate = self;
