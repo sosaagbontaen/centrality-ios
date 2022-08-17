@@ -131,7 +131,7 @@
     NSMutableArray *values = [[NSMutableArray alloc] init];
     for (int i = 0; i < count; i++)
     {
-        CategoryObject* currentCategory = self.userCategories[i % self.userCategories.count];
+        CategoryObject* currentCategory = self.userCategories[i];
         [values addObject:[[PieChartDataEntry alloc] initWithValue:currentCategory.numberOfTasksInCategory label:currentCategory.categoryName icon: [UIImage imageNamed:@"icon"]]];
     }
     
