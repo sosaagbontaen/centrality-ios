@@ -43,9 +43,8 @@
     [UILabel transitionWithView:label
                        duration:0.25f
                         options:UIViewAnimationOptionTransitionCrossDissolve
-                     animations:^{
-        label.text = newText;
-    } completion:nil];
+                     animations:^{label.text = newText;}
+                     completion:nil];
 }
 
 + (NSArray<PFUser*>*)removeUser:(PFUser*)user FromArray:(NSArray<PFUser*>*)arrayToCheck{
